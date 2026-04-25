@@ -244,6 +244,13 @@
       align-items: start;
     }
 
+    .utility-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      align-items: start;
+    }
+
     .cards {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -367,6 +374,7 @@
       border: 1px solid var(--line);
       background: var(--paper-strong);
       min-height: 150px;
+      border-radius: 8px;
     }
 
     .panel h3 {
@@ -632,8 +640,175 @@
       flex-wrap: wrap;
     }
 
+    .utility-panel,
+    .tracker-panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: var(--paper-strong);
+      border-radius: 8px;
+    }
+
+    .utility-panel h3,
+    .tracker-panel h3 {
+      margin: 0 0 12px;
+      font-family: var(--display);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .search-form,
+    .log-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .search-row,
+    .log-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .log-grid {
+      display: grid;
+      grid-template-columns: 1fr 140px 160px;
+      gap: 10px;
+    }
+
+    .field,
+    .select,
+    .button,
+    .textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 249, 0.96);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 14px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .field:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: rgba(183, 103, 51, 0.46);
+      box-shadow: 0 0 0 4px rgba(183, 103, 51, 0.08);
+    }
+
+    .textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .button {
+      width: auto;
+      border: 1px solid rgba(56, 107, 105, 0.18);
+      background: linear-gradient(180deg, rgba(239, 196, 141, 0.32), rgba(239, 196, 141, 0.14));
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      background: rgba(56, 107, 105, 0.08);
+    }
+
+    .search-meta,
+    .tracker-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .task-list,
+    .log-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .task-item,
+    .log-item {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 251, 245, 0.92);
+      border-radius: 8px;
+    }
+
+    .task-item.done {
+      opacity: 0.72;
+      background: rgba(92, 103, 80, 0.08);
+    }
+
+    .task-head,
+    .log-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .task-check {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 10px;
+      align-items: start;
+      cursor: pointer;
+    }
+
+    .task-check input {
+      margin: 2px 0 0;
+      accent-color: var(--teal);
+    }
+
+    .task-item strong,
+    .log-item strong {
+      font-size: 16px;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .micro-pill {
+      padding: 6px 8px;
+      border: 1px solid rgba(56, 107, 105, 0.18);
+      background: rgba(56, 107, 105, 0.07);
+      color: var(--teal);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .empty-state {
+      padding: 20px 14px;
+      border: 1px dashed rgba(72, 51, 37, 0.18);
+      color: var(--muted);
+      text-align: center;
+      border-radius: 8px;
+    }
+
+    .hidden-by-search {
+      display: none !important;
+    }
+
     @media (max-width: 1080px) {
       .hero,
+      .utility-grid,
       .grid-two,
       .coach-grid,
       .coach-strip,
@@ -692,7 +867,10 @@
       }
 
       .priority-line,
-      .source-row {
+      .source-row,
+      .search-row,
+      .log-row,
+      .log-grid {
         grid-template-columns: 1fr;
         display: grid;
       }
@@ -752,6 +930,75 @@
           <span>Variation density: 7 takes</span>
         </div>
       </aside>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Practice Workspace</h2>
+          <p class="section-note">把音樂書庫變成真的工作台。你可以搜尋整個頁面的樂句、和弦、MuseScore 流程與練習主題，也可以把今天的任務勾掉，順手記下練習回報。</p>
+        </div>
+        <p class="section-note">搜尋、勾選狀態與練習紀錄都會存在你的瀏覽器本地端。</p>
+      </div>
+      <div class="utility-grid">
+        <section class="utility-panel">
+          <h3>Search Library</h3>
+          <form class="search-form" id="search-form">
+            <div class="search-row">
+              <input class="field" id="search-input" type="search" placeholder="搜尋 lick、和弦、Logic、DJ、MuseScore、mood...">
+              <button class="button" type="button" id="clear-search">clear</button>
+            </div>
+          </form>
+          <div class="search-meta">
+            <span id="search-status">Showing all library items</span>
+            <span id="search-count">0 matches</span>
+          </div>
+        </section>
+        <section class="tracker-panel">
+          <h3>Today Checklist</h3>
+          <p class="section-note">今天要做的主線任務可以直接在這裡打勾。勾選狀態會保留下來，明天再重排也不會把今天的完成感洗掉。</p>
+          <div class="task-list" id="task-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Practice Log</h2>
+          <p class="section-note">每次練完用一句話記下今天發生了什麼。久了之後，這裡會比單純打卡更有價值，因為你能看到哪種練法真的讓你進步。</p>
+        </div>
+        <p class="section-note">用最短的格式留痕跡：主題、分鐘數、類型、今天的觀察。</p>
+      </div>
+      <div class="utility-grid">
+        <section class="utility-panel">
+          <h3>New Entry</h3>
+          <form class="log-form" id="log-form">
+            <div class="log-grid">
+              <input class="field" id="log-title" type="text" placeholder="例如：E Dorian lick variation">
+              <input class="field" id="log-minutes" type="number" min="1" max="480" placeholder="分鐘">
+              <select class="select" id="log-category">
+                <option value="Guitar">Guitar</option>
+                <option value="Logic">Logic</option>
+                <option value="DJ">DJ</option>
+                <option value="MuseScore">MuseScore</option>
+              </select>
+            </div>
+            <textarea class="textarea" id="log-notes" placeholder="今天卡住什麼、哪裡有進步、下一次要修什麼"></textarea>
+            <div class="log-row">
+              <div class="tracker-meta">
+                <span id="log-total">0 entries</span>
+                <span id="log-minutes-total">0 min tracked</span>
+              </div>
+              <button class="button" type="submit">add log</button>
+            </div>
+          </form>
+        </section>
+        <section class="tracker-panel">
+          <h3>Recent Sessions</h3>
+          <div class="log-list" id="log-list"></div>
+        </section>
+      </div>
     </section>
 
     <section class="section">
@@ -1131,5 +1378,213 @@
       <span>Designed as a music library interface, not a streaming player.</span>
     </footer>
   </main>
+  <script>
+    const storageKeyTasks = "sonic-atlas-tasks-v1";
+    const storageKeyLogs = "sonic-atlas-logs-v1";
+
+    const defaultTasks = [
+      {
+        id: "guitar-drill",
+        title: "45 min / Guitar Phrase Drill",
+        category: "Guitar",
+        description: "暖身後直接進兩條 lick 的變奏與回放，先把昨天的輸入變成手感。",
+        tags: ["Priority A", "Technique"]
+      },
+      {
+        id: "logic-block",
+        title: "35 min / Logic Arrangement Block",
+        category: "Logic",
+        description: "完成一段 intro 到 verse 的層次推進，重點是 mute、filter、reverb send。",
+        tags: ["Priority B", "Output"]
+      },
+      {
+        id: "dj-reps",
+        title: "25 min / DJ Transition Reps",
+        category: "DJ",
+        description: "用兩首相近能量的歌做 6 次轉場，記錄最乾淨與最失控的一次。",
+        tags: ["Priority C", "Ear Training"]
+      },
+      {
+        id: "musescore-pass",
+        title: "20 min / MuseScore Transcription Pass",
+        category: "MuseScore",
+        description: "把今天最有感的一條樂句記成譜，補上 chord symbol、節奏切分和兩個變體。",
+        tags: ["Priority D", "Notation"]
+      }
+    ];
+
+    const taskList = document.getElementById("task-list");
+    const logList = document.getElementById("log-list");
+    const logForm = document.getElementById("log-form");
+    const searchInput = document.getElementById("search-input");
+    const clearSearchButton = document.getElementById("clear-search");
+    const searchStatus = document.getElementById("search-status");
+    const searchCount = document.getElementById("search-count");
+    const logTotal = document.getElementById("log-total");
+    const logMinutesTotal = document.getElementById("log-minutes-total");
+
+    function readTasks() {
+      const raw = localStorage.getItem(storageKeyTasks);
+      if (!raw) {
+        return defaultTasks.map((task) => ({ ...task, done: false }));
+      }
+      try {
+        const saved = JSON.parse(raw);
+        return defaultTasks.map((task) => {
+          const match = saved.find((item) => item.id === task.id);
+          return { ...task, done: Boolean(match && match.done) };
+        });
+      } catch {
+        return defaultTasks.map((task) => ({ ...task, done: false }));
+      }
+    }
+
+    function saveTasks(tasks) {
+      localStorage.setItem(storageKeyTasks, JSON.stringify(tasks));
+    }
+
+    function renderTasks() {
+      const tasks = readTasks();
+      taskList.innerHTML = "";
+      tasks.forEach((task) => {
+        const item = document.createElement("article");
+        item.className = "task-item" + (task.done ? " done" : "");
+        item.innerHTML = `
+          <label class="task-check">
+            <input type="checkbox" data-task-id="${task.id}" ${task.done ? "checked" : ""}>
+            <div>
+              <strong>${task.title}</strong>
+              <p class="muted">${task.description}</p>
+            </div>
+          </label>
+          <div class="pill-row">${task.tags.map((tag) => `<span class="micro-pill">${tag}</span>`).join("")}</div>
+        `;
+        taskList.appendChild(item);
+      });
+    }
+
+    taskList.addEventListener("change", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      const tasks = readTasks().map((task) => (
+        task.id === target.dataset.taskId ? { ...task, done: target.checked } : task
+      ));
+      saveTasks(tasks);
+      renderTasks();
+    });
+
+    function readLogs() {
+      const raw = localStorage.getItem(storageKeyLogs);
+      if (!raw) return [];
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return [];
+      }
+    }
+
+    function saveLogs(logs) {
+      localStorage.setItem(storageKeyLogs, JSON.stringify(logs));
+    }
+
+    function renderLogs() {
+      const logs = readLogs();
+      logList.innerHTML = "";
+
+      if (!logs.length) {
+        logList.innerHTML = '<div class="empty-state">還沒有練習紀錄。先記下今天第一段 session。</div>';
+      } else {
+        logs.forEach((log) => {
+          const item = document.createElement("article");
+          item.className = "log-item";
+          item.innerHTML = `
+            <div class="log-head">
+              <div>
+                <strong>${log.title}</strong>
+                <div class="tracker-meta">
+                  <span>${log.category}</span>
+                  <span>${log.minutes} min</span>
+                  <span>${log.date}</span>
+                </div>
+              </div>
+              <button class="button secondary" type="button" data-delete-log="${log.id}">delete</button>
+            </div>
+            <p class="muted">${log.notes}</p>
+          `;
+          logList.appendChild(item);
+        });
+      }
+
+      const totalMinutes = logs.reduce((sum, log) => sum + Number(log.minutes || 0), 0);
+      logTotal.textContent = `${logs.length} entries`;
+      logMinutesTotal.textContent = `${totalMinutes} min tracked`;
+    }
+
+    logForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const title = document.getElementById("log-title").value.trim();
+      const minutes = document.getElementById("log-minutes").value.trim();
+      const category = document.getElementById("log-category").value;
+      const notes = document.getElementById("log-notes").value.trim();
+
+      if (!title || !minutes || !notes) return;
+
+      const logs = readLogs();
+      logs.unshift({
+        id: crypto.randomUUID(),
+        title,
+        minutes,
+        category,
+        notes,
+        date: new Date().toLocaleDateString("zh-Hant-TW", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        })
+      });
+      saveLogs(logs.slice(0, 20));
+      logForm.reset();
+      renderLogs();
+    });
+
+    logList.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const logId = target.dataset.deleteLog;
+      if (!logId) return;
+      const logs = readLogs().filter((log) => log.id !== logId);
+      saveLogs(logs);
+      renderLogs();
+    });
+
+    const searchableItems = Array.from(
+      document.querySelectorAll(".card, .progression, .archive-item, .insight, .coach-card")
+    );
+
+    function runSearch() {
+      const query = searchInput.value.trim().toLowerCase();
+      let matches = 0;
+
+      searchableItems.forEach((item) => {
+        const text = item.textContent.toLowerCase();
+        const matched = !query || text.includes(query);
+        item.classList.toggle("hidden-by-search", !matched);
+        if (matched) matches += 1;
+      });
+
+      searchStatus.textContent = query ? `Filtering by "${query}"` : "Showing all library items";
+      searchCount.textContent = `${matches} matches`;
+    }
+
+    searchInput.addEventListener("input", runSearch);
+    clearSearchButton.addEventListener("click", () => {
+      searchInput.value = "";
+      runSearch();
+    });
+
+    renderTasks();
+    renderLogs();
+    runSearch();
+  </script>
 </body>
 </html>
