@@ -1,1 +1,1694 @@
-     1|     1|File unchanged since last read. The content from the earlier read_file result in this conversation is still current — refer to that instead of re-reading.
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sonic Atlas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #ede5da;
+      --paper: rgba(252, 247, 240, 0.86);
+      --paper-strong: rgba(255, 252, 247, 0.96);
+      --ink: #201b19;
+      --muted: #62574f;
+      --line: rgba(72, 51, 37, 0.14);
+      --accent: #b76733;
+      --accent-soft: #efc48d;
+      --olive: #5c6750;
+      --teal: #386b69;
+      --wine: #815046;
+      --shadow: 0 30px 90px rgba(68, 44, 26, 0.12);
+      --display: "Noto Serif TC", serif;
+      --body: "Noto Sans TC", sans-serif;
+      --mono: "IBM Plex Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--body);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(239, 196, 141, 0.28), transparent 34%),
+        radial-gradient(circle at 85% 18%, rgba(56, 107, 105, 0.12), transparent 24%),
+        linear-gradient(180deg, #e8ddcf 0%, #f5eee5 40%, #ede2d5 100%);
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.25;
+      background-image:
+        linear-gradient(rgba(93, 64, 37, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(93, 64, 37, 0.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent);
+    }
+
+    main {
+      width: min(1400px, calc(100% - 40px));
+      margin: 28px auto 56px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr;
+      gap: 24px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      min-height: 440px;
+      border-radius: 10px;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -90px;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(191, 91, 44, 0.22), rgba(191, 91, 44, 0));
+      pointer-events: none;
+    }
+
+    .hero-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      width: fit-content;
+      padding: 8px 12px;
+      border: 1px solid rgba(98, 112, 79, 0.3);
+      color: var(--olive);
+      background: rgba(255, 253, 248, 0.75);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(48px, 8vw, 96px);
+      line-height: 0.98;
+      font-weight: 700;
+      max-width: 10ch;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 56ch;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .meta-chip {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 251, 245, 0.76);
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .hero-panel {
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 16px;
+      padding: 18px;
+      border: 1px solid rgba(47, 108, 104, 0.2);
+      background:
+        linear-gradient(160deg, rgba(251, 246, 237, 0.95), rgba(240, 228, 209, 0.82)),
+        repeating-linear-gradient(180deg, rgba(47, 108, 104, 0.06) 0 1px, transparent 1px 44px);
+    }
+
+    .panel-head,
+    .panel-foot {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .wave {
+      position: relative;
+      display: grid;
+      align-items: end;
+      grid-template-columns: repeat(24, minmax(0, 1fr));
+      gap: 6px;
+      min-height: 220px;
+      padding: 8px 0;
+    }
+
+    .wave span {
+      border-radius: 999px 999px 0 0;
+      background: linear-gradient(180deg, var(--accent), #da9866 70%, rgba(218, 152, 102, 0.25));
+      animation: rise 1.2s ease forwards;
+      transform-origin: bottom;
+      transform: scaleY(0.2);
+    }
+
+    .wave span:nth-child(3n) {
+      background: linear-gradient(180deg, var(--teal), #79a4a1 70%, rgba(121, 164, 161, 0.24));
+    }
+
+    .wave span:nth-child(4n) {
+      background: linear-gradient(180deg, var(--wine), #c18a82 70%, rgba(193, 138, 130, 0.2));
+    }
+
+    @keyframes rise {
+      to { transform: scaleY(1); }
+    }
+
+    .section {
+      margin-top: 22px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      background: var(--paper);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+      border-radius: 10px;
+    }
+
+    .section-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .section h2 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(28px, 3.5vw, 42px);
+      line-height: 1.05;
+      font-weight: 700;
+    }
+
+    .section-note {
+      max-width: 52ch;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 15px;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+    }
+
+    .coach-grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .utility-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      min-height: 220px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: var(--paper-strong);
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+      border-radius: 8px;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(191, 91, 44, 0.34);
+      box-shadow: 0 18px 34px rgba(56, 34, 18, 0.12);
+    }
+
+    .card small,
+    .muted {
+      color: var(--muted);
+    }
+
+    .card h3 {
+      margin: 10px 0 8px;
+      font-family: var(--display);
+      font-size: 28px;
+      line-height: 1.08;
+      font-weight: 700;
+      max-width: 10ch;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .tag {
+      padding: 7px 9px;
+      background: rgba(98, 112, 79, 0.09);
+      border: 1px solid rgba(98, 112, 79, 0.2);
+      color: var(--olive);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .fretboard {
+      margin-top: 18px;
+      padding: 16px;
+      border: 1px solid rgba(31, 27, 24, 0.08);
+      background: linear-gradient(180deg, #6f4e37, #583b2b);
+    }
+
+    .fretboard-grid {
+      display: grid;
+      grid-template-columns: 36px repeat(8, minmax(0, 1fr));
+      gap: 10px 8px;
+      align-items: center;
+    }
+
+    .string {
+      color: rgba(255, 242, 228, 0.8);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .fret {
+      position: relative;
+      height: 18px;
+      border-top: 1px solid rgba(255, 244, 232, 0.6);
+    }
+
+    .fret::after {
+      content: "";
+      position: absolute;
+      right: -4px;
+      top: -4px;
+      width: 1px;
+      height: 24px;
+      background: rgba(255, 244, 232, 0.35);
+    }
+
+    .dot {
+      position: absolute;
+      top: -7px;
+      left: 44%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #f8d9a4;
+      box-shadow: 0 0 0 3px rgba(248, 217, 164, 0.18);
+    }
+
+    .dot.alt {
+      background: #9ccac5;
+      box-shadow: 0 0 0 3px rgba(156, 202, 197, 0.2);
+    }
+
+    .dot.dark {
+      background: #d5846f;
+      box-shadow: 0 0 0 3px rgba(213, 132, 111, 0.2);
+    }
+
+    .rail {
+      display: grid;
+      gap: 14px;
+    }
+
+    .panel {
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: var(--paper-strong);
+      min-height: 150px;
+      border-radius: 8px;
+    }
+
+    .panel h3 {
+      margin: 0 0 12px;
+      font-family: var(--display);
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .coach-lead {
+      display: grid;
+      gap: 14px;
+    }
+
+    .coach-strip {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .coach-card {
+      padding: 15px;
+      border: 1px solid var(--line);
+      background: rgba(255, 252, 247, 0.94);
+      min-height: 184px;
+    }
+
+    .coach-card h3,
+    .priority-card h3,
+    .search-card h3 {
+      margin: 8px 0 12px;
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .coach-card strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .coach-card p,
+    .priority-card p,
+    .search-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 14px;
+    }
+
+    .coach-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid rgba(191, 91, 44, 0.28);
+      background: rgba(191, 91, 44, 0.08);
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .priority-stack,
+    .search-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .priority-card,
+    .search-card {
+      padding: 15px;
+      border: 1px solid var(--line);
+      background: rgba(255, 252, 247, 0.94);
+    }
+
+    .priority-line {
+      display: grid;
+      grid-template-columns: 76px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .priority-pill {
+      padding: 7px 9px;
+      border: 1px solid rgba(127, 61, 54, 0.22);
+      background: rgba(127, 61, 54, 0.08);
+      color: var(--wine);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .source-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .source-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(58, 41, 29, 0.08);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .stat-line {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      gap: 10px;
+      align-items: center;
+      margin: 12px 0;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .bar {
+      height: 9px;
+      background: rgba(58, 41, 29, 0.08);
+      overflow: hidden;
+    }
+
+    .bar b {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+    }
+
+    .progression-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .progression {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      padding: 14px;
+      border: 1px solid rgba(127, 61, 54, 0.16);
+      background: rgba(255, 251, 245, 0.9);
+    }
+
+    .progression strong {
+      display: block;
+      margin-bottom: 6px;
+      font-family: var(--display);
+      font-size: 22px;
+      font-weight: 700;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-content: start;
+      justify-content: end;
+    }
+
+    .chips span {
+      padding: 7px 8px;
+      border: 1px solid rgba(47, 108, 104, 0.2);
+      background: rgba(47, 108, 104, 0.07);
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--teal);
+      text-transform: uppercase;
+    }
+
+    .flow-band {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .curve-panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: var(--paper-strong);
+    }
+
+    .curve {
+      position: relative;
+      height: 260px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(98, 112, 79, 0.08), transparent),
+        repeating-linear-gradient(0deg, rgba(31, 27, 24, 0.05) 0 1px, transparent 1px 44px),
+        repeating-linear-gradient(90deg, rgba(31, 27, 24, 0.05) 0 1px, transparent 1px 60px);
+    }
+
+    .curve svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .marker-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .insight-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .insight {
+      padding: 14px;
+      border-left: 3px solid var(--accent);
+      background: rgba(191, 91, 44, 0.08);
+      color: var(--ink);
+    }
+
+    .archive {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .archive-item {
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 252, 247, 0.88);
+      min-height: 145px;
+    }
+
+    .archive-item h4 {
+      margin: 8px 0;
+      font-family: var(--display);
+      font-size: 24px;
+      line-height: 1;
+      font-weight: 700;
+    }
+
+    .footer {
+      margin-top: 22px;
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      background: rgba(255, 249, 240, 0.78);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .utility-panel,
+    .tracker-panel {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: var(--paper-strong);
+      border-radius: 8px;
+    }
+
+    .utility-panel h3,
+    .tracker-panel h3 {
+      margin: 0 0 12px;
+      font-family: var(--display);
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .search-form,
+    .log-form {
+      display: grid;
+      gap: 12px;
+    }
+
+    .search-filters,
+    .snapshot-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .snapshot-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 14px;
+    }
+
+    .search-row,
+    .log-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .log-grid {
+      display: grid;
+      grid-template-columns: 1fr 140px 160px;
+      gap: 10px;
+    }
+
+    .field,
+    .select,
+    .button,
+    .textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255, 253, 249, 0.96);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 14px;
+      padding: 12px 14px;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .field:focus,
+    .select:focus,
+    .textarea:focus {
+      border-color: rgba(183, 103, 51, 0.46);
+      box-shadow: 0 0 0 4px rgba(183, 103, 51, 0.08);
+    }
+
+    .textarea {
+      min-height: 96px;
+      resize: vertical;
+    }
+
+    .button {
+      width: auto;
+      border: 1px solid rgba(56, 107, 105, 0.18);
+      background: linear-gradient(180deg, rgba(239, 196, 141, 0.32), rgba(239, 196, 141, 0.14));
+      color: var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+    }
+
+    .button.secondary {
+      background: rgba(56, 107, 105, 0.08);
+    }
+
+    .button.is-active {
+      background: rgba(183, 103, 51, 0.12);
+      border-color: rgba(183, 103, 51, 0.32);
+    }
+
+    .search-meta,
+    .tracker-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+    }
+
+    .task-list,
+    .log-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .task-item,
+    .log-item {
+      display: grid;
+      gap: 8px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 251, 245, 0.92);
+      border-radius: 8px;
+    }
+
+    .task-item.done {
+      opacity: 0.72;
+      background: rgba(92, 103, 80, 0.08);
+    }
+
+    .task-head,
+    .log-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .task-check {
+      display: grid;
+      grid-template-columns: 22px 1fr;
+      gap: 10px;
+      align-items: start;
+      cursor: pointer;
+    }
+
+    .task-check input {
+      margin: 2px 0 0;
+      accent-color: var(--teal);
+    }
+
+    .task-item strong,
+    .log-item strong {
+      font-size: 16px;
+    }
+
+    .snapshot-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 251, 245, 0.92);
+      border-radius: 8px;
+    }
+
+    .snapshot-card strong {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--display);
+      font-size: 24px;
+      line-height: 1;
+    }
+
+    .snapshot-card span {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .micro-pill {
+      padding: 6px 8px;
+      border: 1px solid rgba(56, 107, 105, 0.18);
+      background: rgba(56, 107, 105, 0.07);
+      color: var(--teal);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .empty-state {
+      padding: 20px 14px;
+      border: 1px dashed rgba(72, 51, 37, 0.18);
+      color: var(--muted);
+      text-align: center;
+      border-radius: 8px;
+    }
+
+    .search-empty {
+      margin-top: 14px;
+    }
+
+    .hidden-by-search {
+      display: none !important;
+    }
+
+    @media (max-width: 1080px) {
+      .hero,
+      .utility-grid,
+      .grid-two,
+      .coach-grid,
+      .coach-strip,
+      .flow-band,
+      .cards,
+      .archive {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        max-width: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      main {
+        width: min(100% - 20px, 1400px);
+        margin-top: 12px;
+      }
+
+      .hero,
+      .section {
+        padding: 16px;
+      }
+
+      .section-top,
+      .panel-head,
+      .panel-foot,
+      .footer {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .hero h1 {
+        font-size: 44px;
+      }
+
+      .card h3,
+      .progression strong,
+      .archive-item h4 {
+        font-size: 24px;
+      }
+
+      .wave {
+        min-height: 150px;
+        gap: 4px;
+      }
+
+      .fretboard-grid {
+        grid-template-columns: 28px repeat(8, minmax(0, 1fr));
+        gap: 8px 6px;
+      }
+
+      .stat-line {
+        grid-template-columns: 84px 1fr auto;
+      }
+
+      .priority-line,
+      .source-row,
+      .search-row,
+      .log-row,
+      .log-grid,
+      .snapshot-grid {
+        grid-template-columns: 1fr;
+        display: grid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="hero">
+      <div class="hero-copy">
+        <div>
+          <div class="eyebrow">Sonic Atlas / Guitar Phrase Library</div>
+          <h1>把樂句當成知識庫，而不是零散片段。</h1>
+        </div>
+        <p>
+          這是一個為吉他手、編曲人與 DJ 打造的音樂書庫介面。你可以把 riff、lick、和弦進行、情緒走向與編曲用途放進同一個系統，從收藏走到分析，再走到下一次創作。
+        </p>
+        <div class="hero-meta">
+          <div class="meta-chip">Phrase Archive / 164 fragments</div>
+          <div class="meta-chip">Chord Lexicon / 58 progressions</div>
+          <div class="meta-chip">Mood Trails / 12 arrangement maps</div>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <div class="panel-head">
+          <span>Current Thread</span>
+          <span>E Dorian / 112 BPM / Late Night Drive</span>
+        </div>
+        <div class="wave" aria-hidden="true">
+          <span style="height: 32%"></span>
+          <span style="height: 68%"></span>
+          <span style="height: 46%"></span>
+          <span style="height: 82%"></span>
+          <span style="height: 40%"></span>
+          <span style="height: 72%"></span>
+          <span style="height: 55%"></span>
+          <span style="height: 90%"></span>
+          <span style="height: 64%"></span>
+          <span style="height: 78%"></span>
+          <span style="height: 38%"></span>
+          <span style="height: 58%"></span>
+          <span style="height: 84%"></span>
+          <span style="height: 47%"></span>
+          <span style="height: 66%"></span>
+          <span style="height: 98%"></span>
+          <span style="height: 52%"></span>
+          <span style="height: 88%"></span>
+          <span style="height: 34%"></span>
+          <span style="height: 60%"></span>
+          <span style="height: 74%"></span>
+          <span style="height: 44%"></span>
+          <span style="height: 69%"></span>
+          <span style="height: 36%"></span>
+        </div>
+        <div class="panel-foot">
+          <span>Lead motif marked across fretboard positions</span>
+          <span>Variation density: 7 takes</span>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Practice Workspace</h2>
+          <p class="section-note">把音樂書庫變成真的工作台。你可以搜尋整個頁面的樂句、和弦、MuseScore 流程與練習主題，也可以把今天的任務勾掉，順手記下練習回報。</p>
+        </div>
+        <p class="section-note">搜尋、勾選狀態與練習紀錄都會存在你的瀏覽器本地端。</p>
+      </div>
+      <div class="utility-grid">
+        <section class="utility-panel">
+          <h3>Search Library</h3>
+          <form class="search-form" id="search-form">
+            <div class="search-row">
+              <input class="field" id="search-input" type="search" placeholder="搜尋 lick、和弦、Logic、DJ、MuseScore、mood...">
+              <button class="button" type="button" id="clear-search">clear</button>
+            </div>
+          </form>
+          <div class="search-filters">
+            <button class="button secondary is-active" type="button" data-filter="all">all</button>
+            <button class="button secondary" type="button" data-filter="guitar">guitar</button>
+            <button class="button secondary" type="button" data-filter="logic">logic</button>
+            <button class="button secondary" type="button" data-filter="dj">dj</button>
+            <button class="button secondary" type="button" data-filter="musescore">musescore</button>
+          </div>
+          <div class="search-meta">
+            <span id="search-status">Showing all library items</span>
+            <span id="search-count">0 matches</span>
+          </div>
+          <div class="empty-state search-empty" id="search-empty" hidden>目前沒有符合的內容，試試看換一個關鍵字或分類。</div>
+        </section>
+        <section class="tracker-panel">
+          <h3>Today Checklist</h3>
+          <p class="section-note">今天要做的主線任務可以直接在這裡打勾。勾選狀態會保留下來，明天再重排也不會把今天的完成感洗掉。</p>
+          <div class="snapshot-grid" id="snapshot-grid">
+            <article class="snapshot-card">
+              <span>Tasks Done</span>
+              <strong id="snapshot-tasks">0 / 4</strong>
+            </article>
+            <article class="snapshot-card">
+              <span>Minutes Logged</span>
+              <strong id="snapshot-minutes">0</strong>
+            </article>
+            <article class="snapshot-card">
+              <span>Top Lane</span>
+              <strong id="snapshot-focus">Guitar</strong>
+            </article>
+          </div>
+          <div class="task-list" id="task-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Practice Log</h2>
+          <p class="section-note">每次練完用一句話記下今天發生了什麼。久了之後，這裡會比單純打卡更有價值，因為你能看到哪種練法真的讓你進步。</p>
+        </div>
+        <p class="section-note">用最短的格式留痕跡：主題、分鐘數、類型、今天的觀察。</p>
+      </div>
+      <div class="utility-grid">
+        <section class="utility-panel">
+          <h3>New Entry</h3>
+          <form class="log-form" id="log-form">
+            <div class="log-grid">
+              <input class="field" id="log-title" type="text" placeholder="例如：E Dorian lick variation">
+              <input class="field" id="log-minutes" type="number" min="1" max="480" placeholder="分鐘">
+              <select class="select" id="log-category">
+                <option value="Guitar">Guitar</option>
+                <option value="Logic">Logic</option>
+                <option value="DJ">DJ</option>
+                <option value="MuseScore">MuseScore</option>
+              </select>
+            </div>
+            <textarea class="textarea" id="log-notes" placeholder="今天卡住什麼、哪裡有進步、下一次要修什麼"></textarea>
+            <div class="log-row">
+              <div class="tracker-meta">
+                <span id="log-total">0 entries</span>
+                <span id="log-minutes-total">0 min tracked</span>
+              </div>
+              <button class="button" type="submit">add log</button>
+            </div>
+          </form>
+        </section>
+        <section class="tracker-panel">
+          <h3>Recent Sessions</h3>
+          <div class="log-list" id="log-list"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Daily Coach</h2>
+          <p class="section-note">每天自動抓新的教學、表演與分析內容，再把它們轉成你今天真的該練的順序。系統不是只推薦影片，而是直接幫你分配吉他、Logic 編曲、DJ、MuseScore 樂譜四條學習線。</p>
+        </div>
+        <p class="section-note">核心判斷會同時看你的卡關點、累積進度、昨天練過什麼，以及今天適合做輸入、寫譜整理，還是偏輸出創作。</p>
+      </div>
+      <div class="coach-grid">
+        <div class="coach-lead">
+          <div class="coach-strip">
+            <article class="coach-card">
+              <span class="coach-index">01</span>
+              <h3>Guitar Line</h3>
+              <strong>主線任務是把樂句變成語言。</strong>
+              <p>今天優先是 E Dorian 兩個樂句變體、節拍器 72 到 92 的乾淨彈奏、再錄 20 秒即興回放檢查。</p>
+            </article>
+            <article class="coach-card">
+              <span class="coach-index">02</span>
+              <h3>Logic Sketch</h3>
+              <strong>編曲線先做可完成的小段落。</strong>
+              <p>今天不追求整首歌，先把一個八小節 loop 做到鼓組、和弦、bass、吉他 texture 四層完整，再做一次簡單 automation。</p>
+            </article>
+            <article class="coach-card">
+              <span class="coach-index">03</span>
+              <h3>DJ Foundations</h3>
+              <strong>DJ 線重點是耳朵與轉場肌肉。</strong>
+              <p>安排 25 分鐘做 BPM 對拍、EQ cut 練習、和兩首相近 key 的乾淨切換，最後留一段聽回放做筆記。</p>
+            </article>
+            <article class="coach-card">
+              <span class="coach-index">04</span>
+              <h3>MuseScore Lab</h3>
+              <strong>把聽到的東西翻成可回看的譜面。</strong>
+              <p>今天用 MuseScore 記下兩小節主題、整理和弦符號與節奏切分，順手輸出一份可回練的 MusicXML 或 MIDI 草稿。</p>
+            </article>
+          </div>
+          <div class="panel">
+            <h3>Today Runbook</h3>
+            <div class="progression-list">
+              <article class="progression">
+                <div>
+                  <strong>45 min / Guitar Phrase Drill</strong>
+                  <p class="muted">暖身後直接進兩條 lick 的變奏與回放，不先看新內容，先把昨天的輸入轉成手感。</p>
+                </div>
+                <div class="chips">
+                  <span>Priority A</span>
+                  <span>Technique</span>
+                </div>
+              </article>
+              <article class="progression">
+                <div>
+                  <strong>35 min / Logic Arrangement Block</strong>
+                  <p class="muted">用同一組和弦完成一段 intro 到 verse 的層次推進，重點放在 mute、filter、reverb send 的變化。</p>
+                </div>
+                <div class="chips">
+                  <span>Priority B</span>
+                  <span>Output</span>
+                </div>
+              </article>
+              <article class="progression">
+                <div>
+                  <strong>25 min / DJ Transition Reps</strong>
+                  <p class="muted">用兩首相近能量的歌做 6 次轉場，記錄哪一次最乾淨，哪一次失去低頻控制。</p>
+                </div>
+                <div class="chips">
+                  <span>Priority C</span>
+                  <span>Ear Training</span>
+                </div>
+              </article>
+              <article class="progression">
+                <div>
+                  <strong>20 min / MuseScore Transcription Pass</strong>
+                  <p class="muted">把今天最有感的一條樂句記成譜，補上 chord symbol、節奏切分和兩個變體，讓靈感不只留在耳朵裡。</p>
+                </div>
+                <div class="chips">
+                  <span>Priority D</span>
+                  <span>Notation</span>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+        <div class="priority-stack">
+          <section class="priority-card">
+            <h3>Priority Engine</h3>
+            <p>每天優先序會依三個條件重排：卡關度、回報率、遺忘風險。你不是永遠平均練四種，而是讓系統判斷今天最值得攻哪一塊。</p>
+            <div class="priority-line"><span>Guitar</span><div class="bar"><b style="width: 88%"></b></div><span class="priority-pill">Focus Now</span></div>
+            <div class="priority-line"><span>Logic</span><div class="bar"><b style="width: 72%"></b></div><span class="priority-pill">Build Output</span></div>
+            <div class="priority-line"><span>DJ</span><div class="bar"><b style="width: 58%"></b></div><span class="priority-pill">Keep Warm</span></div>
+            <div class="priority-line"><span>Score</span><div class="bar"><b style="width: 51%"></b></div><span class="priority-pill">Capture Ideas</span></div>
+          </section>
+          <section class="search-card">
+            <h3>Auto Search Radar</h3>
+            <p>自動搜尋會把你需要的內容分成參考、拆解、任務三層。不是把網路丟給你，而是把資訊翻成今天可執行的練習。</p>
+            <div class="source-list">
+              <div class="source-row"><span>YouTube guitar lessons / live sessions</span><span>抓新 lick 與指法拆解</span></div>
+              <div class="source-row"><span>Logic arrangement walkthroughs</span><span>抓自動化與空間編排案例</span></div>
+              <div class="source-row"><span>DJ set clips / transition breakdowns</span><span>抓對拍、EQ 與能量銜接案例</span></div>
+              <div class="source-row"><span>MuseScore / notation workflows / scoring tips</span><span>抓寫譜、轉譜、MusicXML 與 MIDI 整理方法</span></div>
+              <div class="source-row"><span>Forums / Reddit / creator notes</span><span>抓常見卡點與練法修正</span></div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Phrase Archive</h2>
+          <p class="section-note">樂句卡不是只記錄音符，而是記錄它的手感、張力、轉位方式和它適合接在哪種和弦空間裡。</p>
+        </div>
+        <p class="section-note">每張卡都像設計書庫裡的一本書，有名字、有語氣、有拆解、有延伸關聯。</p>
+      </div>
+      <div class="grid-two">
+        <div class="cards">
+          <article class="card">
+            <small>Featured Lick / 12 bars</small>
+            <h3>Amber Bend Cascade</h3>
+            <p class="muted">從 9th position 下滑到根音，帶一點藍調彎音，但尾巴保留 neo-soul 的懸浮感。</p>
+            <div class="tag-row">
+              <span class="tag">E Dorian</span>
+              <span class="tag">Slide</span>
+              <span class="tag">Warm Delay</span>
+            </div>
+            <div class="fretboard">
+              <div class="fretboard-grid">
+                <div class="string">e</div>
+                <div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot dark"></span></div>
+                <div class="string">b</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">g</div>
+                <div class="fret"></div><div class="fret"><span class="dot dark"></span></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">d</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">a</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">e</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <small>Motif Study / 8 seconds</small>
+            <h3>Glass Roof Octaves</h3>
+            <p class="muted">八度移動的主題樂句，適合用在副歌前的拉開視野，也適合切成 sample 重組。</p>
+            <div class="tag-row">
+              <span class="tag">A Major</span>
+              <span class="tag">Octave</span>
+              <span class="tag">Hook</span>
+            </div>
+            <div class="fretboard">
+              <div class="fretboard-grid">
+                <div class="string">e</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">b</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">g</div>
+                <div class="fret"><span class="dot dark"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div>
+                <div class="string">d</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">a</div>
+                <div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot dark"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot"></span></div>
+                <div class="string">e</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <small>Texture Loop / Layer source</small>
+            <h3>Midnight Harmonic Thread</h3>
+            <p class="muted">泛音與空弦殘響混在一起，適合當 intro 質地，或當 bridge 裡的呼吸空間。</p>
+            <div class="tag-row">
+              <span class="tag">Harmonics</span>
+              <span class="tag">Ambient</span>
+              <span class="tag">Open String</span>
+            </div>
+            <div class="fretboard">
+              <div class="fretboard-grid">
+                <div class="string">e</div>
+                <div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"><span class="dot dark"></span></div>
+                <div class="string">b</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div>
+                <div class="string">g</div>
+                <div class="fret"></div><div class="fret"><span class="dot dark"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">d</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">a</div>
+                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+                <div class="string">e</div>
+                <div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <div class="rail">
+          <section class="panel">
+            <h3>Phrase DNA</h3>
+            <div class="stat-line"><span>Melodic</span><div class="bar"><b style="width: 82%"></b></div><span>82</span></div>
+            <div class="stat-line"><span>Tension</span><div class="bar"><b style="width: 63%"></b></div><span>63</span></div>
+            <div class="stat-line"><span>Bend Use</span><div class="bar"><b style="width: 48%"></b></div><span>48</span></div>
+            <div class="stat-line"><span>Loopability</span><div class="bar"><b style="width: 91%"></b></div><span>91</span></div>
+          </section>
+          <section class="panel">
+            <h3>Usage Notes</h3>
+            <p class="muted">這一區不是樂理教科書，而是編曲判斷。像是「適合 chorus 前一拍進」、「跟 Rhodes 疊會變暖」、「延音別太滿，留給 vocal 進場」。</p>
+            <div class="tag-row">
+              <span class="tag">Pre-Chorus Lift</span>
+              <span class="tag">Tape Echo</span>
+              <span class="tag">Double Track</span>
+            </div>
+          </section>
+          <section class="panel">
+            <h3>Related Threads</h3>
+            <p class="muted">從同一種手感往外擴散：John Mayer 式懸浮、Khruangbin 式乾淨線條、city pop 式和弦滑行。</p>
+          </section>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Chord Lexicon</h2>
+          <p class="section-note">和弦進行不是只有 Roman numerals，而是它會帶出什麼情緒弧線、給吉他什麼 voicing 空間、讓 groove 往哪裡傾斜。</p>
+        </div>
+        <p class="section-note">這裡像編曲人的和弦字典，也像 DJ 對 energy flow 的索引表。</p>
+      </div>
+      <div class="progression-list">
+        <article class="progression">
+          <div>
+            <strong>Imaj7 → III7 → vi9 → ii13</strong>
+            <p class="muted">明亮開場後突然帶一點都市夜色，常見於 neo-soul、city pop、R&B 轉場。吉他適合用 close voicing 加滑音。</p>
+          </div>
+          <div class="chips">
+            <span>Silky</span>
+            <span>Late Sunset</span>
+            <span>Voice-leading</span>
+          </div>
+        </article>
+        <article class="progression">
+          <div>
+            <strong>i7 → bVIImaj7 → iv9 → V7sus</strong>
+            <p class="muted">這條線比較電影感，適合鋪情緒而不急著解決。吉他樂句可以避開三度，多用 9th 和 11th 保留空氣。</p>
+          </div>
+          <div class="chips">
+            <span>Moody</span>
+            <span>Open Ending</span>
+            <span>Dorian</span>
+          </div>
+        </article>
+        <article class="progression">
+          <div>
+            <strong>IV → V → iii → vi</strong>
+            <p class="muted">流行性很高，但如果把節奏切碎、低音延後，會從常見套路變成很能用的 hook bed。</p>
+          </div>
+          <div class="chips">
+            <span>Lift</span>
+            <span>Hook-ready</span>
+            <span>Pop Frame</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Flow Mapping</h2>
+          <p class="section-note">把吉他樂句、和弦進行與編曲段落放進同一條情緒曲線裡，你就會知道哪些片段該收藏，哪些片段其實是同一個宇宙。</p>
+        </div>
+        <p class="section-note">這裡是從 library 走向創作的地方。</p>
+      </div>
+      <div class="flow-band">
+        <div class="curve-panel">
+          <div class="curve">
+            <svg viewBox="0 0 800 260" preserveAspectRatio="none" aria-label="Energy curve">
+              <path d="M0,200 C70,190 120,160 180,152 C250,142 275,182 340,170 C390,160 430,100 480,104 C552,110 570,196 650,182 C710,172 748,100 800,52" fill="none" stroke="#bf5b2c" stroke-width="4"/>
+              <path d="M0,214 C80,222 128,174 192,176 C258,180 287,134 352,136 C421,140 461,208 526,206 C600,204 650,146 718,150 C760,152 784,132 800,118" fill="none" stroke="#2f6c68" stroke-width="3" stroke-dasharray="8 8"/>
+              <circle cx="180" cy="152" r="7" fill="#bf5b2c"/>
+              <circle cx="480" cy="104" r="7" fill="#bf5b2c"/>
+              <circle cx="800" cy="52" r="7" fill="#bf5b2c"/>
+            </svg>
+          </div>
+          <div class="marker-row">
+            <span>Intro Texture</span>
+            <span>Verse Motif</span>
+            <span>Pre-Chorus Tension</span>
+            <span>Hook Release</span>
+          </div>
+        </div>
+        <div class="insight-list">
+          <div class="insight">把 `Amber Bend Cascade` 放在第二段 verse 尾端，會讓主歌不是重複，而是微微抬頭。</div>
+          <div class="insight">如果主和弦走 `i7 → bVIImaj7`，樂句避免太早落根音，會保留空間讓 bass 說話。</div>
+          <div class="insight">同一條旋律做成 clean guitar、muted pluck、reverse texture，就能從單一卡片長成一整段編曲。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Archive Tags</h2>
+          <p class="section-note">讓你不是只靠曲風找素材，而是能靠「雨後柏油路」、「微失真暖音箱」、「副歌前的視線打開」這種創作語言來找東西。</p>
+        </div>
+      </div>
+      <div class="archive">
+        <article class="archive-item">
+          <small class="muted">Mood Shelf</small>
+          <h4>Humid Night</h4>
+          <p class="muted">低飽和、黏性 groove、混響留長尾，適合 city soul 與慢速電子。</p>
+        </article>
+        <article class="archive-item">
+          <small class="muted">Technique Shelf</small>
+          <h4>Ghost Slides</h4>
+          <p class="muted">不把滑音當特效，而是當句子裡的呼吸，特別適合樂句銜接。</p>
+        </article>
+        <article class="archive-item">
+          <small class="muted">Arrangement Shelf</small>
+          <h4>Hook Before Hook</h4>
+          <p class="muted">正式副歌前先給一個半揭露的 motif，讓真正主題進來時更有重量。</p>
+        </article>
+        <article class="archive-item">
+          <small class="muted">Reference Shelf</small>
+          <h4>Analog Glow</h4>
+          <p class="muted">像錄音室裡微黃的燈，tone 不求亮，而求剛好被手指磨過。</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Score Workflow</h2>
+          <p class="section-note">MuseScore 在這套系統裡不是單純打譜，而是把吉他樂句、和弦與編曲想法變成可以回看、可以交換、可以重新編配的結構化素材。</p>
+        </div>
+        <p class="section-note">根據 `musescore/MuseScore` 官方 repo，它很適合承接 MusicXML、MIDI、樂譜編排與回放這一層。</p>
+      </div>
+      <div class="progression-list">
+        <article class="progression">
+          <div>
+            <strong>Phrase to Score</strong>
+            <p class="muted">把今天練的 lick 寫成節奏明確的譜面，標出 slide、bend、rest 與重音，讓吉他語言能被反覆拆解。</p>
+          </div>
+          <div class="chips">
+            <span>Notation</span>
+            <span>Technique</span>
+          </div>
+        </article>
+        <article class="progression">
+          <div>
+            <strong>Harmony to MusicXML</strong>
+            <p class="muted">把和弦進行存成可交換的 MusicXML，之後可回到 MuseScore 校對，也能再丟回編曲流程裡延伸。</p>
+          </div>
+          <div class="chips">
+            <span>MusicXML</span>
+            <span>Archive</span>
+          </div>
+        </article>
+        <article class="progression">
+          <div>
+            <strong>MIDI Bridge to Logic</strong>
+            <p class="muted">從譜面輸出 MIDI 進 `Logic`，把寫譜時的骨架直接轉成編曲草圖，少掉重複輸入。</p>
+          </div>
+          <div class="chips">
+            <span>MIDI</span>
+            <span>Logic Bridge</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <span>Sonic Atlas prototype for guitar phrases, chord progressions, arrangement thinking, and notation workflow.</span>
+      <span>Designed as a music library interface, not a streaming player.</span>
+    </footer>
+  </main>
+  <script>
+    const storageKeyTasks = "sonic-atlas-tasks-v1";
+    const storageKeyLogs = "sonic-atlas-logs-v1";
+
+    const defaultTasks = [
+      {
+        id: "guitar-drill",
+        title: "45 min / Guitar Phrase Drill",
+        category: "Guitar",
+        description: "暖身後直接進兩條 lick 的變奏與回放，先把昨天的輸入變成手感。",
+        tags: ["Priority A", "Technique"]
+      },
+      {
+        id: "logic-block",
+        title: "35 min / Logic Arrangement Block",
+        category: "Logic",
+        description: "完成一段 intro 到 verse 的層次推進，重點是 mute、filter、reverb send。",
+        tags: ["Priority B", "Output"]
+      },
+      {
+        id: "dj-reps",
+        title: "25 min / DJ Transition Reps",
+        category: "DJ",
+        description: "用兩首相近能量的歌做 6 次轉場，記錄最乾淨與最失控的一次。",
+        tags: ["Priority C", "Ear Training"]
+      },
+      {
+        id: "musescore-pass",
+        title: "20 min / MuseScore Transcription Pass",
+        category: "MuseScore",
+        description: "把今天最有感的一條樂句記成譜，補上 chord symbol、節奏切分和兩個變體。",
+        tags: ["Priority D", "Notation"]
+      }
+    ];
+
+    const taskList = document.getElementById("task-list");
+    const logList = document.getElementById("log-list");
+    const logForm = document.getElementById("log-form");
+    const searchInput = document.getElementById("search-input");
+    const clearSearchButton = document.getElementById("clear-search");
+    const searchStatus = document.getElementById("search-status");
+    const searchCount = document.getElementById("search-count");
+    const searchEmpty = document.getElementById("search-empty");
+    const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
+    const logTotal = document.getElementById("log-total");
+    const logMinutesTotal = document.getElementById("log-minutes-total");
+    const snapshotTasks = document.getElementById("snapshot-tasks");
+    const snapshotMinutes = document.getElementById("snapshot-minutes");
+    const snapshotFocus = document.getElementById("snapshot-focus");
+    let activeFilter = "all";
+
+    function readTasks() {
+      const raw = localStorage.getItem(storageKeyTasks);
+      if (!raw) {
+        return defaultTasks.map((task) => ({ ...task, done: false }));
+      }
+      try {
+        const saved = JSON.parse(raw);
+        return defaultTasks.map((task) => {
+          const match = saved.find((item) => item.id === task.id);
+          return { ...task, done: Boolean(match && match.done) };
+        });
+      } catch {
+        return defaultTasks.map((task) => ({ ...task, done: false }));
+      }
+    }
+
+    function saveTasks(tasks) {
+      localStorage.setItem(storageKeyTasks, JSON.stringify(tasks));
+    }
+
+    function renderTasks() {
+      const tasks = readTasks();
+      taskList.innerHTML = "";
+      tasks.forEach((task) => {
+        const item = document.createElement("article");
+        item.className = "task-item" + (task.done ? " done" : "");
+        item.innerHTML = `
+          <label class="task-check">
+            <input type="checkbox" data-task-id="${task.id}" ${task.done ? "checked" : ""}>
+            <div>
+              <strong>${task.title}</strong>
+              <p class="muted">${task.description}</p>
+            </div>
+          </label>
+          <div class="pill-row">${task.tags.map((tag) => `<span class="micro-pill">${tag}</span>`).join("")}</div>
+        `;
+        taskList.appendChild(item);
+      });
+      updateSnapshot();
+    }
+
+    taskList.addEventListener("change", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLInputElement)) return;
+      const tasks = readTasks().map((task) => (
+        task.id === target.dataset.taskId ? { ...task, done: target.checked } : task
+      ));
+      saveTasks(tasks);
+      renderTasks();
+    });
+
+    function readLogs() {
+      const raw = localStorage.getItem(storageKeyLogs);
+      if (!raw) return [];
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return [];
+      }
+    }
+
+    function saveLogs(logs) {
+      localStorage.setItem(storageKeyLogs, JSON.stringify(logs));
+    }
+
+    function renderLogs() {
+      const logs = readLogs();
+      logList.innerHTML = "";
+
+      if (!logs.length) {
+        logList.innerHTML = '<div class="empty-state">還沒有練習紀錄。先記下今天第一段 session。</div>';
+      } else {
+        logs.forEach((log) => {
+          const item = document.createElement("article");
+          item.className = "log-item";
+          item.innerHTML = `
+            <div class="log-head">
+              <div>
+                <strong>${log.title}</strong>
+                <div class="tracker-meta">
+                  <span>${log.category}</span>
+                  <span>${log.minutes} min</span>
+                  <span>${log.date}</span>
+                </div>
+              </div>
+              <button class="button secondary" type="button" data-delete-log="${log.id}">delete</button>
+            </div>
+            <p class="muted">${log.notes}</p>
+          `;
+          logList.appendChild(item);
+        });
+      }
+
+      const totalMinutes = logs.reduce((sum, log) => sum + Number(log.minutes || 0), 0);
+      logTotal.textContent = `${logs.length} entries`;
+      logMinutesTotal.textContent = `${totalMinutes} min tracked`;
+      updateSnapshot();
+    }
+
+    function updateSnapshot() {
+      const tasks = readTasks();
+      const logs = readLogs();
+      const completed = tasks.filter((task) => task.done).length;
+      const totalMinutes = logs.reduce((sum, log) => sum + Number(log.minutes || 0), 0);
+      const categoryTotals = logs.reduce((acc, log) => {
+        acc[log.category] = (acc[log.category] || 0) + Number(log.minutes || 0);
+        return acc;
+      }, {});
+      const focusLane = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0]?.[0] || "Guitar";
+
+      snapshotTasks.textContent = `${completed} / ${tasks.length}`;
+      snapshotMinutes.textContent = `${totalMinutes}`;
+      snapshotFocus.textContent = focusLane;
+    }
+
+    logForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const title = document.getElementById("log-title").value.trim();
+      const minutes = document.getElementById("log-minutes").value.trim();
+      const category = document.getElementById("log-category").value;
+      const notes = document.getElementById("log-notes").value.trim();
+
+      if (!title || !minutes || !notes) return;
+
+      const logs = readLogs();
+      logs.unshift({
+        id: crypto.randomUUID(),
+        title,
+        minutes,
+        category,
+        notes,
+        date: new Date().toLocaleDateString("zh-Hant-TW", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        })
+      });
+      saveLogs(logs.slice(0, 20));
+      logForm.reset();
+      renderLogs();
+    });
+
+    logList.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const logId = target.dataset.deleteLog;
+      if (!logId) return;
+      const logs = readLogs().filter((log) => log.id !== logId);
+      saveLogs(logs);
+      renderLogs();
+    });
+
+    const searchableItems = Array.from(
+      document.querySelectorAll(".card, .progression, .archive-item, .insight, .coach-card")
+    );
+
+    function runSearch() {
+      const query = searchInput.value.trim().toLowerCase();
+      let matches = 0;
+
+      searchableItems.forEach((item) => {
+        const text = item.textContent.toLowerCase();
+        const queryMatched = !query || text.includes(query);
+        const filterMatched = activeFilter === "all" || text.includes(activeFilter);
+        const matched = queryMatched && filterMatched;
+        item.classList.toggle("hidden-by-search", !matched);
+        if (matched) matches += 1;
+      });
+
+      const queryLabel = query ? `"${query}"` : "everything";
+      const filterLabel = activeFilter === "all" ? "all lanes" : activeFilter;
+      searchStatus.textContent = `Filtering ${queryLabel} in ${filterLabel}`;
+      searchCount.textContent = `${matches} matches`;
+      searchEmpty.hidden = matches !== 0;
+    }
+
+    searchInput.addEventListener("input", runSearch);
+    clearSearchButton.addEventListener("click", () => {
+      searchInput.value = "";
+      runSearch();
+    });
+    filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        activeFilter = button.dataset.filter;
+        filterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
+        runSearch();
+      });
+    });
+
+    renderTasks();
+    renderLogs();
+    runSearch();
+  </script>
+</body>
+</html>
