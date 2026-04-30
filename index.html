@@ -9,18 +9,18 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #ede5da;
-      --paper: rgba(252, 247, 240, 0.86);
-      --paper-strong: rgba(255, 252, 247, 0.96);
-      --ink: #201b19;
-      --muted: #62574f;
-      --line: rgba(72, 51, 37, 0.14);
-      --accent: #b76733;
-      --accent-soft: #efc48d;
-      --olive: #5c6750;
-      --teal: #386b69;
-      --wine: #815046;
-      --shadow: 0 30px 90px rgba(68, 44, 26, 0.12);
+      --bg: #0f1417;
+      --paper: rgba(18, 25, 29, 0.88);
+      --paper-strong: rgba(22, 31, 36, 0.96);
+      --ink: #eef4ef;
+      --muted: #93a5a5;
+      --line: rgba(118, 161, 155, 0.18);
+      --accent: #ff8f3c;
+      --accent-soft: #ffd27a;
+      --olive: #9abf57;
+      --teal: #43d4c8;
+      --wine: #ff6c58;
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
       --display: "Noto Serif TC", serif;
       --body: "Noto Sans TC", sans-serif;
       --mono: "IBM Plex Mono", monospace;
@@ -39,9 +39,10 @@
       font-family: var(--body);
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(239, 196, 141, 0.28), transparent 34%),
-        radial-gradient(circle at 85% 18%, rgba(56, 107, 105, 0.12), transparent 24%),
-        linear-gradient(180deg, #e8ddcf 0%, #f5eee5 40%, #ede2d5 100%);
+        radial-gradient(circle at top left, rgba(255, 143, 60, 0.12), transparent 24%),
+        radial-gradient(circle at 82% 12%, rgba(67, 212, 200, 0.14), transparent 26%),
+        radial-gradient(circle at 50% 100%, rgba(154, 191, 87, 0.08), transparent 20%),
+        linear-gradient(180deg, #0c1114 0%, #10181b 48%, #0a0f12 100%);
       min-height: 100vh;
     }
 
@@ -50,17 +51,54 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: 0.25;
+      opacity: 0.4;
       background-image:
-        linear-gradient(rgba(93, 64, 37, 0.06) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(93, 64, 37, 0.05) 1px, transparent 1px);
-      background-size: 28px 28px;
-      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.85), transparent);
+        linear-gradient(rgba(67, 212, 200, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(67, 212, 200, 0.08) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.92), transparent);
     }
 
     main {
       width: min(1400px, calc(100% - 40px));
-      margin: 28px auto 56px;
+      margin: 22px auto 56px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .top-hud {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr 0.9fr 0.9fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .hud-chip {
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      background:
+        linear-gradient(180deg, rgba(67, 212, 200, 0.08), rgba(67, 212, 200, 0.02)),
+        rgba(15, 20, 23, 0.82);
+      border-radius: 14px;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), var(--shadow);
+    }
+
+    .hud-chip span {
+      display: block;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .hud-chip strong {
+      display: block;
+      margin-top: 8px;
+      font-size: 22px;
+      line-height: 1;
+      font-family: var(--display);
+      color: var(--ink);
     }
 
     .hero {
@@ -71,22 +109,22 @@
       gap: 24px;
       padding: 28px;
       border: 1px solid var(--line);
-      background: var(--paper);
+      background:
+        linear-gradient(145deg, rgba(255, 143, 60, 0.08), transparent 28%),
+        linear-gradient(180deg, rgba(19, 28, 32, 0.96), rgba(13, 19, 23, 0.92));
       backdrop-filter: blur(18px);
       box-shadow: var(--shadow);
       min-height: 440px;
-      border-radius: 10px;
+      border-radius: 22px;
     }
 
     .hero::after {
       content: "";
       position: absolute;
-      right: -80px;
-      bottom: -90px;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(191, 91, 44, 0.22), rgba(191, 91, 44, 0));
+      inset: 0;
+      background:
+        linear-gradient(120deg, transparent 0 48%, rgba(67, 212, 200, 0.08) 49%, transparent 50%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
       pointer-events: none;
     }
 
@@ -104,30 +142,32 @@
       gap: 10px;
       width: fit-content;
       padding: 8px 12px;
-      border: 1px solid rgba(98, 112, 79, 0.3);
-      color: var(--olive);
-      background: rgba(255, 253, 248, 0.75);
+      border: 1px solid rgba(67, 212, 200, 0.24);
+      color: var(--teal);
+      background: rgba(67, 212, 200, 0.08);
       font-family: var(--mono);
       font-size: 11px;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      border-radius: 999px;
     }
 
     .hero h1 {
       margin: 0;
       font-family: var(--display);
-      font-size: clamp(48px, 8vw, 96px);
-      line-height: 0.98;
+      font-size: clamp(44px, 7vw, 86px);
+      line-height: 0.96;
       font-weight: 700;
-      max-width: 10ch;
+      max-width: 8ch;
+      text-shadow: 0 0 32px rgba(255, 143, 60, 0.08);
     }
 
     .hero p {
       margin: 0;
       max-width: 56ch;
       color: var(--muted);
-      font-size: 17px;
-      line-height: 1.7;
+      font-size: 16px;
+      line-height: 1.75;
     }
 
     .hero-meta {
@@ -139,10 +179,11 @@
     .meta-chip {
       padding: 10px 14px;
       border: 1px solid var(--line);
-      background: rgba(255, 251, 245, 0.76);
+      background: rgba(255, 255, 255, 0.03);
       font-family: var(--mono);
       font-size: 12px;
-      color: var(--muted);
+      color: var(--ink);
+      border-radius: 999px;
     }
 
     .hero-panel {
@@ -150,10 +191,12 @@
       grid-template-rows: auto 1fr auto;
       gap: 16px;
       padding: 18px;
-      border: 1px solid rgba(47, 108, 104, 0.2);
+      border: 1px solid rgba(67, 212, 200, 0.18);
+      border-radius: 18px;
       background:
-        linear-gradient(160deg, rgba(251, 246, 237, 0.95), rgba(240, 228, 209, 0.82)),
-        repeating-linear-gradient(180deg, rgba(47, 108, 104, 0.06) 0 1px, transparent 1px 44px);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
+        radial-gradient(circle at 50% 100%, rgba(255, 143, 60, 0.08), transparent 45%),
+        rgba(11, 16, 19, 0.84);
     }
 
     .panel-head,
@@ -201,10 +244,12 @@
       margin-top: 22px;
       padding: 22px;
       border: 1px solid var(--line);
-      background: var(--paper);
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
+        var(--paper);
       box-shadow: var(--shadow);
       backdrop-filter: blur(14px);
-      border-radius: 10px;
+      border-radius: 20px;
     }
 
     .section-top {
@@ -218,7 +263,7 @@
     .section h2 {
       margin: 0;
       font-family: var(--display);
-      font-size: clamp(28px, 3.5vw, 42px);
+      font-size: clamp(26px, 3vw, 38px);
       line-height: 1.05;
       font-weight: 700;
     }
@@ -263,15 +308,15 @@
       min-height: 220px;
       padding: 16px;
       border: 1px solid var(--line);
-      background: var(--paper-strong);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.08)), var(--paper-strong);
       transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
-      border-radius: 8px;
+      border-radius: 14px;
     }
 
     .card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(191, 91, 44, 0.34);
-      box-shadow: 0 18px 34px rgba(56, 34, 18, 0.12);
+      transform: translateY(-4px) scale(1.01);
+      border-color: rgba(67, 212, 200, 0.32);
+      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24);
     }
 
     .card small,
@@ -297,9 +342,9 @@
 
     .tag {
       padding: 7px 9px;
-      background: rgba(98, 112, 79, 0.09);
-      border: 1px solid rgba(98, 112, 79, 0.2);
-      color: var(--olive);
+      background: rgba(67, 212, 200, 0.08);
+      border: 1px solid rgba(67, 212, 200, 0.18);
+      color: var(--teal);
       font-family: var(--mono);
       font-size: 11px;
       text-transform: uppercase;
@@ -374,7 +419,7 @@
       border: 1px solid var(--line);
       background: var(--paper-strong);
       min-height: 150px;
-      border-radius: 8px;
+      border-radius: 14px;
     }
 
     .panel h3 {
@@ -398,8 +443,9 @@
     .coach-card {
       padding: 15px;
       border: 1px solid var(--line);
-      background: rgba(255, 252, 247, 0.94);
+      background: rgba(255, 255, 255, 0.03);
       min-height: 184px;
+      border-radius: 14px;
     }
 
     .coach-card h3,
@@ -432,9 +478,9 @@
       justify-content: center;
       width: 28px;
       height: 28px;
-      border: 1px solid rgba(191, 91, 44, 0.28);
-      background: rgba(191, 91, 44, 0.08);
-      color: var(--accent);
+      border: 1px solid rgba(255, 143, 60, 0.32);
+      background: rgba(255, 143, 60, 0.12);
+      color: var(--accent-soft);
       font-family: var(--mono);
       font-size: 11px;
       text-transform: uppercase;
@@ -450,7 +496,8 @@
     .search-card {
       padding: 15px;
       border: 1px solid var(--line);
-      background: rgba(255, 252, 247, 0.94);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
     }
 
     .priority-line {
@@ -465,9 +512,9 @@
 
     .priority-pill {
       padding: 7px 9px;
-      border: 1px solid rgba(127, 61, 54, 0.22);
-      background: rgba(127, 61, 54, 0.08);
-      color: var(--wine);
+      border: 1px solid rgba(255, 108, 88, 0.24);
+      background: rgba(255, 108, 88, 0.1);
+      color: #ff9e92;
       font-family: var(--mono);
       font-size: 11px;
       text-transform: uppercase;
@@ -522,8 +569,9 @@
       grid-template-columns: 1fr auto;
       gap: 12px;
       padding: 14px;
-      border: 1px solid rgba(127, 61, 54, 0.16);
-      background: rgba(255, 251, 245, 0.9);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
     }
 
     .progression strong {
@@ -544,8 +592,8 @@
 
     .chips span {
       padding: 7px 8px;
-      border: 1px solid rgba(47, 108, 104, 0.2);
-      background: rgba(47, 108, 104, 0.07);
+      border: 1px solid rgba(67, 212, 200, 0.2);
+      background: rgba(67, 212, 200, 0.08);
       font-family: var(--mono);
       font-size: 11px;
       color: var(--teal);
@@ -563,6 +611,7 @@
       padding: 18px;
       border: 1px solid var(--line);
       background: var(--paper-strong);
+      border-radius: 16px;
     }
 
     .curve {
@@ -614,8 +663,9 @@
     .archive-item {
       padding: 14px;
       border: 1px solid var(--line);
-      background: rgba(255, 252, 247, 0.88);
+      background: rgba(255, 255, 255, 0.03);
       min-height: 145px;
+      border-radius: 14px;
     }
 
     .archive-item h4 {
@@ -630,7 +680,7 @@
       margin-top: 22px;
       padding: 18px 20px;
       border: 1px solid var(--line);
-      background: rgba(255, 249, 240, 0.78);
+      background: rgba(255, 255, 255, 0.02);
       color: var(--muted);
       font-family: var(--mono);
       font-size: 12px;
@@ -645,7 +695,7 @@
       padding: 18px;
       border: 1px solid var(--line);
       background: var(--paper-strong);
-      border-radius: 8px;
+      border-radius: 16px;
     }
 
     .momentum-grid,
@@ -703,7 +753,7 @@
     .textarea {
       width: 100%;
       border: 1px solid var(--line);
-      background: rgba(255, 253, 249, 0.96);
+      background: rgba(7, 10, 12, 0.58);
       color: var(--ink);
       font-family: var(--body);
       font-size: 14px;
@@ -726,8 +776,8 @@
 
     .button {
       width: auto;
-      border: 1px solid rgba(56, 107, 105, 0.18);
-      background: linear-gradient(180deg, rgba(239, 196, 141, 0.32), rgba(239, 196, 141, 0.14));
+      border: 1px solid rgba(67, 212, 200, 0.24);
+      background: linear-gradient(180deg, rgba(255, 143, 60, 0.18), rgba(255, 143, 60, 0.08));
       color: var(--ink);
       font-family: var(--mono);
       font-size: 12px;
@@ -737,7 +787,7 @@
     }
 
     .button.secondary {
-      background: rgba(56, 107, 105, 0.08);
+      background: rgba(67, 212, 200, 0.08);
     }
 
     .button.is-active {
@@ -807,8 +857,8 @@
     .snapshot-card {
       padding: 14px;
       border: 1px solid var(--line);
-      background: rgba(255, 251, 245, 0.92);
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
     }
 
     .snapshot-card strong {
@@ -833,7 +883,7 @@
       padding: 18px;
       border: 1px solid var(--line);
       background: var(--paper-strong);
-      border-radius: 8px;
+      border-radius: 16px;
     }
 
     .motivation-quote {
@@ -854,7 +904,8 @@
       margin-top: 14px;
       padding: 14px;
       border-left: 3px solid var(--accent);
-      background: rgba(183, 103, 51, 0.08);
+      background: rgba(255, 143, 60, 0.08);
+      border-radius: 0 14px 14px 0;
     }
 
     .challenge-card strong,
@@ -883,7 +934,7 @@
       height: 10px;
       overflow: hidden;
       border-radius: 999px;
-      background: rgba(58, 41, 29, 0.08);
+      background: rgba(255, 255, 255, 0.06);
     }
 
     .meter-fill {
@@ -918,8 +969,8 @@
     .radar-item {
       padding: 14px;
       border: 1px solid var(--line);
-      background: rgba(255, 251, 245, 0.92);
-      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 14px;
       display: grid;
       gap: 10px;
     }
@@ -953,8 +1004,8 @@
 
     .micro-pill {
       padding: 6px 8px;
-      border: 1px solid rgba(56, 107, 105, 0.18);
-      background: rgba(56, 107, 105, 0.07);
+      border: 1px solid rgba(67, 212, 200, 0.18);
+      background: rgba(67, 212, 200, 0.07);
       color: var(--teal);
       font-family: var(--mono);
       font-size: 11px;
@@ -978,6 +1029,7 @@
     }
 
     @media (max-width: 1080px) {
+      .top-hud,
       .hero,
       .utility-grid,
       .momentum-grid,
@@ -1053,25 +1105,44 @@
 </head>
 <body>
   <main>
+    <section class="top-hud">
+      <article class="hud-chip">
+        <span>Mode</span>
+        <strong>Practice Quest / Stage A-4</strong>
+      </article>
+      <article class="hud-chip">
+        <span>Combo</span>
+        <strong id="hud-combo">03 Chain</strong>
+      </article>
+      <article class="hud-chip">
+        <span>XP Gain</span>
+        <strong id="hud-xp">120 XP</strong>
+      </article>
+      <article class="hud-chip">
+        <span>Target</span>
+        <strong id="hud-target">Lick Capture</strong>
+      </article>
+    </section>
+
     <section class="hero">
       <div class="hero-copy">
         <div>
-          <div class="eyebrow">Sonic Atlas / Guitar Phrase Library</div>
-          <h1>把樂句當成知識庫，而不是零散片段。</h1>
+          <div class="eyebrow">Sonic Atlas / Rhythm Game Interface</div>
+          <h1>把練習做成一場會上癮的音樂任務。</h1>
         </div>
         <p>
-          這是一個為吉他手、編曲人與 DJ 打造的音樂書庫介面。你可以把 riff、lick、和弦進行、情緒走向與編曲用途放進同一個系統，從收藏走到分析，再走到下一次創作。
+          這不只是音樂書庫，而是你的練功介面。吉他、Logic、DJ、MuseScore 都變成不同關卡，Lick Radar 是掃描雷達，練習紀錄是戰績板，每天打開都像進到新的回合。
         </p>
         <div class="hero-meta">
-          <div class="meta-chip">Phrase Archive / 164 fragments</div>
-          <div class="meta-chip">Chord Lexicon / 58 progressions</div>
-          <div class="meta-chip">Mood Trails / 12 arrangement maps</div>
+          <div class="meta-chip">Mission Board / Daily Run</div>
+          <div class="meta-chip">Lick Radar / Live Feed</div>
+          <div class="meta-chip">Score + Logic + DJ Sync</div>
         </div>
       </div>
       <aside class="hero-panel">
         <div class="panel-head">
-          <span>Current Thread</span>
-          <span>E Dorian / 112 BPM / Late Night Drive</span>
+          <span>Current Stage</span>
+          <span>E Dorian / 112 BPM / Night Route</span>
         </div>
         <div class="wave" aria-hidden="true">
           <span style="height: 32%"></span>
@@ -1100,7 +1171,7 @@
           <span style="height: 36%"></span>
         </div>
         <div class="panel-foot">
-          <span>Lead motif marked across fretboard positions</span>
+          <span>Wave scan / motif intensity / timing heat</span>
           <span>Variation density: 7 takes</span>
         </div>
       </aside>
@@ -1110,9 +1181,9 @@
       <div class="section-top">
         <div>
           <h2>Momentum Engine</h2>
-          <p class="section-note">每天有沒有想打開，很多時候不是靠意志，而是靠入口夠不夠順。這一區負責給你今天的情緒推力、挑戰感和「做完會有感」的回饋。</p>
+          <p class="section-note">把今天的練習翻成遊戲節奏：你不是在硬撐，而是在累積連擊、解一個小挑戰、把狀態推到下一段。</p>
         </div>
-        <p class="section-note">它會根據你的勾選和練習紀錄，算出目前節奏、今天的主線，還有一個剛剛好的小挑戰。</p>
+        <p class="section-note">它會根據你的勾選和練習紀錄，算出目前節奏、今天的主線，和最適合啟動手感的任務。</p>
       </div>
       <div class="momentum-grid">
         <section class="motivation-card">
@@ -1154,7 +1225,7 @@
       <div class="section-top">
         <div>
           <h2>Practice Workspace</h2>
-          <p class="section-note">把音樂書庫變成真的工作台。你可以搜尋整個頁面的樂句、和弦、MuseScore 流程與練習主題，也可以把今天的任務勾掉，順手記下練習回報。</p>
+          <p class="section-note">這裡是你的任務中樞。搜尋像選關，待辦像當前任務欄，紀錄像戰績回放。</p>
         </div>
         <p class="section-note">搜尋、勾選狀態與練習紀錄都會存在你的瀏覽器本地端。</p>
       </div>
@@ -1206,7 +1277,7 @@
       <div class="section-top">
         <div>
           <h2>Lick Radar</h2>
-          <p class="section-note">這裡是你的樂句雷達。它把每天抓到的 lick 拆成可練的素材，不只是「有新影片」，而是「這條值得你今天拿來練」。</p>
+          <p class="section-note">這裡是你的掉寶雷達。它把每天抓到的 lick 拆成可練素材，不只是「有新影片」，而是「這條值得你今天撿起來練」。</p>
         </div>
         <p class="section-note">目前先做成前端可操作的抓取台：掃描、收藏、加入今日待辦。之後很容易接上真正的爬蟲來源。</p>
       </div>
