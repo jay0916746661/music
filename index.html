@@ -648,6 +648,14 @@
       border-radius: 8px;
     }
 
+    .momentum-grid,
+    .radar-grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 18px;
+      align-items: start;
+    }
+
     .utility-panel h3,
     .tracker-panel h3 {
       margin: 0 0 12px;
@@ -819,6 +827,115 @@
       letter-spacing: 0.04em;
     }
 
+    .motivation-card,
+    .radar-card,
+    .radar-feed {
+      padding: 18px;
+      border: 1px solid var(--line);
+      background: var(--paper-strong);
+      border-radius: 8px;
+    }
+
+    .motivation-quote {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 28px;
+      line-height: 1.2;
+      max-width: 14ch;
+    }
+
+    .motivation-sub {
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .challenge-card {
+      margin-top: 14px;
+      padding: 14px;
+      border-left: 3px solid var(--accent);
+      background: rgba(183, 103, 51, 0.08);
+    }
+
+    .challenge-card strong,
+    .radar-item strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .meter {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .meter-line {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .meter-track {
+      height: 10px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(58, 41, 29, 0.08);
+    }
+
+    .meter-fill {
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--accent), var(--accent-soft));
+      transition: width 220ms ease;
+    }
+
+    .radar-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .radar-feed {
+      display: grid;
+      gap: 12px;
+    }
+
+    .radar-item {
+      padding: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 251, 245, 0.92);
+      border-radius: 8px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .radar-item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .radar-source {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .radar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     .pill-row {
       display: flex;
       flex-wrap: wrap;
@@ -854,6 +971,8 @@
     @media (max-width: 1080px) {
       .hero,
       .utility-grid,
+      .momentum-grid,
+      .radar-grid,
       .grid-two,
       .coach-grid,
       .coach-strip,
@@ -981,6 +1100,50 @@
     <section class="section">
       <div class="section-top">
         <div>
+          <h2>Momentum Engine</h2>
+          <p class="section-note">每天有沒有想打開，很多時候不是靠意志，而是靠入口夠不夠順。這一區負責給你今天的情緒推力、挑戰感和「做完會有感」的回饋。</p>
+        </div>
+        <p class="section-note">它會根據你的勾選和練習紀錄，算出目前節奏、今天的主線，還有一個剛剛好的小挑戰。</p>
+      </div>
+      <div class="momentum-grid">
+        <section class="motivation-card">
+          <h3>Today Push</h3>
+          <p class="motivation-quote" id="motivation-quote">今天不是把自己逼滿，而是把手感叫醒。</p>
+          <p class="motivation-sub" id="motivation-sub">先做一段最短可完成的練習，完成感會比完美更快把你帶進狀態。</p>
+          <div class="challenge-card">
+            <strong id="challenge-title">Mini Challenge / 12 minutes</strong>
+            <p class="muted" id="challenge-copy">把一條吉他樂句做出兩個節奏變體，然後用手機錄一遍回放。</p>
+          </div>
+        </section>
+        <section class="tracker-panel">
+          <h3>Momentum Meter</h3>
+          <div class="snapshot-grid">
+            <article class="snapshot-card">
+              <span>Weekly Streak</span>
+              <strong id="streak-count">0 days</strong>
+            </article>
+            <article class="snapshot-card">
+              <span>Today Focus</span>
+              <strong id="focus-lane">Guitar</strong>
+            </article>
+            <article class="snapshot-card">
+              <span>Readiness</span>
+              <strong id="readiness-score">Fresh</strong>
+            </article>
+          </div>
+          <div class="meter">
+            <div class="meter-line"><span>Practice Rhythm</span><span id="meter-rhythm-label">0%</span></div>
+            <div class="meter-track"><div class="meter-fill" id="meter-rhythm"></div></div>
+            <div class="meter-line"><span>Creative Momentum</span><span id="meter-creative-label">0%</span></div>
+            <div class="meter-track"><div class="meter-fill" id="meter-creative"></div></div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
           <h2>Practice Workspace</h2>
           <p class="section-note">把音樂書庫變成真的工作台。你可以搜尋整個頁面的樂句、和弦、MuseScore 流程與練習主題，也可以把今天的任務勾掉，順手記下練習回報。</p>
         </div>
@@ -1027,6 +1190,34 @@
           </div>
           <div class="task-list" id="task-list"></div>
         </section>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
+          <h2>Lick Radar</h2>
+          <p class="section-note">這裡是你的樂句雷達。它把每天抓到的 lick 拆成可練的素材，不只是「有新影片」，而是「這條值得你今天拿來練」。</p>
+        </div>
+        <p class="section-note">目前先做成前端可操作的抓取台：掃描、收藏、加入今日待辦。之後很容易接上真正的爬蟲來源。</p>
+      </div>
+      <div class="radar-grid">
+        <section class="radar-card">
+          <div class="radar-top">
+            <div>
+              <h3>Lick Sources</h3>
+              <p class="section-note">來源先模擬成 guitar lesson、live session、creator note 與 tab breakdown 四種。按一下就掃一輪今天的候選片段。</p>
+            </div>
+            <button class="button" type="button" id="scan-licks">scan radar</button>
+          </div>
+          <div class="source-list">
+            <div class="source-row"><span>YouTube lesson channels</span><span>抓 lick / phrasing / timing 拆解</span></div>
+            <div class="source-row"><span>Live session clips</span><span>抓真實演奏裡的語氣與停頓</span></div>
+            <div class="source-row"><span>Creator notes / blogs</span><span>抓練法與應用情境</span></div>
+            <div class="source-row"><span>Tabs / lesson snippets</span><span>抓位置、節奏、可回練片段</span></div>
+          </div>
+        </section>
+        <section class="radar-feed" id="radar-feed"></section>
       </div>
     </section>
 
@@ -1449,6 +1640,7 @@
   <script>
     const storageKeyTasks = "sonic-atlas-tasks-v1";
     const storageKeyLogs = "sonic-atlas-logs-v1";
+    const storageKeyRadar = "sonic-atlas-radar-v1";
 
     const defaultTasks = [
       {
@@ -1495,7 +1687,84 @@
     const snapshotTasks = document.getElementById("snapshot-tasks");
     const snapshotMinutes = document.getElementById("snapshot-minutes");
     const snapshotFocus = document.getElementById("snapshot-focus");
+    const motivationQuote = document.getElementById("motivation-quote");
+    const motivationSub = document.getElementById("motivation-sub");
+    const challengeTitle = document.getElementById("challenge-title");
+    const challengeCopy = document.getElementById("challenge-copy");
+    const streakCount = document.getElementById("streak-count");
+    const focusLane = document.getElementById("focus-lane");
+    const readinessScore = document.getElementById("readiness-score");
+    const meterRhythm = document.getElementById("meter-rhythm");
+    const meterCreative = document.getElementById("meter-creative");
+    const meterRhythmLabel = document.getElementById("meter-rhythm-label");
+    const meterCreativeLabel = document.getElementById("meter-creative-label");
+    const radarFeed = document.getElementById("radar-feed");
+    const scanLicksButton = document.getElementById("scan-licks");
     let activeFilter = "all";
+
+    const motivationModes = [
+      {
+        quote: "今天不是把自己逼滿，而是把手感叫醒。",
+        sub: "先做一段最短可完成的練習，完成感會比完美更快把你帶進狀態。",
+        title: "Mini Challenge / 12 minutes",
+        copy: "把一條吉他樂句做出兩個節奏變體，然後用手機錄一遍回放。"
+      },
+      {
+        quote: "不是練更多，是讓一句話真的進到手裡。",
+        sub: "當你能反覆彈出同一條句子，創作時才會真的開始說自己的話。",
+        title: "Mini Challenge / 15 minutes",
+        copy: "從今天的最強 lick 裡抽 4 個音，做一個新的收尾句。"
+      },
+      {
+        quote: "你不是缺素材，你只是需要今天的第一個起點。",
+        sub: "先把第一個動作做掉，後面那條線就會自己展開。",
+        title: "Mini Challenge / 10 minutes",
+        copy: "選一條最短的 loop，做一次 mute 與 reverb send 的動態推進。"
+      }
+    ];
+
+    const radarSeeds = [
+      {
+        id: "radar-1",
+        title: "Dorian Slide Answer",
+        lane: "Guitar",
+        source: "YouTube lesson / neo-soul phrasing",
+        note: "重點不是速度，而是 slide 進拍前那一下的語氣，適合接在主歌尾端。",
+        tags: ["E Dorian", "Slide", "Call and response"]
+      },
+      {
+        id: "radar-2",
+        title: "Muted Double-stop Pocket",
+        lane: "Guitar",
+        source: "Live session clip / pocket comping",
+        note: "這條片段適合拿來練右手控制，音不多，但 groove 很黏。",
+        tags: ["Double-stop", "Muted", "Pocket"]
+      },
+      {
+        id: "radar-3",
+        title: "Hook Lead with Delay Tail",
+        lane: "Logic",
+        source: "Creator note / arrangement breakdown",
+        note: "把一句簡單 lead 用 delay tail 撐出空間，適合做 intro 到 verse 的過門。",
+        tags: ["Lead", "Delay", "Arrangement"]
+      },
+      {
+        id: "radar-4",
+        title: "Octave Lift Turnaround",
+        lane: "MuseScore",
+        source: "Tab snippet / phrase notation",
+        note: "這條值得記成譜，因為節奏很清楚，而且能轉成自己的 ending vocabulary。",
+        tags: ["Octave", "Notation", "Turnaround"]
+      },
+      {
+        id: "radar-5",
+        title: "Bassline-friendly Top Phrase",
+        lane: "DJ",
+        source: "Creator note / transition timing",
+        note: "這條雖然是樂句，但很適合 DJ 練習能量接續時去理解上層旋律怎麼留空間。",
+        tags: ["Topline", "Space", "Energy"]
+      }
+    ];
 
     function readTasks() {
       const raw = localStorage.getItem(storageKeyTasks);
@@ -1504,10 +1773,12 @@
       }
       try {
         const saved = JSON.parse(raw);
-        return defaultTasks.map((task) => {
+        const baseTasks = defaultTasks.map((task) => {
           const match = saved.find((item) => item.id === task.id);
           return { ...task, done: Boolean(match && match.done) };
         });
+        const extraTasks = saved.filter((item) => !defaultTasks.some((task) => task.id === item.id));
+        return [...extraTasks, ...baseTasks];
       } catch {
         return defaultTasks.map((task) => ({ ...task, done: false }));
       }
@@ -1562,6 +1833,20 @@
       localStorage.setItem(storageKeyLogs, JSON.stringify(logs));
     }
 
+    function readRadar() {
+      const raw = localStorage.getItem(storageKeyRadar);
+      if (!raw) return radarSeeds.slice(0, 3);
+      try {
+        return JSON.parse(raw);
+      } catch {
+        return radarSeeds.slice(0, 3);
+      }
+    }
+
+    function saveRadar(items) {
+      localStorage.setItem(storageKeyRadar, JSON.stringify(items));
+    }
+
     function renderLogs() {
       const logs = readLogs();
       logList.innerHTML = "";
@@ -1610,6 +1895,51 @@
       snapshotTasks.textContent = `${completed} / ${tasks.length}`;
       snapshotMinutes.textContent = `${totalMinutes}`;
       snapshotFocus.textContent = focusLane;
+      updateMomentum(tasks, logs, focusLane, totalMinutes);
+    }
+
+    function updateMomentum(tasks, logs, lane, totalMinutes) {
+      const completed = tasks.filter((task) => task.done).length;
+      const mode = motivationModes[Math.min(completed, motivationModes.length - 1)];
+      const streak = calculateStreak(logs);
+      const rhythmScore = Math.min(100, streak * 18 + completed * 12);
+      const creativeScore = Math.min(100, totalMinutes >= 90 ? 95 : totalMinutes);
+
+      motivationQuote.textContent = mode.quote;
+      motivationSub.textContent = mode.sub;
+      challengeTitle.textContent = mode.title;
+      challengeCopy.textContent = mode.copy;
+
+      streakCount.textContent = `${streak} days`;
+      focusLane.textContent = lane;
+      readinessScore.textContent = completed >= 2 ? "Locked In" : totalMinutes >= 30 ? "Warm" : "Fresh";
+      meterRhythm.style.width = `${rhythmScore}%`;
+      meterCreative.style.width = `${creativeScore}%`;
+      meterRhythmLabel.textContent = `${rhythmScore}%`;
+      meterCreativeLabel.textContent = `${creativeScore}%`;
+    }
+
+    function calculateStreak(logs) {
+      if (!logs.length) return 0;
+      const uniqueDates = [...new Set(logs.map((log) => log.date))].sort().reverse();
+      let streak = 0;
+      let cursor = new Date();
+      cursor.setHours(0, 0, 0, 0);
+
+      for (let i = 0; i < 14; i += 1) {
+        const label = cursor.toLocaleDateString("zh-Hant-TW", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit"
+        });
+        if (uniqueDates.includes(label)) {
+          streak += 1;
+          cursor.setDate(cursor.getDate() - 1);
+        } else {
+          break;
+        }
+      }
+      return streak;
     }
 
     logForm.addEventListener("submit", (event) => {
@@ -1647,6 +1977,87 @@
       const logs = readLogs().filter((log) => log.id !== logId);
       saveLogs(logs);
       renderLogs();
+    });
+
+    function renderRadar() {
+      const items = readRadar();
+      radarFeed.innerHTML = "";
+      items.forEach((item) => {
+        const article = document.createElement("article");
+        article.className = "radar-item";
+        article.innerHTML = `
+          <div class="radar-item-head">
+            <div>
+              <span class="radar-source">${item.source}</span>
+              <strong>${item.title}</strong>
+            </div>
+            <span class="micro-pill">${item.lane}</span>
+          </div>
+          <p class="muted">${item.note}</p>
+          <div class="pill-row">${item.tags.map((tag) => `<span class="micro-pill">${tag}</span>`).join("")}</div>
+          <div class="radar-actions">
+            <button class="button secondary" type="button" data-save-radar="${item.id}">save to log</button>
+            <button class="button secondary" type="button" data-task-radar="${item.id}">add to today</button>
+          </div>
+        `;
+        radarFeed.appendChild(article);
+      });
+    }
+
+    function scanRadar() {
+      const offset = Math.floor(Math.random() * radarSeeds.length);
+      const items = [];
+      for (let i = 0; i < 3; i += 1) {
+        items.push(radarSeeds[(offset + i) % radarSeeds.length]);
+      }
+      saveRadar(items);
+      renderRadar();
+    }
+
+    scanLicksButton.addEventListener("click", scanRadar);
+
+    radarFeed.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+
+      const saveId = target.dataset.saveRadar;
+      const taskId = target.dataset.taskRadar;
+      const items = readRadar();
+      const match = items.find((item) => item.id === saveId || item.id === taskId);
+      if (!match) return;
+
+      if (saveId) {
+        const logs = readLogs();
+        logs.unshift({
+          id: crypto.randomUUID(),
+          title: match.title,
+          minutes: 15,
+          category: match.lane,
+          notes: `Radar capture: ${match.note}`,
+          date: new Date().toLocaleDateString("zh-Hant-TW", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+          })
+        });
+        saveLogs(logs.slice(0, 20));
+        renderLogs();
+      }
+
+      if (taskId) {
+        const tasks = readTasks();
+        tasks.unshift({
+          id: `radar-task-${match.id}`,
+          title: `15 min / ${match.title}`,
+          category: match.lane,
+          description: match.note,
+          tags: ["Radar Pick", match.lane],
+          done: false
+        });
+        const deduped = tasks.filter((task, index, arr) => arr.findIndex((item) => item.id === task.id) === index);
+        saveTasks(deduped);
+        renderTasks();
+      }
     });
 
     const searchableItems = Array.from(
@@ -1688,6 +2099,7 @@
 
     renderTasks();
     renderLogs();
+    renderRadar();
     runSearch();
   </script>
 </body>
