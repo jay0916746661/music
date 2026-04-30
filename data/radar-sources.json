@@ -1,0 +1,42 @@
+[
+  {
+    "id": "signals-music-studio",
+    "type": "youtube_handle",
+    "label": "Signals Music Studio",
+    "url": "https://www.youtube.com/@SignalsMusicStudio/videos",
+    "lane": "Guitar",
+    "tags": ["modes", "phrasing", "music theory"]
+  },
+  {
+    "id": "marty-music",
+    "type": "youtube_handle",
+    "label": "Marty Music",
+    "url": "https://www.youtube.com/@MartyMusic/videos",
+    "lane": "Guitar",
+    "tags": ["song lesson", "lick", "chords"]
+  },
+  {
+    "id": "rick-beato",
+    "type": "youtube_handle",
+    "label": "Rick Beato",
+    "url": "https://www.youtube.com/@RickBeato/videos",
+    "lane": "Logic",
+    "tags": ["ear training", "arrangement", "analysis"]
+  },
+  {
+    "id": "musescore-youtube",
+    "type": "youtube_handle",
+    "label": "MuseScore",
+    "url": "https://www.youtube.com/@MuseScore/videos",
+    "lane": "MuseScore",
+    "tags": ["notation", "musicxml", "midi"]
+  },
+  {
+    "id": "instagram-placeholder",
+    "type": "instagram_placeholder",
+    "label": "Instagram music educators",
+    "url": "https://www.instagram.com/",
+    "lane": "Guitar",
+    "tags": ["reels", "micro-lesson", "manual review"]
+  }
+]

@@ -901,6 +901,15 @@
       margin-bottom: 14px;
     }
 
+    .radar-meta {
+      margin-top: 10px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
     .radar-feed {
       display: grid;
       gap: 12px;
@@ -1207,6 +1216,7 @@
             <div>
               <h3>Lick Sources</h3>
               <p class="section-note">來源先模擬成 guitar lesson、live session、creator note 與 tab breakdown 四種。按一下就掃一輪今天的候選片段。</p>
+              <div class="radar-meta" id="radar-meta">Radar seed loaded</div>
             </div>
             <button class="button" type="button" id="scan-licks">scan radar</button>
           </div>
@@ -1215,6 +1225,7 @@
             <div class="source-row"><span>Live session clips</span><span>抓真實演奏裡的語氣與停頓</span></div>
             <div class="source-row"><span>Creator notes / blogs</span><span>抓練法與應用情境</span></div>
             <div class="source-row"><span>Tabs / lesson snippets</span><span>抓位置、節奏、可回練片段</span></div>
+            <div class="source-row"><span>Instagram educators</span><span>先保留來源位，建議走 API 或人工審核</span></div>
           </div>
         </section>
         <section class="radar-feed" id="radar-feed"></section>
@@ -1700,7 +1711,9 @@
     const meterCreativeLabel = document.getElementById("meter-creative-label");
     const radarFeed = document.getElementById("radar-feed");
     const scanLicksButton = document.getElementById("scan-licks");
+    const radarMeta = document.getElementById("radar-meta");
     let activeFilter = "all";
+    let radarItems = [];
 
     const motivationModes = [
       {
@@ -1835,16 +1848,38 @@
 
     function readRadar() {
       const raw = localStorage.getItem(storageKeyRadar);
-      if (!raw) return radarSeeds.slice(0, 3);
+      if (!raw) return [];
       try {
         return JSON.parse(raw);
       } catch {
-        return radarSeeds.slice(0, 3);
+        return [];
       }
     }
 
     function saveRadar(items) {
       localStorage.setItem(storageKeyRadar, JSON.stringify(items));
+    }
+
+    async function loadExternalRadar() {
+      try {
+        const response = await fetch("./data/lick-radar.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`Radar fetch failed: ${response.status}`);
+        const payload = await response.json();
+        if (Array.isArray(payload.items) && payload.items.length) {
+          radarItems = payload.items;
+          saveRadar(radarItems);
+          const updatedAt = payload.updatedAt ? new Date(payload.updatedAt) : null;
+          radarMeta.textContent = updatedAt
+            ? `Last update ${updatedAt.toLocaleString("zh-Hant-TW")}`
+            : "Live radar loaded";
+          return;
+        }
+      } catch (error) {
+        radarMeta.textContent = "Live radar unavailable, using local picks";
+      }
+
+      const saved = readRadar();
+      radarItems = saved.length ? saved : radarSeeds.slice(0, 3);
     }
 
     function renderLogs() {
@@ -1980,7 +2015,7 @@
     });
 
     function renderRadar() {
-      const items = readRadar();
+      const items = radarItems.length ? radarItems : (readRadar().length ? readRadar() : radarSeeds.slice(0, 3));
       radarFeed.innerHTML = "";
       items.forEach((item) => {
         const article = document.createElement("article");
@@ -1995,6 +2030,7 @@
           </div>
           <p class="muted">${item.note}</p>
           <div class="pill-row">${item.tags.map((tag) => `<span class="micro-pill">${tag}</span>`).join("")}</div>
+          ${item.url ? `<a class="radar-source" href="${item.url}" target="_blank" rel="noreferrer">open source</a>` : ""}
           <div class="radar-actions">
             <button class="button secondary" type="button" data-save-radar="${item.id}">save to log</button>
             <button class="button secondary" type="button" data-task-radar="${item.id}">add to today</button>
@@ -2005,11 +2041,13 @@
     }
 
     function scanRadar() {
-      const offset = Math.floor(Math.random() * radarSeeds.length);
+      const sourceItems = radarItems.length ? radarItems : radarSeeds;
+      const offset = Math.floor(Math.random() * sourceItems.length);
       const items = [];
       for (let i = 0; i < 3; i += 1) {
-        items.push(radarSeeds[(offset + i) % radarSeeds.length]);
+        items.push(sourceItems[(offset + i) % sourceItems.length]);
       }
+      radarItems = items;
       saveRadar(items);
       renderRadar();
     }
@@ -2022,7 +2060,7 @@
 
       const saveId = target.dataset.saveRadar;
       const taskId = target.dataset.taskRadar;
-      const items = readRadar();
+      const items = radarItems.length ? radarItems : readRadar();
       const match = items.find((item) => item.id === saveId || item.id === taskId);
       if (!match) return;
 
@@ -2097,10 +2135,14 @@
       });
     });
 
-    renderTasks();
-    renderLogs();
-    renderRadar();
-    runSearch();
+    Promise.resolve()
+      .then(loadExternalRadar)
+      .then(() => {
+        renderTasks();
+        renderLogs();
+        renderRadar();
+        runSearch();
+      });
   </script>
 </body>
 </html>
