@@ -101,6 +101,25 @@
       color: var(--ink);
     }
 
+    .pulse {
+      animation: pulseGlow 560ms ease;
+    }
+
+    @keyframes pulseGlow {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(67, 212, 200, 0);
+      }
+      45% {
+        transform: scale(1.04);
+        box-shadow: 0 0 28px rgba(67, 212, 200, 0.2);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(67, 212, 200, 0);
+      }
+    }
+
     .hero {
       position: relative;
       overflow: hidden;
@@ -944,6 +963,46 @@
       transition: width 220ms ease;
     }
 
+    .xp-track {
+      margin-top: 16px;
+    }
+
+    .quest-toast {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 20;
+      max-width: 320px;
+      padding: 14px 16px;
+      border: 1px solid rgba(67, 212, 200, 0.24);
+      background: rgba(9, 14, 17, 0.92);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      opacity: 0;
+      transform: translateY(14px);
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+    }
+
+    .quest-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .quest-toast strong {
+      display: block;
+      font-family: var(--display);
+      font-size: 20px;
+    }
+
+    .quest-toast span {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
     .radar-top {
       display: flex;
       justify-content: space-between;
@@ -1216,6 +1275,10 @@
             <div class="meter-track"><div class="meter-fill" id="meter-rhythm"></div></div>
             <div class="meter-line"><span>Creative Momentum</span><span id="meter-creative-label">0%</span></div>
             <div class="meter-track"><div class="meter-fill" id="meter-creative"></div></div>
+          </div>
+          <div class="meter xp-track">
+            <div class="meter-line"><span>Quest XP</span><span id="xp-progress-label">0 / 100</span></div>
+            <div class="meter-track"><div class="meter-fill" id="xp-progress"></div></div>
           </div>
         </section>
       </div>
@@ -1719,6 +1782,10 @@
       <span>Designed as a music library interface, not a streaming player.</span>
     </footer>
   </main>
+  <div class="quest-toast" id="quest-toast">
+    <strong id="quest-toast-title">Quest Up</strong>
+    <span id="quest-toast-copy">你剛剛完成了一段任務，節奏正在被你累積起來。</span>
+  </div>
   <script>
     const storageKeyTasks = "sonic-atlas-tasks-v1";
     const storageKeyLogs = "sonic-atlas-logs-v1";
@@ -1783,8 +1850,17 @@
     const radarFeed = document.getElementById("radar-feed");
     const scanLicksButton = document.getElementById("scan-licks");
     const radarMeta = document.getElementById("radar-meta");
+    const hudCombo = document.getElementById("hud-combo");
+    const hudXp = document.getElementById("hud-xp");
+    const hudTarget = document.getElementById("hud-target");
+    const xpProgress = document.getElementById("xp-progress");
+    const xpProgressLabel = document.getElementById("xp-progress-label");
+    const questToast = document.getElementById("quest-toast");
+    const questToastTitle = document.getElementById("quest-toast-title");
+    const questToastCopy = document.getElementById("quest-toast-copy");
     let activeFilter = "all";
     let radarItems = [];
+    let toastTimer = null;
 
     const motivationModes = [
       {
@@ -1850,6 +1926,14 @@
       }
     ];
 
+    const rankTable = [
+      { name: "Rookie", minXp: 0 },
+      { name: "Groove Scout", minXp: 80 },
+      { name: "Pocket Runner", minXp: 180 },
+      { name: "Phrase Hunter", minXp: 320 },
+      { name: "Night Driver", minXp: 500 }
+    ];
+
     function readTasks() {
       const raw = localStorage.getItem(storageKeyTasks);
       if (!raw) {
@@ -1896,11 +1980,18 @@
     taskList.addEventListener("change", (event) => {
       const target = event.target;
       if (!(target instanceof HTMLInputElement)) return;
+      const tasksBefore = readTasks();
+      const toggledTask = tasksBefore.find((task) => task.id === target.dataset.taskId);
       const tasks = readTasks().map((task) => (
         task.id === target.dataset.taskId ? { ...task, done: target.checked } : task
       ));
       saveTasks(tasks);
       renderTasks();
+      if (target.checked && toggledTask) {
+        pulseHud(hudCombo);
+        pulseHud(hudXp);
+        showQuestToast("Quest Clear", `你完成了 ${toggledTask.title}，連擊和 XP 都往上推了一格。`);
+      }
     });
 
     function readLogs() {
@@ -1929,6 +2020,45 @@
 
     function saveRadar(items) {
       localStorage.setItem(storageKeyRadar, JSON.stringify(items));
+    }
+
+    function getXpState(tasks, logs) {
+      const completed = tasks.filter((task) => task.done).length;
+      const totalMinutes = logs.reduce((sum, log) => sum + Number(log.minutes || 0), 0);
+      const xp = completed * 25 + totalMinutes;
+      const rank = [...rankTable].reverse().find((entry) => xp >= entry.minXp) || rankTable[0];
+      const nextRank = rankTable.find((entry) => entry.minXp > xp);
+      const base = rank.minXp;
+      const target = nextRank ? nextRank.minXp : base + 120;
+      const current = xp - base;
+      const span = Math.max(1, target - base);
+      const percent = Math.max(0, Math.min(100, Math.round((current / span) * 100)));
+      return {
+        xp,
+        rank: rank.name,
+        nextRank: nextRank ? nextRank.name : "Maxed",
+        current,
+        span,
+        percent,
+        combo: Math.max(1, completed + Math.min(4, logs.length))
+      };
+    }
+
+    function pulseHud(element) {
+      if (!element) return;
+      element.classList.remove("pulse");
+      void element.offsetWidth;
+      element.classList.add("pulse");
+    }
+
+    function showQuestToast(title, copy) {
+      questToastTitle.textContent = title;
+      questToastCopy.textContent = copy;
+      questToast.classList.add("show");
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        questToast.classList.remove("show");
+      }, 2200);
     }
 
     async function loadExternalRadar() {
@@ -2002,6 +2132,16 @@
       snapshotMinutes.textContent = `${totalMinutes}`;
       snapshotFocus.textContent = focusLane;
       updateMomentum(tasks, logs, focusLane, totalMinutes);
+      updateQuestHud(tasks, logs, focusLane);
+    }
+
+    function updateQuestHud(tasks, logs, focus) {
+      const xpState = getXpState(tasks, logs);
+      hudCombo.textContent = `${String(xpState.combo).padStart(2, "0")} Chain`;
+      hudXp.textContent = `${xpState.rank} / ${xpState.xp} XP`;
+      hudTarget.textContent = `${focus} Focus`;
+      xpProgress.style.width = `${xpState.percent}%`;
+      xpProgressLabel.textContent = `${xpState.current} / ${xpState.span}`;
     }
 
     function updateMomentum(tasks, logs, lane, totalMinutes) {
@@ -2073,6 +2213,8 @@
       saveLogs(logs.slice(0, 20));
       logForm.reset();
       renderLogs();
+      pulseHud(hudXp);
+      showQuestToast("Session Logged", `已記錄 ${title}，這次練習會被算進你的 XP 和主練線。`);
     });
 
     logList.addEventListener("click", (event) => {
@@ -2121,6 +2263,8 @@
       radarItems = items;
       saveRadar(items);
       renderRadar();
+      pulseHud(hudTarget);
+      showQuestToast("Radar Sweep", "雷達已刷新，今天新的樂句掉寶已經進場。");
     }
 
     scanLicksButton.addEventListener("click", scanRadar);
@@ -2151,6 +2295,8 @@
         });
         saveLogs(logs.slice(0, 20));
         renderLogs();
+        pulseHud(hudXp);
+        showQuestToast("Loot Saved", `已把 ${match.title} 收進戰績板，之後會算進你的動能。`);
       }
 
       if (taskId) {
@@ -2166,6 +2312,8 @@
         const deduped = tasks.filter((task, index, arr) => arr.findIndex((item) => item.id === task.id) === index);
         saveTasks(deduped);
         renderTasks();
+        pulseHud(hudTarget);
+        showQuestToast("Quest Added", `${match.title} 已加入今天任務欄，現在可以直接開練。`);
       }
     });
 
