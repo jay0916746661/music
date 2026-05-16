@@ -3,46 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sonic Atlas</title>
+  <title>Score Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f1417;
-      --paper: rgba(18, 25, 29, 0.88);
-      --paper-strong: rgba(22, 31, 36, 0.96);
-      --ink: #eef4ef;
-      --muted: #93a5a5;
-      --line: rgba(118, 161, 155, 0.18);
-      --accent: #ff8f3c;
-      --accent-soft: #ffd27a;
-      --olive: #9abf57;
-      --teal: #43d4c8;
-      --wine: #ff6c58;
-      --shadow: 0 30px 90px rgba(0, 0, 0, 0.4);
+      --bg: #0d1114;
+      --panel: #131a1f;
+      --panel-soft: #182127;
+      --panel-strong: #0f1519;
+      --line: rgba(150, 184, 177, 0.16);
+      --line-strong: rgba(150, 184, 177, 0.26);
+      --ink: #edf5ef;
+      --muted: #93a7a0;
+      --accent: #ff9e49;
+      --accent-soft: rgba(255, 158, 73, 0.12);
+      --teal: #55d3c7;
+      --olive: #9fcb63;
+      --danger: #ff7a68;
+      --shadow: 0 28px 70px rgba(0, 0, 0, 0.36);
       --display: "Noto Serif TC", serif;
       --body: "Noto Sans TC", sans-serif;
       --mono: "IBM Plex Mono", monospace;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       margin: 0;
       font-family: var(--body);
       color: var(--ink);
       background:
-        radial-gradient(circle at top left, rgba(255, 143, 60, 0.12), transparent 24%),
-        radial-gradient(circle at 82% 12%, rgba(67, 212, 200, 0.14), transparent 26%),
-        radial-gradient(circle at 50% 100%, rgba(154, 191, 87, 0.08), transparent 20%),
-        linear-gradient(180deg, #0c1114 0%, #10181b 48%, #0a0f12 100%);
+        radial-gradient(circle at top left, rgba(85, 211, 199, 0.08), transparent 24%),
+        radial-gradient(circle at 92% 0%, rgba(255, 158, 73, 0.08), transparent 18%),
+        linear-gradient(180deg, #0a0e11 0%, #0d1114 100%);
       min-height: 100vh;
     }
 
@@ -51,1228 +46,349 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: 0.4;
       background-image:
-        linear-gradient(rgba(67, 212, 200, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(67, 212, 200, 0.08) 1px, transparent 1px);
-      background-size: 32px 32px;
-      mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.92), transparent);
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), transparent 80%);
+      opacity: 0.28;
     }
 
     main {
-      width: min(1400px, calc(100% - 40px));
-      margin: 22px auto 56px;
+      width: min(1480px, calc(100% - 32px));
+      margin: 18px auto 56px;
+      display: grid;
+      gap: 16px;
       position: relative;
       z-index: 1;
     }
 
-    .top-hud {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr 0.9fr 0.9fr;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .hud-chip {
-      padding: 14px 16px;
+    .hero,
+    .panel {
       border: 1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(67, 212, 200, 0.08), rgba(67, 212, 200, 0.02)),
-        rgba(15, 20, 23, 0.82);
-      border-radius: 14px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03), var(--shadow);
-    }
-
-    .hud-chip span {
-      display: block;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .hud-chip strong {
-      display: block;
-      margin-top: 8px;
-      font-size: 22px;
-      line-height: 1;
-      font-family: var(--display);
-      color: var(--ink);
-    }
-
-    .pulse {
-      animation: pulseGlow 560ms ease;
-    }
-
-    @keyframes pulseGlow {
-      0% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(67, 212, 200, 0);
-      }
-      45% {
-        transform: scale(1.04);
-        box-shadow: 0 0 28px rgba(67, 212, 200, 0.2);
-      }
-      100% {
-        transform: scale(1);
-        box-shadow: 0 0 0 rgba(67, 212, 200, 0);
-      }
+      background: rgba(16, 22, 26, 0.92);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
     }
 
     .hero {
-      position: relative;
-      overflow: hidden;
+      padding: 22px;
       display: grid;
-      grid-template-columns: 1.2fr 0.9fr;
-      gap: 24px;
-      padding: 28px;
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(145deg, rgba(255, 143, 60, 0.08), transparent 28%),
-        linear-gradient(180deg, rgba(19, 28, 32, 0.96), rgba(13, 19, 23, 0.92));
-      backdrop-filter: blur(18px);
-      box-shadow: var(--shadow);
-      min-height: 440px;
-      border-radius: 22px;
-    }
-
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(120deg, transparent 0 48%, rgba(67, 212, 200, 0.08) 49%, transparent 50%),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent);
-      pointer-events: none;
-    }
-
-    .hero-copy {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 20px;
-      min-width: 0;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
     }
 
     .eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      width: fit-content;
-      padding: 8px 12px;
-      border: 1px solid rgba(67, 212, 200, 0.24);
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(85, 211, 199, 0.24);
+      background: rgba(85, 211, 199, 0.08);
       color: var(--teal);
-      background: rgba(67, 212, 200, 0.08);
       font-family: var(--mono);
       font-size: 11px;
-      letter-spacing: 0.08em;
       text-transform: uppercase;
-      border-radius: 999px;
     }
 
     .hero h1 {
-      margin: 0;
+      margin: 14px 0 10px;
       font-family: var(--display);
-      font-size: clamp(44px, 7vw, 86px);
-      line-height: 0.96;
-      font-weight: 700;
-      max-width: 8ch;
-      text-shadow: 0 0 32px rgba(255, 143, 60, 0.08);
+      font-size: clamp(38px, 5vw, 68px);
+      line-height: 0.98;
+      max-width: 9ch;
     }
 
     .hero p {
       margin: 0;
-      max-width: 56ch;
       color: var(--muted);
-      font-size: 16px;
-      line-height: 1.75;
+      line-height: 1.8;
+      max-width: 60ch;
     }
 
-    .hero-meta {
+    .hero-actions {
+      margin-top: 18px;
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
+      gap: 10px;
     }
 
-    .meta-chip {
-      padding: 10px 14px;
-      border: 1px solid var(--line);
+    .button,
+    .chip-button {
+      appearance: none;
+      border: 1px solid var(--line-strong);
+      border-radius: 12px;
       background: rgba(255, 255, 255, 0.03);
-      font-family: var(--mono);
-      font-size: 12px;
       color: var(--ink);
-      border-radius: 999px;
+      padding: 10px 12px;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      min-height: 42px;
     }
 
-    .hero-panel {
+    .button.primary {
+      background: var(--accent-soft);
+      border-color: rgba(255, 158, 73, 0.28);
+      color: #fff2e1;
+    }
+
+    .hero-stats {
       display: grid;
-      grid-template-rows: auto 1fr auto;
-      gap: 16px;
-      padding: 18px;
-      border: 1px solid rgba(67, 212, 200, 0.18);
-      border-radius: 18px;
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent),
-        radial-gradient(circle at 50% 100%, rgba(255, 143, 60, 0.08), transparent 45%),
-        rgba(11, 16, 19, 0.84);
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      align-content: start;
     }
 
-    .panel-head,
-    .panel-foot {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--muted);
-    }
-
-    .wave {
-      position: relative;
-      display: grid;
-      align-items: end;
-      grid-template-columns: repeat(24, minmax(0, 1fr));
-      gap: 6px;
-      min-height: 220px;
-      padding: 8px 0;
-    }
-
-    .wave span {
-      border-radius: 999px 999px 0 0;
-      background: linear-gradient(180deg, var(--accent), #da9866 70%, rgba(218, 152, 102, 0.25));
-      animation: rise 1.2s ease forwards;
-      transform-origin: bottom;
-      transform: scaleY(0.2);
-    }
-
-    .wave span:nth-child(3n) {
-      background: linear-gradient(180deg, var(--teal), #79a4a1 70%, rgba(121, 164, 161, 0.24));
-    }
-
-    .wave span:nth-child(4n) {
-      background: linear-gradient(180deg, var(--wine), #c18a82 70%, rgba(193, 138, 130, 0.2));
-    }
-
-    @keyframes rise {
-      to { transform: scaleY(1); }
-    }
-
-    .section {
-      margin-top: 22px;
-      padding: 22px;
-      border: 1px solid var(--line);
-      background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent),
-        var(--paper);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(14px);
-      border-radius: 20px;
-    }
-
-    .section-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: end;
-      gap: 18px;
-      margin-bottom: 18px;
-    }
-
-    .section h2 {
-      margin: 0;
-      font-family: var(--display);
-      font-size: clamp(26px, 3vw, 38px);
-      line-height: 1.05;
-      font-weight: 700;
-    }
-
-    .section-note {
-      max-width: 52ch;
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.5;
-      font-size: 15px;
-    }
-
-    .grid-two {
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 18px;
-    }
-
-    .coach-grid {
-      display: grid;
-      grid-template-columns: 1.08fr 0.92fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .utility-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .card {
-      position: relative;
-      overflow: hidden;
-      min-height: 220px;
+    .stat-card {
       padding: 16px;
+      border-radius: 16px;
       border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.08)), var(--paper-strong);
-      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
-      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
     }
 
-    .card:hover {
-      transform: translateY(-4px) scale(1.01);
-      border-color: rgba(67, 212, 200, 0.32);
-      box-shadow: 0 18px 34px rgba(0, 0, 0, 0.24);
-    }
-
-    .card small,
-    .muted {
+    .stat-card span {
+      display: block;
       color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
     }
 
-    .card h3 {
-      margin: 10px 0 8px;
+    .stat-card strong {
+      display: block;
+      margin-top: 10px;
       font-family: var(--display);
       font-size: 28px;
-      line-height: 1.08;
-      font-weight: 700;
-      max-width: 10ch;
+      line-height: 1;
     }
 
-    .tag-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 14px;
-    }
-
-    .tag {
-      padding: 7px 9px;
-      background: rgba(67, 212, 200, 0.08);
-      border: 1px solid rgba(67, 212, 200, 0.18);
-      color: var(--teal);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .fretboard {
-      margin-top: 18px;
-      padding: 16px;
-      border: 1px solid rgba(31, 27, 24, 0.08);
-      background: linear-gradient(180deg, #6f4e37, #583b2b);
-    }
-
-    .fretboard-grid {
+    .workspace {
       display: grid;
-      grid-template-columns: 36px repeat(8, minmax(0, 1fr));
-      gap: 10px 8px;
-      align-items: center;
-    }
-
-    .string {
-      color: rgba(255, 242, 228, 0.8);
-      font-size: 11px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .fret {
-      position: relative;
-      height: 18px;
-      border-top: 1px solid rgba(255, 244, 232, 0.6);
-    }
-
-    .fret::after {
-      content: "";
-      position: absolute;
-      right: -4px;
-      top: -4px;
-      width: 1px;
-      height: 24px;
-      background: rgba(255, 244, 232, 0.35);
-    }
-
-    .dot {
-      position: absolute;
-      top: -7px;
-      left: 44%;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #f8d9a4;
-      box-shadow: 0 0 0 3px rgba(248, 217, 164, 0.18);
-    }
-
-    .dot.alt {
-      background: #9ccac5;
-      box-shadow: 0 0 0 3px rgba(156, 202, 197, 0.2);
-    }
-
-    .dot.dark {
-      background: #d5846f;
-      box-shadow: 0 0 0 3px rgba(213, 132, 111, 0.2);
-    }
-
-    .rail {
-      display: grid;
-      gap: 14px;
+      grid-template-columns: 320px minmax(0, 1fr) 420px;
+      gap: 16px;
+      align-items: start;
     }
 
     .panel {
       padding: 16px;
-      border: 1px solid var(--line);
-      background: var(--paper-strong);
-      min-height: 150px;
-      border-radius: 14px;
+      display: grid;
+      gap: 14px;
     }
 
+    .panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .panel h2,
     .panel h3 {
-      margin: 0 0 12px;
-      font-family: var(--display);
-      font-size: 20px;
-      font-weight: 700;
-    }
-
-    .coach-lead {
-      display: grid;
-      gap: 14px;
-    }
-
-    .coach-strip {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-    }
-
-    .coach-card {
-      padding: 15px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.03);
-      min-height: 184px;
-      border-radius: 14px;
-    }
-
-    .coach-card h3,
-    .priority-card h3,
-    .search-card h3 {
-      margin: 8px 0 12px;
-      font-family: var(--display);
-      font-size: 22px;
-      font-weight: 700;
-    }
-
-    .coach-card strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 16px;
-    }
-
-    .coach-card p,
-    .priority-card p,
-    .search-card p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.45;
-      font-size: 14px;
-    }
-
-    .coach-index {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 28px;
-      height: 28px;
-      border: 1px solid rgba(255, 143, 60, 0.32);
-      background: rgba(255, 143, 60, 0.12);
-      color: var(--accent-soft);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-    }
-
-    .priority-stack,
-    .search-stack {
-      display: grid;
-      gap: 12px;
-    }
-
-    .priority-card,
-    .search-card {
-      padding: 15px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 14px;
-    }
-
-    .priority-line {
-      display: grid;
-      grid-template-columns: 76px 1fr auto;
-      gap: 10px;
-      align-items: center;
-      margin-top: 10px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .priority-pill {
-      padding: 7px 9px;
-      border: 1px solid rgba(255, 108, 88, 0.24);
-      background: rgba(255, 108, 88, 0.1);
-      color: #ff9e92;
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .source-list {
-      display: grid;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .source-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      padding-top: 10px;
-      border-top: 1px solid rgba(58, 41, 29, 0.08);
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .stat-line {
-      display: grid;
-      grid-template-columns: 100px 1fr auto;
-      gap: 10px;
-      align-items: center;
-      margin: 12px 0;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    .bar {
-      height: 9px;
-      background: rgba(58, 41, 29, 0.08);
-      overflow: hidden;
-    }
-
-    .bar b {
-      display: block;
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent-soft));
-    }
-
-    .progression-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .progression {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 12px;
-      padding: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 14px;
-    }
-
-    .progression strong {
-      display: block;
-      margin-bottom: 6px;
-      font-family: var(--display);
-      font-size: 22px;
-      font-weight: 700;
-    }
-
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-content: start;
-      justify-content: end;
-    }
-
-    .chips span {
-      padding: 7px 8px;
-      border: 1px solid rgba(67, 212, 200, 0.2);
-      background: rgba(67, 212, 200, 0.08);
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--teal);
-      text-transform: uppercase;
-    }
-
-    .flow-band {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 18px;
-      align-items: stretch;
-    }
-
-    .curve-panel {
-      padding: 18px;
-      border: 1px solid var(--line);
-      background: var(--paper-strong);
-      border-radius: 16px;
-    }
-
-    .curve {
-      position: relative;
-      height: 260px;
-      overflow: hidden;
-      background:
-        linear-gradient(180deg, rgba(98, 112, 79, 0.08), transparent),
-        repeating-linear-gradient(0deg, rgba(31, 27, 24, 0.05) 0 1px, transparent 1px 44px),
-        repeating-linear-gradient(90deg, rgba(31, 27, 24, 0.05) 0 1px, transparent 1px 60px);
-    }
-
-    .curve svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .marker-row {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: 10px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .insight-list {
-      display: grid;
-      gap: 12px;
-    }
-
-    .insight {
-      padding: 14px;
-      border-left: 3px solid var(--accent);
-      background: rgba(191, 91, 44, 0.08);
-      color: var(--ink);
-    }
-
-    .archive {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .archive-item {
-      padding: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.03);
-      min-height: 145px;
-      border-radius: 14px;
-    }
-
-    .archive-item h4 {
-      margin: 8px 0;
-      font-family: var(--display);
-      font-size: 24px;
-      line-height: 1;
-      font-weight: 700;
-    }
-
-    .footer {
-      margin-top: 22px;
-      padding: 18px 20px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 12px;
-      display: flex;
-      justify-content: space-between;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    .utility-panel,
-    .tracker-panel {
-      padding: 18px;
-      border: 1px solid var(--line);
-      background: var(--paper-strong);
-      border-radius: 16px;
-    }
-
-    .momentum-grid,
-    .radar-grid {
-      display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
-      gap: 18px;
-      align-items: start;
-    }
-
-    .utility-panel h3,
-    .tracker-panel h3 {
-      margin: 0 0 12px;
-      font-family: var(--display);
-      font-size: 24px;
-      font-weight: 700;
-    }
-
-    .search-form,
-    .log-form {
-      display: grid;
-      gap: 12px;
-    }
-
-    .search-filters,
-    .snapshot-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .snapshot-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      margin-top: 14px;
-    }
-
-    .search-row,
-    .log-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .log-grid {
-      display: grid;
-      grid-template-columns: 1fr 140px 160px;
-      gap: 10px;
-    }
-
-    .field,
-    .select,
-    .button,
-    .textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: rgba(7, 10, 12, 0.58);
-      color: var(--ink);
-      font-family: var(--body);
-      font-size: 14px;
-      padding: 12px 14px;
-      border-radius: 8px;
-      outline: none;
-    }
-
-    .field:focus,
-    .select:focus,
-    .textarea:focus {
-      border-color: rgba(183, 103, 51, 0.46);
-      box-shadow: 0 0 0 4px rgba(183, 103, 51, 0.08);
-    }
-
-    .textarea {
-      min-height: 96px;
-      resize: vertical;
-    }
-
-    .button {
-      width: auto;
-      border: 1px solid rgba(67, 212, 200, 0.24);
-      background: linear-gradient(180deg, rgba(255, 143, 60, 0.18), rgba(255, 143, 60, 0.08));
-      color: var(--ink);
-      font-family: var(--mono);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      cursor: pointer;
-    }
-
-    .button.secondary {
-      background: rgba(67, 212, 200, 0.08);
-    }
-
-    .button.is-active {
-      background: rgba(183, 103, 51, 0.12);
-      border-color: rgba(183, 103, 51, 0.32);
-    }
-
-    .search-meta,
-    .tracker-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 12px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 12px;
-    }
-
-    .task-list,
-    .log-list {
-      display: grid;
-      gap: 12px;
-      margin-top: 14px;
-    }
-
-    .task-item,
-    .log-item {
-      display: grid;
-      gap: 8px;
-      padding: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255, 251, 245, 0.92);
-      border-radius: 8px;
-    }
-
-    .task-item.done {
-      opacity: 0.72;
-      background: rgba(92, 103, 80, 0.08);
-    }
-
-    .task-head,
-    .log-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: start;
-    }
-
-    .task-check {
-      display: grid;
-      grid-template-columns: 22px 1fr;
-      gap: 10px;
-      align-items: start;
-      cursor: pointer;
-    }
-
-    .task-check input {
-      margin: 2px 0 0;
-      accent-color: var(--teal);
-    }
-
-    .task-item strong,
-    .log-item strong {
-      font-size: 16px;
-    }
-
-    .snapshot-card {
-      padding: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 14px;
-    }
-
-    .snapshot-card strong {
-      display: block;
-      margin-top: 6px;
-      font-family: var(--display);
-      font-size: 24px;
-      line-height: 1;
-    }
-
-    .snapshot-card span {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .motivation-card,
-    .radar-card,
-    .radar-feed {
-      padding: 18px;
-      border: 1px solid var(--line);
-      background: var(--paper-strong);
-      border-radius: 16px;
-    }
-
-    .motivation-quote {
       margin: 0;
       font-family: var(--display);
-      font-size: 28px;
-      line-height: 1.2;
-      max-width: 14ch;
-    }
-
-    .motivation-sub {
-      margin-top: 10px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .challenge-card {
-      margin-top: 14px;
-      padding: 14px;
-      border-left: 3px solid var(--accent);
-      background: rgba(255, 143, 60, 0.08);
-      border-radius: 0 14px 14px 0;
-    }
-
-    .challenge-card strong,
-    .radar-item strong {
-      display: block;
-      font-size: 18px;
-    }
-
-    .meter {
-      margin-top: 14px;
-      display: grid;
-      gap: 8px;
-    }
-
-    .meter-line {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-    }
-
-    .meter-track {
-      height: 10px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    .meter-fill {
-      height: 100%;
-      width: 0;
-      background: linear-gradient(90deg, var(--accent), var(--accent-soft));
-      transition: width 220ms ease;
-    }
-
-    .xp-track {
-      margin-top: 16px;
-    }
-
-    .quest-toast {
-      position: fixed;
-      right: 22px;
-      bottom: 22px;
-      z-index: 20;
-      max-width: 320px;
-      padding: 14px 16px;
-      border: 1px solid rgba(67, 212, 200, 0.24);
-      background: rgba(9, 14, 17, 0.92);
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-      opacity: 0;
-      transform: translateY(14px);
-      pointer-events: none;
-      transition: opacity 180ms ease, transform 180ms ease;
-    }
-
-    .quest-toast.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .quest-toast strong {
-      display: block;
-      font-family: var(--display);
-      font-size: 20px;
-    }
-
-    .quest-toast span {
-      display: block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .radar-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: start;
-      margin-bottom: 14px;
-    }
-
-    .radar-meta {
-      margin-top: 10px;
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .radar-feed {
-      display: grid;
-      gap: 12px;
-    }
-
-    .radar-item {
-      padding: 14px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 14px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .radar-item-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: start;
-    }
-
-    .radar-source {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .radar-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .pill-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .micro-pill {
-      padding: 6px 8px;
-      border: 1px solid rgba(67, 212, 200, 0.18);
-      background: rgba(67, 212, 200, 0.07);
-      color: var(--teal);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-    }
-
-    .vault-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 18px;
-    }
-
-    .vault-card {
-      overflow: hidden;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-    }
-
-    .vault-media {
-      aspect-ratio: 16 / 9;
-      width: 100%;
-      object-fit: cover;
-      display: block;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .vault-body {
-      padding: 16px;
-      display: grid;
-      gap: 12px;
-    }
-
-    .vault-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: start;
-    }
-
-    .vault-head h3 {
-      margin: 0;
-      font-family: var(--display);
-      font-size: 26px;
-      line-height: 1.05;
-    }
-
-    .vault-files {
-      display: grid;
-      gap: 8px;
-    }
-
-    .vault-link {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      padding: 10px 12px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--ink);
-      text-decoration: none;
-      font-size: 14px;
-    }
-
-    .vault-link small {
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
-    }
-
-    .skill-grid {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 18px;
-    }
-
-    .skill-branch-grid,
-    .skill-priority-grid {
-      display: grid;
-      gap: 14px;
-    }
-
-    .skill-branch-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .skill-card,
-    .skill-priority-card {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(255, 255, 255, 0.03);
-      padding: 16px;
-      box-shadow: var(--shadow);
-      display: grid;
-      gap: 12px;
-    }
-
-    .skill-card h3,
-    .skill-priority-card h3 {
-      margin: 0;
-      font-family: var(--display);
-      font-size: 24px;
       line-height: 1.08;
     }
 
-    .skill-list {
-      display: grid;
-      gap: 8px;
-    }
+    .panel h2 { font-size: 28px; }
+    .panel h3 { font-size: 22px; }
 
-    .skill-link {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      padding: 10px 12px;
-      text-decoration: none;
-      color: var(--ink);
-      border: 1px solid rgba(67, 212, 200, 0.12);
-      border-radius: 12px;
-      background: rgba(67, 212, 200, 0.05);
-    }
-
-    .skill-link strong {
-      font-size: 14px;
-    }
-
-    .skill-link small {
+    .note {
+      margin: 0;
       color: var(--muted);
-      font-family: var(--mono);
-      font-size: 11px;
-      text-transform: uppercase;
+      font-size: 14px;
+      line-height: 1.7;
     }
 
-    .skill-actions {
+    .field,
+    .select {
+      width: 100%;
+      min-height: 44px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.025);
+      color: var(--ink);
+      padding: 0 12px;
+      font: inherit;
+    }
+
+    .field::placeholder { color: #7e928b; }
+
+    .stack { display: grid; gap: 10px; }
+
+    .chip-group {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
 
-    .skill-action {
+    .chip-button {
+      padding: 8px 10px;
+      min-height: 36px;
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+
+    .chip-button.active {
+      background: rgba(85, 211, 199, 0.12);
+      border-color: rgba(85, 211, 199, 0.28);
+      color: var(--teal);
+    }
+
+    .series-list,
+    .track-list,
+    .priority-list,
+    .file-list,
+    .practice-list,
+    .lesson-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .metric-row,
+    .series-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.02);
+    }
+
+    .metric-row strong,
+    .series-row strong {
+      font-size: 14px;
+    }
+
+    .series-row small,
+    .metric-row small {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+    }
+
+    .library-head {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .library-toolbar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 150px 150px;
+      gap: 10px;
+    }
+
+    .lesson-list {
+      max-height: calc(100vh - 290px);
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .lesson-card {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      display: grid;
+      gap: 10px;
+      cursor: pointer;
+      transition: border-color 140ms ease, transform 140ms ease, background 140ms ease;
+    }
+
+    .lesson-card:hover,
+    .lesson-card.active {
+      border-color: rgba(255, 158, 73, 0.36);
+      background: rgba(255, 158, 73, 0.06);
+      transform: translateY(-1px);
+    }
+
+    .lesson-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: start;
+    }
+
+    .lesson-card h3 {
+      margin: 0;
+      font-size: 21px;
+      line-height: 1.12;
+    }
+
+    .mono-badge,
+    .priority-badge {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 8px 10px;
-      min-height: 38px;
-      border: 1px solid rgba(67, 212, 200, 0.14);
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.02);
-      color: var(--ink);
-      text-decoration: none;
+      width: fit-content;
+      padding: 6px 8px;
+      border-radius: 999px;
       font-family: var(--mono);
       font-size: 11px;
       text-transform: uppercase;
     }
 
-    .media-modal {
-      position: fixed;
-      inset: 0;
-      display: none;
+    .mono-badge {
+      color: var(--teal);
+      background: rgba(85, 211, 199, 0.08);
+      border: 1px solid rgba(85, 211, 199, 0.16);
+    }
+
+    .priority-badge {
+      color: #fff2e1;
+      background: rgba(255, 158, 73, 0.12);
+      border: 1px solid rgba(255, 158, 73, 0.18);
+    }
+
+    .lesson-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .lesson-meta span {
+      display: inline-flex;
+      padding: 6px 8px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .format-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .format-pill {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      background: rgba(8, 11, 15, 0.84);
-      z-index: 40;
+      padding: 6px 8px;
+      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      background: rgba(159, 203, 99, 0.08);
+      color: var(--olive);
+      border: 1px solid rgba(159, 203, 99, 0.14);
     }
 
-    .media-modal.show {
-      display: flex;
-    }
-
-    .media-panel {
-      width: min(100%, 1080px);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: #0c1217;
-      box-shadow: var(--shadow);
-      overflow: hidden;
-      display: grid;
-      gap: 0;
-    }
-
-    .media-panel-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: center;
-      padding: 14px 16px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .media-panel-head strong {
-      font-family: var(--display);
-      font-size: 24px;
-      line-height: 1.1;
-    }
-
-    .media-stage {
+    .detail-stage {
       aspect-ratio: 16 / 9;
-      width: 100%;
-      background: #05080b;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #090d10;
+      overflow: hidden;
     }
 
-    .media-stage video,
-    .media-stage iframe {
+    .detail-stage video,
+    .detail-stage iframe {
       width: 100%;
       height: 100%;
       border: 0;
@@ -1280,1710 +396,685 @@
       background: #000;
     }
 
-    .skill-header {
+    .placeholder {
+      width: 100%;
+      height: 100%;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .action-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .link-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line-strong);
+      background: rgba(255,255,255,0.03);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 13px;
+    }
+
+    .detail-block {
+      padding: 14px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.03);
+      display: grid;
+      gap: 12px;
+    }
+
+    .detail-block h4 {
+      margin: 0;
+      font-size: 15px;
+      color: var(--muted);
+      font-family: var(--mono);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .file-item {
       display: flex;
       justify-content: space-between;
       gap: 12px;
-      align-items: start;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.03);
+      text-decoration: none;
+      color: var(--ink);
     }
 
-    .skill-note {
+    .file-item span { font-size: 14px; }
+    .file-item small {
+      font-family: var(--mono);
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.6;
+      font-size: 11px;
+      text-transform: uppercase;
     }
 
-    .empty-state {
-      padding: 20px 14px;
-      border: 1px dashed rgba(72, 51, 37, 0.18);
+    .practice-item {
+      padding-left: 18px;
+      position: relative;
+      color: var(--ink);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .practice-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .mindmap {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .mind-branch {
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      display: grid;
+      gap: 10px;
+    }
+
+    .mind-branch h4 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 20px;
+    }
+
+    .mind-branch ul {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 14px;
+    }
+
+    .empty {
+      padding: 22px 14px;
+      border-radius: 14px;
+      border: 1px dashed var(--line);
       color: var(--muted);
       text-align: center;
-      border-radius: 8px;
     }
 
-    .search-empty {
-      margin-top: 14px;
+    @media (max-width: 1240px) {
+      .workspace { grid-template-columns: 300px minmax(0, 1fr); }
+      .detail-panel { grid-column: 1 / -1; }
     }
 
-    .hidden-by-search {
-      display: none !important;
-    }
-
-    @media (max-width: 1080px) {
-      .top-hud,
+    @media (max-width: 920px) {
       .hero,
-      .utility-grid,
-      .momentum-grid,
-      .radar-grid,
-      .grid-two,
-      .coach-grid,
-      .coach-strip,
-      .flow-band,
-      .cards,
-      .archive,
-      .skill-grid,
-      .skill-branch-grid {
+      .workspace,
+      .mindmap {
         grid-template-columns: 1fr;
       }
 
-      .hero h1 {
-        max-width: none;
-      }
-    }
-
-    @media (max-width: 720px) {
-      main {
-        width: min(100% - 20px, 1400px);
-        margin-top: 12px;
-      }
-
-      .hero,
-      .section {
-        padding: 16px;
-      }
-
-      .section-top,
-      .panel-head,
-      .panel-foot,
-      .footer {
-        align-items: start;
-        flex-direction: column;
-      }
-
-      .hero h1 {
-        font-size: 44px;
-      }
-
-      .card h3,
-      .progression strong,
-      .archive-item h4 {
-        font-size: 24px;
-      }
-
-      .wave {
-        min-height: 150px;
-        gap: 4px;
-      }
-
-      .fretboard-grid {
-        grid-template-columns: 28px repeat(8, minmax(0, 1fr));
-        gap: 8px 6px;
-      }
-
-      .stat-line {
-        grid-template-columns: 84px 1fr auto;
-      }
-
-      .priority-line,
-      .source-row,
-      .search-row,
-      .log-row,
-      .log-grid,
-      .snapshot-grid {
+      .library-toolbar {
         grid-template-columns: 1fr;
-        display: grid;
+      }
+
+      .lesson-list {
+        max-height: none;
       }
     }
   </style>
 </head>
 <body>
   <main>
-    <section class="top-hud">
-      <article class="hud-chip">
-        <span>Mode</span>
-        <strong>Practice Quest / Stage A-4</strong>
-      </article>
-      <article class="hud-chip">
-        <span>Combo</span>
-        <strong id="hud-combo">03 Chain</strong>
-      </article>
-      <article class="hud-chip">
-        <span>XP Gain</span>
-        <strong id="hud-xp">120 XP</strong>
-      </article>
-      <article class="hud-chip">
-        <span>Target</span>
-        <strong id="hud-target">Lick Capture</strong>
-      </article>
-    </section>
-
     <section class="hero">
-      <div class="hero-copy">
-        <div>
-          <div class="eyebrow">Sonic Atlas / Rhythm Game Interface</div>
-          <h1>把練習做成一場會上癮的音樂任務。</h1>
-        </div>
+      <div>
+        <span class="eyebrow">Score-first / Practice Workbench</span>
+        <h1>吉他譜面資源台</h1>
         <p>
-          這不只是音樂書庫，而是你的練功介面。吉他、Logic、DJ、MuseScore 都變成不同關卡，Lick Radar 是掃描雷達，練習紀錄是戰績板，每天打開都像進到新的回合。
+          這版把重心拉回譜面本身。你現在看到的不是概念頁，而是一個可以搜尋、分類、看影片、開 PDF、開 GP5、跟 backing track 練習的工作台。
         </p>
-        <div class="hero-meta">
-          <div class="meta-chip">Mission Board / Daily Run</div>
-          <div class="meta-chip">Lick Radar / Live Feed</div>
-          <div class="meta-chip">Score + Logic + DJ Sync</div>
+        <div class="hero-actions">
+          <a class="button primary" href="#library-panel">直接找譜</a>
+          <a class="button" href="#detail-panel">看影片與檔案</a>
+          <a class="button" href="#mindmap-panel">看技能樹</a>
         </div>
       </div>
-      <aside class="hero-panel">
+      <div class="hero-stats" id="hero-stats"></div>
+    </section>
+
+    <section class="workspace">
+      <aside class="panel">
         <div class="panel-head">
-          <span>Current Stage</span>
-          <span>E Dorian / 112 BPM / Night Route</span>
+          <div>
+            <h2>分類</h2>
+            <p class="note">先按技能線或系列找，再看難度和格式，會比在大資料夾裡翻更快。</p>
+          </div>
         </div>
-        <div class="wave" aria-hidden="true">
-          <span style="height: 32%"></span>
-          <span style="height: 68%"></span>
-          <span style="height: 46%"></span>
-          <span style="height: 82%"></span>
-          <span style="height: 40%"></span>
-          <span style="height: 72%"></span>
-          <span style="height: 55%"></span>
-          <span style="height: 90%"></span>
-          <span style="height: 64%"></span>
-          <span style="height: 78%"></span>
-          <span style="height: 38%"></span>
-          <span style="height: 58%"></span>
-          <span style="height: 84%"></span>
-          <span style="height: 47%"></span>
-          <span style="height: 66%"></span>
-          <span style="height: 98%"></span>
-          <span style="height: 52%"></span>
-          <span style="height: 88%"></span>
-          <span style="height: 34%"></span>
-          <span style="height: 60%"></span>
-          <span style="height: 74%"></span>
-          <span style="height: 44%"></span>
-          <span style="height: 69%"></span>
-          <span style="height: 36%"></span>
+        <div class="stack">
+          <input class="field" id="quick-search" type="search" placeholder="搜尋曲名、系列、理論、blues、Tsubasa...">
+          <div>
+            <small class="note">技能線</small>
+            <div class="chip-group" id="track-filters"></div>
+          </div>
+          <div>
+            <small class="note">難度</small>
+            <div class="chip-group" id="level-filters"></div>
+          </div>
+          <div>
+            <small class="note">格式</small>
+            <div class="chip-group" id="format-filters"></div>
+          </div>
         </div>
-        <div class="panel-foot">
-          <span>Wave scan / motif intensity / timing heat</span>
-          <span>Variation density: 7 takes</span>
+        <div class="detail-block">
+          <h4>熱門系列</h4>
+          <div class="series-list" id="series-list"></div>
+        </div>
+        <div class="detail-block">
+          <h4>優先練習</h4>
+          <div class="priority-list" id="priority-list"></div>
         </div>
       </aside>
-    </section>
 
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Lesson Vault</h2>
-          <p class="section-note">這一區現在直接以你手上的教材為主。E major 系列和 Tsubasa 系列被整理成兩個優先練功包，先練這些，再往外擴素材。</p>
-        </div>
-        <p class="section-note">PDF、圖表、影片和 GP5 檔都已經收進專案素材裡，之後這些會是 Daily Coach 和 Lick Radar 的第一優先來源。</p>
-      </div>
-      <div class="vault-grid">
-        <article class="vault-card searchable-item">
-          <img class="vault-media" src="assets/previews/major-circle-video.png" alt="Major Circle in E video preview">
-          <div class="vault-body">
-            <div class="vault-head">
-              <div>
-                <h3>E Major Quest Pack</h3>
-                <p class="muted">主打 E 大調的和弦循環、旋律加入方式和 circle 概念，很適合直接變成你的吉他與 Logic 主練素材。</p>
-              </div>
-              <span class="micro-pill">Priority Pack</span>
-            </div>
-            <div class="pill-row">
-              <span class="micro-pill">E Major</span>
-              <span class="micro-pill">Chord Progression</span>
-              <span class="micro-pill">Melody</span>
-              <span class="micro-pill">Video + PDF</span>
-            </div>
-            <div class="vault-files">
-              <a class="vault-link" href="assets/library/E%20Chord%20Progression%20and%20Adding%20Melody.pdf" target="_blank" rel="noreferrer"><span>E Chord Progression and Adding Melody</span><small>pdf</small></a>
-              <a class="vault-link" href="assets/library/Major%20Circle%20in%20E.pdf" target="_blank" rel="noreferrer"><span>Major Circle in E</span><small>pdf</small></a>
-              <a class="vault-link" href="assets/library/Major%20Circle%20in%20E%20Chords%20Diagram.pdf" target="_blank" rel="noreferrer"><span>Major Circle in E Chords Diagram</span><small>diagram</small></a>
-              <a class="vault-link" href="assets/library/Major%20Circle%20in%20E%20patreon.mp4" target="_blank" rel="noreferrer"><span>Major Circle in E Patreon Video</span><small>mp4</small></a>
-            </div>
-          </div>
-        </article>
-        <article class="vault-card searchable-item">
-          <img class="vault-media" src="assets/previews/ql/Tsubasa 8 Fast Tab and Sheet Music.pdf.png" alt="Tsubasa 8 fast tab preview">
-          <div class="vault-body">
-            <div class="vault-head">
-              <div>
-                <h3>Tsubasa Study Pack</h3>
-                <p class="muted">同一首素材同時有慢速、快速、和弦圖與 GP5，這很適合做分速練習、記譜對照和手感升級。</p>
-              </div>
-              <span class="micro-pill">Speed Run</span>
-            </div>
-            <div class="pill-row">
-              <span class="micro-pill">Tsubasa 8</span>
-              <span class="micro-pill">Slow / Fast</span>
-              <span class="micro-pill">Tab + Sheet</span>
-              <span class="micro-pill">GP5</span>
-            </div>
-            <div class="vault-files">
-              <a class="vault-link" href="assets/library/Tsubasa%208%20Chords%20Diagram.pdf" target="_blank" rel="noreferrer"><span>Tsubasa 8 Chords Diagram</span><small>diagram</small></a>
-              <a class="vault-link" href="assets/library/Tsubasa%208%20Slow%20Tab%20and%20Sheet%20Music.pdf" target="_blank" rel="noreferrer"><span>Tsubasa 8 Slow Tab and Sheet Music</span><small>pdf</small></a>
-              <a class="vault-link" href="assets/library/Tsubasa%208%20Slow%20Tab%20and%20Sheet%20Music.gp5" target="_blank" rel="noreferrer"><span>Tsubasa 8 Slow Tab and Sheet Music</span><small>gp5</small></a>
-              <a class="vault-link" href="assets/library/Tsubasa%208%20Fast%20Tab%20and%20Sheet%20Music.pdf" target="_blank" rel="noreferrer"><span>Tsubasa 8 Fast Tab and Sheet Music</span><small>pdf</small></a>
-              <a class="vault-link" href="assets/library/Tsubasa%208%20Fast%20Tab%20and%20Sheet%20Music.gp5" target="_blank" rel="noreferrer"><span>Tsubasa 8 Fast Tab and Sheet Music</span><small>gp5</small></a>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Skill Tree Sync</h2>
-          <p class="section-note">這一區直接吃你外接碟整理好的技能樹分類。不是概念圖而已，而是連回真實教材資料夾的練習入口。</p>
-        </div>
-        <p class="section-note" id="skill-tree-meta">Loading current skill tree snapshot...</p>
-      </div>
-      <div class="skill-grid">
-        <div class="skill-branch-grid" id="skill-branch-grid">
-          <article class="skill-card">
-            <div class="skill-header">
-              <div>
-                <h3>Sync Pending</h3>
-                <p class="skill-note">等待技能樹快照載入後，這裡會出現節奏、和聲、blues、jazz、riff、作品六條主幹。</p>
-              </div>
-              <span class="micro-pill">Skill Tree</span>
-            </div>
-          </article>
-        </div>
-        <div class="skill-priority-grid">
-          <article class="skill-priority-card">
-            <div class="skill-header">
-              <div>
-                <h3>Now Training</h3>
-                <p class="skill-note">根據你整理好的資料夾，自動帶出目前最值得先練的節點。</p>
-              </div>
-              <span class="micro-pill">Priority</span>
-            </div>
-            <div class="skill-list" id="skill-now-list"></div>
-          </article>
-          <article class="skill-priority-card">
-            <div class="skill-header">
-              <div>
-                <h3>Next Unlocks</h3>
-                <p class="skill-note">這些是下一批最適合接上的教材，不會讓你一直只練同一條線。</p>
-              </div>
-              <span class="micro-pill">Next</span>
-            </div>
-            <div class="skill-list" id="skill-next-list"></div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Momentum Engine</h2>
-          <p class="section-note">把今天的練習翻成遊戲節奏：你不是在硬撐，而是在累積連擊、解一個小挑戰、把狀態推到下一段。</p>
-        </div>
-        <p class="section-note">它會根據你的勾選和練習紀錄，算出目前節奏、今天的主線，和最適合啟動手感的任務。</p>
-      </div>
-      <div class="momentum-grid">
-        <section class="motivation-card">
-          <h3>Today Push</h3>
-          <p class="motivation-quote" id="motivation-quote">今天不是把自己逼滿，而是把手感叫醒。</p>
-          <p class="motivation-sub" id="motivation-sub">先做一段最短可完成的練習，完成感會比完美更快把你帶進狀態。</p>
-          <div class="challenge-card">
-            <strong id="challenge-title">Mini Challenge / 12 minutes</strong>
-            <p class="muted" id="challenge-copy">把一條吉他樂句做出兩個節奏變體，然後用手機錄一遍回放。</p>
-          </div>
-        </section>
-        <section class="tracker-panel">
-          <h3>Momentum Meter</h3>
-          <div class="snapshot-grid">
-            <article class="snapshot-card">
-              <span>Weekly Streak</span>
-              <strong id="streak-count">0 days</strong>
-            </article>
-            <article class="snapshot-card">
-              <span>Today Focus</span>
-              <strong id="focus-lane">Guitar</strong>
-            </article>
-            <article class="snapshot-card">
-              <span>Readiness</span>
-              <strong id="readiness-score">Fresh</strong>
-            </article>
-          </div>
-          <div class="meter">
-            <div class="meter-line"><span>Practice Rhythm</span><span id="meter-rhythm-label">0%</span></div>
-            <div class="meter-track"><div class="meter-fill" id="meter-rhythm"></div></div>
-            <div class="meter-line"><span>Creative Momentum</span><span id="meter-creative-label">0%</span></div>
-            <div class="meter-track"><div class="meter-fill" id="meter-creative"></div></div>
-          </div>
-          <div class="meter xp-track">
-            <div class="meter-line"><span>Quest XP</span><span id="xp-progress-label">0 / 100</span></div>
-            <div class="meter-track"><div class="meter-fill" id="xp-progress"></div></div>
-          </div>
-        </section>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Practice Workspace</h2>
-          <p class="section-note">這裡是你的任務中樞。搜尋像選關，待辦像當前任務欄，紀錄像戰績回放。</p>
-        </div>
-        <p class="section-note">搜尋、勾選狀態與練習紀錄都會存在你的瀏覽器本地端。</p>
-      </div>
-      <div class="utility-grid">
-        <section class="utility-panel">
-          <h3>Search Library</h3>
-          <form class="search-form" id="search-form">
-            <div class="search-row">
-              <input class="field" id="search-input" type="search" placeholder="搜尋 lick、和弦、Logic、DJ、MuseScore、mood...">
-              <button class="button" type="button" id="clear-search">clear</button>
-            </div>
-          </form>
-          <div class="search-filters">
-            <button class="button secondary is-active" type="button" data-filter="all">all</button>
-            <button class="button secondary" type="button" data-filter="guitar">guitar</button>
-            <button class="button secondary" type="button" data-filter="logic">logic</button>
-            <button class="button secondary" type="button" data-filter="dj">dj</button>
-            <button class="button secondary" type="button" data-filter="musescore">musescore</button>
-          </div>
-          <div class="search-meta">
-            <span id="search-status">Showing all library items</span>
-            <span id="search-count">0 matches</span>
-          </div>
-          <div class="empty-state search-empty" id="search-empty" hidden>目前沒有符合的內容，試試看換一個關鍵字或分類。</div>
-        </section>
-        <section class="tracker-panel">
-          <h3>Today Checklist</h3>
-          <p class="section-note">今天要做的主線任務可以直接在這裡打勾。勾選狀態會保留下來，明天再重排也不會把今天的完成感洗掉。</p>
-          <div class="snapshot-grid" id="snapshot-grid">
-            <article class="snapshot-card">
-              <span>Tasks Done</span>
-              <strong id="snapshot-tasks">0 / 4</strong>
-            </article>
-            <article class="snapshot-card">
-              <span>Minutes Logged</span>
-              <strong id="snapshot-minutes">0</strong>
-            </article>
-            <article class="snapshot-card">
-              <span>Top Lane</span>
-              <strong id="snapshot-focus">Guitar</strong>
-            </article>
-          </div>
-          <div class="task-list" id="task-list"></div>
-        </section>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Lick Radar</h2>
-          <p class="section-note">這裡是你的掉寶雷達。它把每天抓到的 lick 拆成可練素材，不只是「有新影片」，而是「這條值得你今天撿起來練」。</p>
-        </div>
-        <p class="section-note">目前先做成前端可操作的抓取台：掃描、收藏、加入今日待辦。之後很容易接上真正的爬蟲來源。</p>
-      </div>
-      <div class="radar-grid">
-        <section class="radar-card">
-          <div class="radar-top">
-            <div>
-              <h3>Lick Sources</h3>
-              <p class="section-note">來源先模擬成 guitar lesson、live session、creator note 與 tab breakdown 四種。按一下就掃一輪今天的候選片段。</p>
-              <div class="radar-meta" id="radar-meta">Radar seed loaded</div>
-            </div>
-            <button class="button" type="button" id="scan-licks">scan radar</button>
-          </div>
-          <div class="source-list">
-            <div class="source-row"><span>Local lesson vault</span><span>優先吃 E major 與 Tsubasa 教材包</span></div>
-            <div class="source-row"><span>YouTube lesson channels</span><span>抓 lick / phrasing / timing 拆解</span></div>
-            <div class="source-row"><span>Live session clips</span><span>抓真實演奏裡的語氣與停頓</span></div>
-            <div class="source-row"><span>Creator notes / blogs</span><span>抓練法與應用情境</span></div>
-            <div class="source-row"><span>Tabs / lesson snippets</span><span>抓位置、節奏、可回練片段</span></div>
-            <div class="source-row"><span>Instagram educators</span><span>先保留來源位，建議走 API 或人工審核</span></div>
-          </div>
-        </section>
-        <section class="radar-feed" id="radar-feed"></section>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Practice Log</h2>
-          <p class="section-note">每次練完用一句話記下今天發生了什麼。久了之後，這裡會比單純打卡更有價值，因為你能看到哪種練法真的讓你進步。</p>
-        </div>
-        <p class="section-note">用最短的格式留痕跡：主題、分鐘數、類型、今天的觀察。</p>
-      </div>
-      <div class="utility-grid">
-        <section class="utility-panel">
-          <h3>New Entry</h3>
-          <form class="log-form" id="log-form">
-            <div class="log-grid">
-              <input class="field" id="log-title" type="text" placeholder="例如：E Dorian lick variation">
-              <input class="field" id="log-minutes" type="number" min="1" max="480" placeholder="分鐘">
-              <select class="select" id="log-category">
-                <option value="Guitar">Guitar</option>
-                <option value="Logic">Logic</option>
-                <option value="DJ">DJ</option>
-                <option value="MuseScore">MuseScore</option>
-              </select>
-            </div>
-            <textarea class="textarea" id="log-notes" placeholder="今天卡住什麼、哪裡有進步、下一次要修什麼"></textarea>
-            <div class="log-row">
-              <div class="tracker-meta">
-                <span id="log-total">0 entries</span>
-                <span id="log-minutes-total">0 min tracked</span>
-              </div>
-              <button class="button" type="submit">add log</button>
-            </div>
-          </form>
-        </section>
-        <section class="tracker-panel">
-          <h3>Recent Sessions</h3>
-          <div class="log-list" id="log-list"></div>
-        </section>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Daily Coach</h2>
-          <p class="section-note">每天自動抓新的教學、表演與分析內容，再把它們轉成你今天真的該練的順序。系統不是只推薦影片，而是直接幫你分配吉他、Logic 編曲、DJ、MuseScore 樂譜四條學習線。</p>
-        </div>
-        <p class="section-note">核心判斷會同時看你的卡關點、累積進度、昨天練過什麼，以及今天適合做輸入、寫譜整理，還是偏輸出創作。</p>
-      </div>
-      <div class="coach-grid">
-        <div class="coach-lead">
-          <div class="coach-strip" id="coach-strip">
-            <article class="coach-card">
-              <span class="coach-index">01</span>
-              <h3>Guitar Line</h3>
-              <strong>主線任務是把樂句變成語言。</strong>
-              <p>今天優先是 E Dorian 兩個樂句變體、節拍器 72 到 92 的乾淨彈奏、再錄 20 秒即興回放檢查。</p>
-            </article>
-            <article class="coach-card">
-              <span class="coach-index">02</span>
-              <h3>Logic Sketch</h3>
-              <strong>編曲線先做可完成的小段落。</strong>
-              <p>今天不追求整首歌，先把一個八小節 loop 做到鼓組、和弦、bass、吉他 texture 四層完整，再做一次簡單 automation。</p>
-            </article>
-            <article class="coach-card">
-              <span class="coach-index">03</span>
-              <h3>DJ Foundations</h3>
-              <strong>DJ 線重點是耳朵與轉場肌肉。</strong>
-              <p>安排 25 分鐘做 BPM 對拍、EQ cut 練習、和兩首相近 key 的乾淨切換，最後留一段聽回放做筆記。</p>
-            </article>
-            <article class="coach-card">
-              <span class="coach-index">04</span>
-              <h3>MuseScore Lab</h3>
-              <strong>把聽到的東西翻成可回看的譜面。</strong>
-              <p>今天用 MuseScore 記下兩小節主題、整理和弦符號與節奏切分，順手輸出一份可回練的 MusicXML 或 MIDI 草稿。</p>
-            </article>
-          </div>
-          <div class="panel">
-            <h3>Today Runbook</h3>
-            <div class="progression-list" id="runbook-list">
-              <article class="progression">
-                <div>
-                  <strong>45 min / Guitar Phrase Drill</strong>
-                  <p class="muted">暖身後直接進兩條 lick 的變奏與回放，不先看新內容，先把昨天的輸入轉成手感。</p>
-                </div>
-                <div class="chips">
-                  <span>Priority A</span>
-                  <span>Technique</span>
-                </div>
-              </article>
-              <article class="progression">
-                <div>
-                  <strong>35 min / Logic Arrangement Block</strong>
-                  <p class="muted">用同一組和弦完成一段 intro 到 verse 的層次推進，重點放在 mute、filter、reverb send 的變化。</p>
-                </div>
-                <div class="chips">
-                  <span>Priority B</span>
-                  <span>Output</span>
-                </div>
-              </article>
-              <article class="progression">
-                <div>
-                  <strong>25 min / DJ Transition Reps</strong>
-                  <p class="muted">用兩首相近能量的歌做 6 次轉場，記錄哪一次最乾淨，哪一次失去低頻控制。</p>
-                </div>
-                <div class="chips">
-                  <span>Priority C</span>
-                  <span>Ear Training</span>
-                </div>
-              </article>
-              <article class="progression">
-                <div>
-                  <strong>20 min / MuseScore Transcription Pass</strong>
-                  <p class="muted">把今天最有感的一條樂句記成譜，補上 chord symbol、節奏切分和兩個變體，讓靈感不只留在耳朵裡。</p>
-                </div>
-                <div class="chips">
-                  <span>Priority D</span>
-                  <span>Notation</span>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-        <div class="priority-stack">
-          <section class="priority-card" id="priority-engine-card">
-            <h3>Priority Engine</h3>
-            <p id="priority-engine-copy">每天優先序會依三個條件重排：卡關度、回報率、遺忘風險。你不是永遠平均練四種，而是讓系統判斷今天最值得攻哪一塊。</p>
-            <div id="priority-line-list">
-              <div class="priority-line"><span>Guitar</span><div class="bar"><b style="width: 88%"></b></div><span class="priority-pill">Focus Now</span></div>
-              <div class="priority-line"><span>Logic</span><div class="bar"><b style="width: 72%"></b></div><span class="priority-pill">Build Output</span></div>
-              <div class="priority-line"><span>DJ</span><div class="bar"><b style="width: 58%"></b></div><span class="priority-pill">Keep Warm</span></div>
-              <div class="priority-line"><span>Score</span><div class="bar"><b style="width: 51%"></b></div><span class="priority-pill">Capture Ideas</span></div>
-            </div>
-          </section>
-          <section class="search-card">
-            <h3>Auto Search Radar</h3>
-            <p>自動搜尋會把你需要的內容分成參考、拆解、任務三層。不是把網路丟給你，而是把資訊翻成今天可執行的練習。</p>
-            <div class="source-list">
-              <div class="source-row"><span>YouTube guitar lessons / live sessions</span><span>抓新 lick 與指法拆解</span></div>
-              <div class="source-row"><span>Logic arrangement walkthroughs</span><span>抓自動化與空間編排案例</span></div>
-              <div class="source-row"><span>DJ set clips / transition breakdowns</span><span>抓對拍、EQ 與能量銜接案例</span></div>
-              <div class="source-row"><span>MuseScore / notation workflows / scoring tips</span><span>抓寫譜、轉譜、MusicXML 與 MIDI 整理方法</span></div>
-              <div class="source-row"><span>Forums / Reddit / creator notes</span><span>抓常見卡點與練法修正</span></div>
-            </div>
-          </section>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Phrase Archive</h2>
-          <p class="section-note">樂句卡不是只記錄音符，而是記錄它的手感、張力、轉位方式和它適合接在哪種和弦空間裡。</p>
-        </div>
-        <p class="section-note">每張卡都像設計書庫裡的一本書，有名字、有語氣、有拆解、有延伸關聯。</p>
-      </div>
-      <div class="grid-two">
-        <div class="cards">
-          <article class="card">
-            <small>Featured Lick / 12 bars</small>
-            <h3>Amber Bend Cascade</h3>
-            <p class="muted">從 9th position 下滑到根音，帶一點藍調彎音，但尾巴保留 neo-soul 的懸浮感。</p>
-            <div class="tag-row">
-              <span class="tag">E Dorian</span>
-              <span class="tag">Slide</span>
-              <span class="tag">Warm Delay</span>
-            </div>
-            <div class="fretboard">
-              <div class="fretboard-grid">
-                <div class="string">e</div>
-                <div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot dark"></span></div>
-                <div class="string">b</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">g</div>
-                <div class="fret"></div><div class="fret"><span class="dot dark"></span></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">d</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">a</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">e</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-              </div>
-            </div>
-          </article>
-          <article class="card">
-            <small>Motif Study / 8 seconds</small>
-            <h3>Glass Roof Octaves</h3>
-            <p class="muted">八度移動的主題樂句，適合用在副歌前的拉開視野，也適合切成 sample 重組。</p>
-            <div class="tag-row">
-              <span class="tag">A Major</span>
-              <span class="tag">Octave</span>
-              <span class="tag">Hook</span>
-            </div>
-            <div class="fretboard">
-              <div class="fretboard-grid">
-                <div class="string">e</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">b</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">g</div>
-                <div class="fret"><span class="dot dark"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div>
-                <div class="string">d</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">a</div>
-                <div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot dark"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot"></span></div>
-                <div class="string">e</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-              </div>
-            </div>
-          </article>
-          <article class="card">
-            <small>Texture Loop / Layer source</small>
-            <h3>Midnight Harmonic Thread</h3>
-            <p class="muted">泛音與空弦殘響混在一起，適合當 intro 質地，或當 bridge 裡的呼吸空間。</p>
-            <div class="tag-row">
-              <span class="tag">Harmonics</span>
-              <span class="tag">Ambient</span>
-              <span class="tag">Open String</span>
-            </div>
-            <div class="fretboard">
-              <div class="fretboard-grid">
-                <div class="string">e</div>
-                <div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"><span class="dot dark"></span></div>
-                <div class="string">b</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot alt"></span></div><div class="fret"></div>
-                <div class="string">g</div>
-                <div class="fret"></div><div class="fret"><span class="dot dark"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"><span class="dot"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">d</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">a</div>
-                <div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-                <div class="string">e</div>
-                <div class="fret"><span class="dot alt"></span></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div><div class="fret"></div>
-              </div>
-            </div>
-          </article>
-        </div>
-        <div class="rail">
-          <section class="panel">
-            <h3>Phrase DNA</h3>
-            <div class="stat-line"><span>Melodic</span><div class="bar"><b style="width: 82%"></b></div><span>82</span></div>
-            <div class="stat-line"><span>Tension</span><div class="bar"><b style="width: 63%"></b></div><span>63</span></div>
-            <div class="stat-line"><span>Bend Use</span><div class="bar"><b style="width: 48%"></b></div><span>48</span></div>
-            <div class="stat-line"><span>Loopability</span><div class="bar"><b style="width: 91%"></b></div><span>91</span></div>
-          </section>
-          <section class="panel">
-            <h3>Usage Notes</h3>
-            <p class="muted">這一區不是樂理教科書，而是編曲判斷。像是「適合 chorus 前一拍進」、「跟 Rhodes 疊會變暖」、「延音別太滿，留給 vocal 進場」。</p>
-            <div class="tag-row">
-              <span class="tag">Pre-Chorus Lift</span>
-              <span class="tag">Tape Echo</span>
-              <span class="tag">Double Track</span>
-            </div>
-          </section>
-          <section class="panel">
-            <h3>Related Threads</h3>
-            <p class="muted">從同一種手感往外擴散：John Mayer 式懸浮、Khruangbin 式乾淨線條、city pop 式和弦滑行。</p>
-          </section>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Chord Lexicon</h2>
-          <p class="section-note">和弦進行不是只有 Roman numerals，而是它會帶出什麼情緒弧線、給吉他什麼 voicing 空間、讓 groove 往哪裡傾斜。</p>
-        </div>
-        <p class="section-note">這裡像編曲人的和弦字典，也像 DJ 對 energy flow 的索引表。</p>
-      </div>
-      <div class="progression-list">
-        <article class="progression">
+      <section class="panel" id="library-panel">
+        <div class="library-head">
           <div>
-            <strong>Imaj7 → III7 → vi9 → ii13</strong>
-            <p class="muted">明亮開場後突然帶一點都市夜色，常見於 neo-soul、city pop、R&B 轉場。吉他適合用 close voicing 加滑音。</p>
+            <h2>譜面庫</h2>
+            <p class="note" id="library-status">正在載入譜面資料...</p>
           </div>
-          <div class="chips">
-            <span>Silky</span>
-            <span>Late Sunset</span>
-            <span>Voice-leading</span>
+          <div class="library-toolbar">
+            <select class="select" id="sort-select">
+              <option value="priority">依優先順序</option>
+              <option value="title">依標題</option>
+              <option value="series">依系列</option>
+            </select>
+            <select class="select" id="series-select">
+              <option value="all">全部系列</option>
+            </select>
+            <button class="button" type="button" id="reset-filters">重設篩選</button>
           </div>
-        </article>
-        <article class="progression">
+        </div>
+        <div class="lesson-list" id="lesson-list"></div>
+      </section>
+
+      <section class="panel detail-panel" id="detail-panel">
+        <div class="panel-head">
           <div>
-            <strong>i7 → bVIImaj7 → iv9 → V7sus</strong>
-            <p class="muted">這條線比較電影感，適合鋪情緒而不急著解決。吉他樂句可以避開三度，多用 9th 和 11th 保留空氣。</p>
+            <h2 id="detail-title">選一份譜開始</h2>
+            <p class="note" id="detail-copy">左邊選一個教材，這裡就會顯示影片、檔案入口和練習步驟。</p>
           </div>
-          <div class="chips">
-            <span>Moody</span>
-            <span>Open Ending</span>
-            <span>Dorian</span>
-          </div>
-        </article>
-        <article class="progression">
-          <div>
-            <strong>IV → V → iii → vi</strong>
-            <p class="muted">流行性很高，但如果把節奏切碎、低音延後，會從常見套路變成很能用的 hook bed。</p>
-          </div>
-          <div class="chips">
-            <span>Lift</span>
-            <span>Hook-ready</span>
-            <span>Pop Frame</span>
-          </div>
-        </article>
-      </div>
+          <span class="mono-badge" id="detail-track">Score Focus</span>
+        </div>
+
+        <div class="detail-stage" id="detail-stage">
+          <div class="placeholder">Select lesson</div>
+        </div>
+
+        <div class="action-row" id="detail-actions"></div>
+
+        <div class="detail-block">
+          <h4>譜面與素材</h4>
+          <div class="file-list" id="detail-files"></div>
+        </div>
+
+        <div class="detail-block">
+          <h4>怎麼練</h4>
+          <div class="practice-list" id="detail-practice"></div>
+        </div>
+      </section>
     </section>
 
-    <section class="section">
-      <div class="section-top">
+    <section class="panel" id="mindmap-panel">
+      <div class="panel-head">
         <div>
-          <h2>Flow Mapping</h2>
-          <p class="section-note">把吉他樂句、和弦進行與編曲段落放進同一條情緒曲線裡，你就會知道哪些片段該收藏，哪些片段其實是同一個宇宙。</p>
-        </div>
-        <p class="section-note">這裡是從 library 走向創作的地方。</p>
-      </div>
-      <div class="flow-band">
-        <div class="curve-panel">
-          <div class="curve">
-            <svg viewBox="0 0 800 260" preserveAspectRatio="none" aria-label="Energy curve">
-              <path d="M0,200 C70,190 120,160 180,152 C250,142 275,182 340,170 C390,160 430,100 480,104 C552,110 570,196 650,182 C710,172 748,100 800,52" fill="none" stroke="#bf5b2c" stroke-width="4"/>
-              <path d="M0,214 C80,222 128,174 192,176 C258,180 287,134 352,136 C421,140 461,208 526,206 C600,204 650,146 718,150 C760,152 784,132 800,118" fill="none" stroke="#2f6c68" stroke-width="3" stroke-dasharray="8 8"/>
-              <circle cx="180" cy="152" r="7" fill="#bf5b2c"/>
-              <circle cx="480" cy="104" r="7" fill="#bf5b2c"/>
-              <circle cx="800" cy="52" r="7" fill="#bf5b2c"/>
-            </svg>
-          </div>
-          <div class="marker-row">
-            <span>Intro Texture</span>
-            <span>Verse Motif</span>
-            <span>Pre-Chorus Tension</span>
-            <span>Hook Release</span>
-          </div>
-        </div>
-        <div class="insight-list">
-          <div class="insight">把 `Amber Bend Cascade` 放在第二段 verse 尾端，會讓主歌不是重複，而是微微抬頭。</div>
-          <div class="insight">如果主和弦走 `i7 → bVIImaj7`，樂句避免太早落根音，會保留空間讓 bass 說話。</div>
-          <div class="insight">同一條旋律做成 clean guitar、muted pluck、reverse texture，就能從單一卡片長成一整段編曲。</div>
+          <h2>技能樹 / 練習地圖</h2>
+          <p class="note">不是裝飾用的心智圖，而是對應你現在這批譜面教材的實際技能樹。每條線都對應到可點的課。</p>
         </div>
       </div>
-    </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Archive Tags</h2>
-          <p class="section-note">讓你不是只靠曲風找素材，而是能靠「雨後柏油路」、「微失真暖音箱」、「副歌前的視線打開」這種創作語言來找東西。</p>
-        </div>
-      </div>
-      <div class="archive">
-        <article class="archive-item">
-          <small class="muted">Mood Shelf</small>
-          <h4>Humid Night</h4>
-          <p class="muted">低飽和、黏性 groove、混響留長尾，適合 city soul 與慢速電子。</p>
+      <div class="mindmap">
+        <article class="mind-branch">
+          <h4>節奏與基礎</h4>
+          <ul>
+            <li>Circle / Omega / Exercise 類</li>
+            <li>拍點、位置感、轉調與節奏穩定</li>
+            <li>先解鎖可轉 key 的主題句</li>
+          </ul>
         </article>
-        <article class="archive-item">
-          <small class="muted">Technique Shelf</small>
-          <h4>Ghost Slides</h4>
-          <p class="muted">不把滑音當特效，而是當句子裡的呼吸，特別適合樂句銜接。</p>
+        <article class="mind-branch">
+          <h4>和聲與氣氛</h4>
+          <ul>
+            <li>Peaceful / Tsubasa / Extensions</li>
+            <li>和弦進行、voice leading、tone</li>
+            <li>適合 clean、reverb、delay 練法</li>
+          </ul>
         </article>
-        <article class="archive-item">
-          <small class="muted">Arrangement Shelf</small>
-          <h4>Hook Before Hook</h4>
-          <p class="muted">正式副歌前先給一個半揭露的 motif，讓真正主題進來時更有重量。</p>
+        <article class="mind-branch">
+          <h4>Blues / Jazz 語言</h4>
+          <ul>
+            <li>Blues、Jazz、251 / 451</li>
+            <li>句尾、voicing、和聲色彩</li>
+            <li>適合做 call-and-response</li>
+          </ul>
         </article>
-        <article class="archive-item">
-          <small class="muted">Reference Shelf</small>
-          <h4>Analog Glow</h4>
-          <p class="muted">像錄音室裡微黃的燈，tone 不求亮，而求剛好被手指磨過。</p>
+        <article class="mind-branch">
+          <h4>技巧與作品</h4>
+          <ul>
+            <li>Twister、Riff、單曲研究</li>
+            <li>速度、riff、完整作品表現</li>
+            <li>最後進錄音、改編、編曲應用</li>
+          </ul>
         </article>
       </div>
     </section>
-
-    <section class="section">
-      <div class="section-top">
-        <div>
-          <h2>Score Workflow</h2>
-          <p class="section-note">MuseScore 在這套系統裡不是單純打譜，而是把吉他樂句、和弦與編曲想法變成可以回看、可以交換、可以重新編配的結構化素材。</p>
-        </div>
-        <p class="section-note">根據 `musescore/MuseScore` 官方 repo，它很適合承接 MusicXML、MIDI、樂譜編排與回放這一層。</p>
-      </div>
-      <div class="progression-list">
-        <article class="progression">
-          <div>
-            <strong>Phrase to Score</strong>
-            <p class="muted">把今天練的 lick 寫成節奏明確的譜面，標出 slide、bend、rest 與重音，讓吉他語言能被反覆拆解。</p>
-          </div>
-          <div class="chips">
-            <span>Notation</span>
-            <span>Technique</span>
-          </div>
-        </article>
-        <article class="progression">
-          <div>
-            <strong>Harmony to MusicXML</strong>
-            <p class="muted">把和弦進行存成可交換的 MusicXML，之後可回到 MuseScore 校對，也能再丟回編曲流程裡延伸。</p>
-          </div>
-          <div class="chips">
-            <span>MusicXML</span>
-            <span>Archive</span>
-          </div>
-        </article>
-        <article class="progression">
-          <div>
-            <strong>MIDI Bridge to Logic</strong>
-            <p class="muted">從譜面輸出 MIDI 進 `Logic`，把寫譜時的骨架直接轉成編曲草圖，少掉重複輸入。</p>
-          </div>
-          <div class="chips">
-            <span>MIDI</span>
-            <span>Logic Bridge</span>
-          </div>
-        </article>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <span>Sonic Atlas prototype for guitar phrases, chord progressions, arrangement thinking, and notation workflow.</span>
-      <span>Designed as a music library interface, not a streaming player.</span>
-    </footer>
   </main>
-  <div class="media-modal" id="media-modal" aria-hidden="true">
-    <div class="media-panel">
-      <div class="media-panel-head">
-        <div>
-          <strong id="media-modal-title">Video Preview</strong>
-          <p class="section-note" id="media-modal-copy">直接在面板裡看，不用先跳去下載。</p>
-        </div>
-        <button class="button secondary" type="button" id="media-modal-close">close</button>
-      </div>
-      <div class="media-stage" id="media-stage"></div>
-    </div>
-  </div>
-  <div class="quest-toast" id="quest-toast">
-    <strong id="quest-toast-title">Quest Up</strong>
-    <span id="quest-toast-copy">你剛剛完成了一段任務，節奏正在被你累積起來。</span>
-  </div>
+
   <script>
-    const storageKeyTasks = "sonic-atlas-tasks-v1";
-    const storageKeyLogs = "sonic-atlas-logs-v1";
-    const storageKeyRadar = "sonic-atlas-radar-v1";
-
-    const defaultTasks = [
-      {
-        id: "guitar-drill",
-        title: "45 min / Guitar Phrase Drill",
-        category: "Guitar",
-        description: "暖身後直接進兩條 lick 的變奏與回放，先把昨天的輸入變成手感。",
-        tags: ["Priority A", "Technique"]
-      },
-      {
-        id: "logic-block",
-        title: "35 min / Logic Arrangement Block",
-        category: "Logic",
-        description: "完成一段 intro 到 verse 的層次推進，重點是 mute、filter、reverb send。",
-        tags: ["Priority B", "Output"]
-      },
-      {
-        id: "dj-reps",
-        title: "25 min / DJ Transition Reps",
-        category: "DJ",
-        description: "用兩首相近能量的歌做 6 次轉場，記錄最乾淨與最失控的一次。",
-        tags: ["Priority C", "Ear Training"]
-      },
-      {
-        id: "musescore-pass",
-        title: "20 min / MuseScore Transcription Pass",
-        category: "MuseScore",
-        description: "把今天最有感的一條樂句記成譜，補上 chord symbol、節奏切分和兩個變體。",
-        tags: ["Priority D", "Notation"]
+    const state = {
+      mode: "public",
+      data: null,
+      selectedId: null,
+      filters: {
+        query: "",
+        track: "all",
+        level: "all",
+        format: "all",
+        series: "all",
+        sort: "priority"
       }
-    ];
+    };
+    const dataSource = window.location.protocol === "file:" ? "./data/score-hub.json" : "./data/score-hub-public.json";
 
-    const taskList = document.getElementById("task-list");
-    const logList = document.getElementById("log-list");
-    const logForm = document.getElementById("log-form");
-    const searchInput = document.getElementById("search-input");
-    const clearSearchButton = document.getElementById("clear-search");
-    const searchStatus = document.getElementById("search-status");
-    const searchCount = document.getElementById("search-count");
-    const searchEmpty = document.getElementById("search-empty");
-    const filterButtons = Array.from(document.querySelectorAll("[data-filter]"));
-    const logTotal = document.getElementById("log-total");
-    const logMinutesTotal = document.getElementById("log-minutes-total");
-    const snapshotTasks = document.getElementById("snapshot-tasks");
-    const snapshotMinutes = document.getElementById("snapshot-minutes");
-    const snapshotFocus = document.getElementById("snapshot-focus");
-    const motivationQuote = document.getElementById("motivation-quote");
-    const motivationSub = document.getElementById("motivation-sub");
-    const challengeTitle = document.getElementById("challenge-title");
-    const challengeCopy = document.getElementById("challenge-copy");
-    const streakCount = document.getElementById("streak-count");
-    const focusLane = document.getElementById("focus-lane");
-    const readinessScore = document.getElementById("readiness-score");
-    const meterRhythm = document.getElementById("meter-rhythm");
-    const meterCreative = document.getElementById("meter-creative");
-    const meterRhythmLabel = document.getElementById("meter-rhythm-label");
-    const meterCreativeLabel = document.getElementById("meter-creative-label");
-    const radarFeed = document.getElementById("radar-feed");
-    const scanLicksButton = document.getElementById("scan-licks");
-    const radarMeta = document.getElementById("radar-meta");
-    const hudCombo = document.getElementById("hud-combo");
-    const hudXp = document.getElementById("hud-xp");
-    const hudTarget = document.getElementById("hud-target");
-    const xpProgress = document.getElementById("xp-progress");
-    const xpProgressLabel = document.getElementById("xp-progress-label");
-    const skillTreeMeta = document.getElementById("skill-tree-meta");
-    const skillBranchGrid = document.getElementById("skill-branch-grid");
-    const skillNowList = document.getElementById("skill-now-list");
-    const skillNextList = document.getElementById("skill-next-list");
-    const coachStrip = document.getElementById("coach-strip");
-    const runbookList = document.getElementById("runbook-list");
-    const priorityLineList = document.getElementById("priority-line-list");
-    const priorityEngineCopy = document.getElementById("priority-engine-copy");
-    const mediaModal = document.getElementById("media-modal");
-    const mediaModalTitle = document.getElementById("media-modal-title");
-    const mediaModalCopy = document.getElementById("media-modal-copy");
-    const mediaStage = document.getElementById("media-stage");
-    const mediaModalClose = document.getElementById("media-modal-close");
-    const questToast = document.getElementById("quest-toast");
-    const questToastTitle = document.getElementById("quest-toast-title");
-    const questToastCopy = document.getElementById("quest-toast-copy");
-    let activeFilter = "all";
-    let radarItems = [];
-    let skillTreeSnapshot = null;
-    let toastTimer = null;
+    const heroStats = document.getElementById("hero-stats");
+    const quickSearch = document.getElementById("quick-search");
+    const trackFilters = document.getElementById("track-filters");
+    const levelFilters = document.getElementById("level-filters");
+    const formatFilters = document.getElementById("format-filters");
+    const seriesList = document.getElementById("series-list");
+    const priorityList = document.getElementById("priority-list");
+    const libraryStatus = document.getElementById("library-status");
+    const lessonList = document.getElementById("lesson-list");
+    const sortSelect = document.getElementById("sort-select");
+    const seriesSelect = document.getElementById("series-select");
+    const resetFilters = document.getElementById("reset-filters");
+    const detailTitle = document.getElementById("detail-title");
+    const detailCopy = document.getElementById("detail-copy");
+    const detailTrack = document.getElementById("detail-track");
+    const detailStage = document.getElementById("detail-stage");
+    const detailActions = document.getElementById("detail-actions");
+    const detailFiles = document.getElementById("detail-files");
+    const detailPractice = document.getElementById("detail-practice");
 
-    const motivationModes = [
-      {
-        quote: "今天不是把自己逼滿，而是把手感叫醒。",
-        sub: "先做一段最短可完成的練習，完成感會比完美更快把你帶進狀態。",
-        title: "Mini Challenge / 12 minutes",
-        copy: "把一條吉他樂句做出兩個節奏變體，然後用手機錄一遍回放。"
-      },
-      {
-        quote: "不是練更多，是讓一句話真的進到手裡。",
-        sub: "當你能反覆彈出同一條句子，創作時才會真的開始說自己的話。",
-        title: "Mini Challenge / 15 minutes",
-        copy: "從今天的最強 lick 裡抽 4 個音，做一個新的收尾句。"
-      },
-      {
-        quote: "你不是缺素材，你只是需要今天的第一個起點。",
-        sub: "先把第一個動作做掉，後面那條線就會自己展開。",
-        title: "Mini Challenge / 10 minutes",
-        copy: "選一條最短的 loop，做一次 mute 與 reverb send 的動態推進。"
-      }
-    ];
-
-    const radarSeeds = [
-      {
-        id: "radar-1",
-        title: "Dorian Slide Answer",
-        lane: "Guitar",
-        source: "YouTube lesson / neo-soul phrasing",
-        note: "重點不是速度，而是 slide 進拍前那一下的語氣，適合接在主歌尾端。",
-        tags: ["E Dorian", "Slide", "Call and response"]
-      },
-      {
-        id: "radar-2",
-        title: "Muted Double-stop Pocket",
-        lane: "Guitar",
-        source: "Live session clip / pocket comping",
-        note: "這條片段適合拿來練右手控制，音不多，但 groove 很黏。",
-        tags: ["Double-stop", "Muted", "Pocket"]
-      },
-      {
-        id: "radar-3",
-        title: "Hook Lead with Delay Tail",
-        lane: "Logic",
-        source: "Creator note / arrangement breakdown",
-        note: "把一句簡單 lead 用 delay tail 撐出空間，適合做 intro 到 verse 的過門。",
-        tags: ["Lead", "Delay", "Arrangement"]
-      },
-      {
-        id: "radar-4",
-        title: "Octave Lift Turnaround",
-        lane: "MuseScore",
-        source: "Tab snippet / phrase notation",
-        note: "這條值得記成譜，因為節奏很清楚，而且能轉成自己的 ending vocabulary。",
-        tags: ["Octave", "Notation", "Turnaround"]
-      },
-      {
-        id: "radar-5",
-        title: "Bassline-friendly Top Phrase",
-        lane: "DJ",
-        source: "Creator note / transition timing",
-        note: "這條雖然是樂句，但很適合 DJ 練習能量接續時去理解上層旋律怎麼留空間。",
-        tags: ["Topline", "Space", "Energy"]
-      }
-    ];
-
-    const vaultRadarItems = [
-      {
-        id: "vault-e-major-pack",
-        title: "E Major Quest Pack",
-        lane: "Guitar",
-        source: "Local lesson vault / E major series",
-        note: "先從 E Chord Progression、Major Circle in E 和 chord diagram 裡挑一條句子，這是你目前最核心的主線教材。",
-        tags: ["E Major", "Local Pack", "Priority"],
-        url: "assets/library/E%20Chord%20Progression%20and%20Adding%20Melody.pdf"
-      },
-      {
-        id: "vault-tsubasa-pack",
-        title: "Tsubasa Speed Run Pack",
-        lane: "Guitar",
-        source: "Local lesson vault / Tsubasa 8",
-        note: "慢版、快版、chord diagram 和 GP5 都齊，最適合拿來做分速練習和記譜對照。",
-        tags: ["Tsubasa 8", "Slow/Fast", "GP5"],
-        url: "assets/library/Tsubasa%208%20Slow%20Tab%20and%20Sheet%20Music.pdf"
-      }
-    ];
-
-    const rankTable = [
-      { name: "Rookie", minXp: 0 },
-      { name: "Groove Scout", minXp: 80 },
-      { name: "Pocket Runner", minXp: 180 },
-      { name: "Phrase Hunter", minXp: 320 },
-      { name: "Night Driver", minXp: 500 }
-    ];
-
-    function readTasks() {
-      const raw = localStorage.getItem(storageKeyTasks);
-      if (!raw) {
-        return defaultTasks.map((task) => ({ ...task, done: false }));
-      }
-      try {
-        const saved = JSON.parse(raw);
-        const baseTasks = defaultTasks.map((task) => {
-          const match = saved.find((item) => item.id === task.id);
-          return { ...task, done: Boolean(match && match.done) };
-        });
-        const extraTasks = saved.filter((item) => !defaultTasks.some((task) => task.id === item.id));
-        return [...extraTasks, ...baseTasks];
-      } catch {
-        return defaultTasks.map((task) => ({ ...task, done: false }));
-      }
+    function formatCountMap(formats) {
+      return Object.entries(formats || {}).map(([key, value]) => `${key} ${value}`);
     }
 
-    function saveTasks(tasks) {
-      localStorage.setItem(storageKeyTasks, JSON.stringify(tasks));
+    function renderHeroStats() {
+      const stats = state.data.stats;
+      heroStats.innerHTML = `
+        <article class="stat-card"><span>Lessons</span><strong>${stats.lesson_count}</strong></article>
+        <article class="stat-card"><span>PDF Scores</span><strong>${stats.pdf_count}</strong></article>
+        <article class="stat-card"><span>GP Files</span><strong>${stats.gp_count}</strong></article>
+        <article class="stat-card"><span>Video Sources</span><strong>${stats.video_count}</strong></article>
+      `;
+      libraryStatus.textContent = state.mode === "local"
+        ? "本地模式：可直接打開你硬碟裡的譜面、GP、音檔與影片。"
+        : "公開模式：可直接看公開影片；譜面與音檔請回本地版打開。";
     }
 
-    function renderTasks() {
-      const tasks = readTasks();
-      taskList.innerHTML = "";
-      tasks.forEach((task) => {
-        const item = document.createElement("article");
-        item.className = "task-item" + (task.done ? " done" : "");
-        item.innerHTML = `
-          <label class="task-check">
-            <input type="checkbox" data-task-id="${task.id}" ${task.done ? "checked" : ""}>
-            <div>
-              <strong>${task.title}</strong>
-              <p class="muted">${task.description}</p>
-            </div>
-          </label>
-          <div class="pill-row">${task.tags.map((tag) => `<span class="micro-pill">${tag}</span>`).join("")}</div>
-        `;
-        taskList.appendChild(item);
-      });
-      updateSnapshot();
-    }
-
-    taskList.addEventListener("change", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLInputElement)) return;
-      const tasksBefore = readTasks();
-      const toggledTask = tasksBefore.find((task) => task.id === target.dataset.taskId);
-      const tasks = readTasks().map((task) => (
-        task.id === target.dataset.taskId ? { ...task, done: target.checked } : task
-      ));
-      saveTasks(tasks);
-      renderTasks();
-      if (target.checked && toggledTask) {
-        pulseHud(hudCombo);
-        pulseHud(hudXp);
-        showQuestToast("Quest Clear", `你完成了 ${toggledTask.title}，連擊和 XP 都往上推了一格。`);
-      }
-    });
-
-    function readLogs() {
-      const raw = localStorage.getItem(storageKeyLogs);
-      if (!raw) return [];
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return [];
-      }
-    }
-
-    function saveLogs(logs) {
-      localStorage.setItem(storageKeyLogs, JSON.stringify(logs));
-    }
-
-    function readRadar() {
-      const raw = localStorage.getItem(storageKeyRadar);
-      if (!raw) return [];
-      try {
-        return JSON.parse(raw);
-      } catch {
-        return [];
-      }
-    }
-
-    function saveRadar(items) {
-      localStorage.setItem(storageKeyRadar, JSON.stringify(items));
-    }
-
-    function getXpState(tasks, logs) {
-      const completed = tasks.filter((task) => task.done).length;
-      const totalMinutes = logs.reduce((sum, log) => sum + Number(log.minutes || 0), 0);
-      const xp = completed * 25 + totalMinutes;
-      const rank = [...rankTable].reverse().find((entry) => xp >= entry.minXp) || rankTable[0];
-      const nextRank = rankTable.find((entry) => entry.minXp > xp);
-      const base = rank.minXp;
-      const target = nextRank ? nextRank.minXp : base + 120;
-      const current = xp - base;
-      const span = Math.max(1, target - base);
-      const percent = Math.max(0, Math.min(100, Math.round((current / span) * 100)));
-      return {
-        xp,
-        rank: rank.name,
-        nextRank: nextRank ? nextRank.name : "Maxed",
-        current,
-        span,
-        percent,
-        combo: Math.max(1, completed + Math.min(4, logs.length))
-      };
-    }
-
-    function pulseHud(element) {
-      if (!element) return;
-      element.classList.remove("pulse");
-      void element.offsetWidth;
-      element.classList.add("pulse");
-    }
-
-    function showQuestToast(title, copy) {
-      questToastTitle.textContent = title;
-      questToastCopy.textContent = copy;
-      questToast.classList.add("show");
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        questToast.classList.remove("show");
-      }, 2200);
-    }
-
-    async function loadExternalRadar() {
-      try {
-        const response = await fetch("./data/lick-radar.json", { cache: "no-store" });
-        if (!response.ok) throw new Error(`Radar fetch failed: ${response.status}`);
-        const payload = await response.json();
-        if (Array.isArray(payload.items) && payload.items.length) {
-          radarItems = [...vaultRadarItems, ...payload.items];
-          saveRadar(radarItems);
-          const updatedAt = payload.updatedAt ? new Date(payload.updatedAt) : null;
-          radarMeta.textContent = updatedAt
-            ? `Last update ${updatedAt.toLocaleString("zh-Hant-TW")}`
-            : "Live radar loaded";
-          return;
-        }
-      } catch (error) {
-        radarMeta.textContent = "Live radar unavailable, using local picks";
-      }
-
-      const saved = readRadar();
-      radarItems = saved.length ? saved : [...vaultRadarItems, ...radarSeeds.slice(0, 3)];
-    }
-
-    function renderSkillList(target, items) {
-      if (!target) return;
+    function renderFilterGroup(target, items, activeValue, onClick) {
       target.innerHTML = "";
-      if (!items || !items.length) {
-        target.innerHTML = '<div class="empty-state">技能樹資料尚未同步。</div>';
-        return;
-      }
+      const all = document.createElement("button");
+      all.type = "button";
+      all.className = "chip-button" + (activeValue === "all" ? " active" : "");
+      all.textContent = "all";
+      all.addEventListener("click", () => onClick("all"));
+      target.appendChild(all);
+
       items.forEach((item) => {
-        const card = document.createElement("div");
-        card.className = "skill-link";
-        card.innerHTML = `
-          <span>
-            <strong>${item.title}</strong>
-            <small>${item.track_label || item.level || "practice"}</small>
-          </span>
-          <small>${item.priority_band || "node"}</small>
-        `;
-        const actions = document.createElement("div");
-        actions.className = "skill-actions";
-        if (item.preferred_watch_url) {
-          const watch = document.createElement("button");
-          watch.className = "skill-action";
-          watch.type = "button";
-          watch.dataset.watchTitle = item.title;
-          watch.dataset.watchVideo = item.stream_video_url || "";
-          watch.dataset.watchEmbed = item.embed_video_url || "";
-          watch.dataset.watchExternal = item.video_url || item.preferred_watch_url || "";
-          watch.textContent = item.local_video ? "watch mp4" : "watch video";
-          actions.appendChild(watch);
-        }
-        const folder = document.createElement("a");
-        folder.className = "skill-action";
-        folder.href = item.folder;
-        folder.target = "_blank";
-        folder.rel = "noreferrer";
-        folder.textContent = item.folder && item.folder.startsWith("http") ? "open source" : "open folder";
-        actions.appendChild(folder);
-        card.appendChild(actions);
-        target.appendChild(card);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "chip-button" + (activeValue === item.value ? " active" : "");
+        button.textContent = `${item.label} (${item.count})`;
+        button.addEventListener("click", () => onClick(item.value));
+        target.appendChild(button);
       });
     }
 
-    function renderSkillTree() {
-      if (!skillTreeSnapshot) return;
-      skillBranchGrid.innerHTML = "";
-      skillTreeSnapshot.branches.forEach((branch) => {
-        const card = document.createElement("article");
-        card.className = "skill-card searchable-item";
-        card.innerHTML = `
-          <div class="skill-header">
-            <div>
-              <h3>${branch.title}</h3>
-              <p class="skill-note">${branch.summary}</p>
-            </div>
-            <span class="micro-pill">Branch</span>
-          </div>
-          <div class="skill-list">
-            ${branch.current.map((item) => `
-              <div class="skill-link">
-                <span>
-                  <strong>${item.title}</strong>
-                  <small>${item.level}</small>
-                </span>
-                  <small>${item.local_video ? "mp4" : item.video_url ? "video" : "folder"}</small>
-                <div class="skill-actions">
-                  ${item.preferred_watch_url ? `<button class="skill-action" type="button" data-watch-title="${item.title}" data-watch-video="${item.stream_video_url || ""}" data-watch-embed="${item.embed_video_url || ""}" data-watch-external="${item.video_url || item.preferred_watch_url || ""}">${item.local_video || item.stream_video_url ? "watch mp4" : "watch video"}</button>` : ""}
-                  <a class="skill-action" href="${item.folder}" target="_blank" rel="noreferrer">${item.folder && item.folder.startsWith("http") ? "open source" : "open folder"}</a>
-                </div>
-              </div>
-            `).join("")}
-          </div>
-        `;
-        skillBranchGrid.appendChild(card);
-      });
-      renderSkillList(skillNowList, skillTreeSnapshot.now);
-      renderSkillList(skillNextList, skillTreeSnapshot.next);
-      renderCoachFromSkillTree();
-    }
-
-    function laneLabelFromTrack(track) {
-      const map = {
-        "fretboard-theory": "Guitar Theory",
-        "harmony-touch": "Harmony Touch",
-        "blues-language": "Blues Language",
-        "jazz-voicing": "Jazz Voicing",
-        "technique-riff": "Technique / Riff",
-        "song-study": "Song Study"
-      };
-      return map[track] || "Practice Lane";
-    }
-
-    function buildCoachCopy(item) {
-      const ext = item.extensions || [];
-      return {
-        strong: `${item.track_label} 先用 ${item.title} 開路。`,
-        body: `${item.summary} 今天直接從這個資料夾開練，再補 ${ext[0] || "一個短變奏"}。`
-      };
-    }
-
-    function renderCoachFromSkillTree() {
-      if (!skillTreeSnapshot || !coachStrip || !runbookList || !priorityLineList) return;
-
-      const nowItems = Array.isArray(skillTreeSnapshot.now) ? skillTreeSnapshot.now : [];
-      const chosen = [];
-      const usedTracks = new Set();
-      nowItems.forEach((item) => {
-        if (chosen.length >= 4) return;
-        if (usedTracks.has(item.track)) return;
-        usedTracks.add(item.track);
-        chosen.push(item);
-      });
-      while (chosen.length < 4 && nowItems[chosen.length]) {
-        chosen.push(nowItems[chosen.length]);
-      }
-
-      coachStrip.innerHTML = chosen.map((item, index) => {
-        const copy = buildCoachCopy(item);
-        return `
-          <article class="coach-card searchable-item">
-            <span class="coach-index">${String(index + 1).padStart(2, "0")}</span>
-            <h3>${laneLabelFromTrack(item.track)}</h3>
-            <strong>${copy.strong}</strong>
-            <p>${copy.body}</p>
-          </article>
-        `;
-      }).join("");
-
-      runbookList.innerHTML = chosen.map((item, index) => `
-        <article class="progression searchable-item">
-          <div>
-            <strong>${45 - index * 5} min / ${item.title}</strong>
-            <p class="muted">${item.extensions?.join(" / ") || item.summary}</p>
-          </div>
-          <div class="chips">
-            <span>Priority ${String.fromCharCode(65 + index)}</span>
-            <span>${item.track_label}</span>
-          </div>
-          <div class="skill-actions">
-            ${item.preferred_watch_url ? `<button class="skill-action" type="button" data-watch-title="${item.title}" data-watch-video="${item.stream_video_url || ""}" data-watch-embed="${item.embed_video_url || ""}" data-watch-external="${item.video_url || item.preferred_watch_url || ""}">${item.local_video || item.stream_video_url ? "watch mp4" : "watch video"}</button>` : ""}
-            <a class="skill-action" href="${item.folder}" target="_blank" rel="noreferrer">${item.folder && item.folder.startsWith("http") ? "open source" : "open folder"}</a>
-          </div>
-        </article>
-      `).join("");
-
-      const trackCounts = {};
-      nowItems.forEach((item) => {
-        trackCounts[item.track_label] = (trackCounts[item.track_label] || 0) + 1;
-      });
-      const topTracks = Object.entries(trackCounts)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 4);
-      const maxCount = Math.max(...topTracks.map(([, count]) => count), 1);
-      priorityLineList.innerHTML = topTracks.map(([label, count], index) => {
-        const width = Math.max(32, Math.round((count / maxCount) * 100));
-        const pill = index === 0 ? "Focus Now" : index === 1 ? "Build Up" : index === 2 ? "Keep Warm" : "Explore";
-        return `
-          <div class="priority-line">
-            <span>${label}</span>
-            <div class="bar"><b style="width: ${width}%"></b></div>
-            <span class="priority-pill">${pill}</span>
-          </div>
-        `;
-      }).join("");
-      priorityEngineCopy.textContent = skillTreeSnapshot.hero?.copy || "今天的優先序會先吃你已下載教材裡最值得先練的節點。";
-    }
-
-    function closeMediaModal() {
-      mediaModal.classList.remove("show");
-      mediaModal.setAttribute("aria-hidden", "true");
-      mediaStage.innerHTML = "";
-    }
-
-    function openMediaModal({ title, videoUrl, embedUrl, externalUrl }) {
-      mediaModalTitle.textContent = title || "Video Preview";
-      mediaModalCopy.textContent = "直接在面板裡看，不用先跳去下載。";
-      mediaStage.innerHTML = "";
-
-      if (videoUrl) {
-        const video = document.createElement("video");
-        video.src = videoUrl;
-        video.controls = true;
-        video.autoplay = true;
-        video.playsInline = true;
-        mediaStage.appendChild(video);
-      } else if (embedUrl) {
-        const iframe = document.createElement("iframe");
-        iframe.src = `${embedUrl}?autoplay=1&rel=0`;
-        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-        iframe.allowFullscreen = true;
-        mediaStage.appendChild(iframe);
-      } else if (externalUrl) {
-        window.open(externalUrl, "_blank", "noopener,noreferrer");
-        return;
-      } else {
-        mediaModalCopy.textContent = "這個節點目前沒有可直接播放的影片來源。";
-      }
-
-      mediaModal.classList.add("show");
-      mediaModal.setAttribute("aria-hidden", "false");
-    }
-
-    async function loadSkillTreeSnapshot() {
-      try {
-        const response = await fetch("./data/skill-tree-snapshot.json", { cache: "no-store" });
-        if (!response.ok) throw new Error(`Skill tree fetch failed: ${response.status}`);
-        skillTreeSnapshot = await response.json();
-        const updatedAt = skillTreeSnapshot.updatedAt ? new Date(skillTreeSnapshot.updatedAt) : null;
-        skillTreeMeta.textContent = updatedAt
-          ? `Synced ${updatedAt.toLocaleString("zh-Hant-TW")}`
-          : "Skill tree snapshot loaded";
-        renderSkillTree();
-      } catch (error) {
-        skillTreeMeta.textContent = "Skill tree snapshot unavailable";
-      }
-    }
-
-    function renderLogs() {
-      const logs = readLogs();
-      logList.innerHTML = "";
-
-      if (!logs.length) {
-        logList.innerHTML = '<div class="empty-state">還沒有練習紀錄。先記下今天第一段 session。</div>';
-      } else {
-        logs.forEach((log) => {
-          const item = document.createElement("article");
-          item.className = "log-item";
-          item.innerHTML = `
-            <div class="log-head">
-              <div>
-                <strong>${log.title}</strong>
-                <div class="tracker-meta">
-                  <span>${log.category}</span>
-                  <span>${log.minutes} min</span>
-                  <span>${log.date}</span>
-                </div>
-              </div>
-              <button class="button secondary" type="button" data-delete-log="${log.id}">delete</button>
-            </div>
-            <p class="muted">${log.notes}</p>
-          `;
-          logList.appendChild(item);
-        });
-      }
-
-      const totalMinutes = logs.reduce((sum, log) => sum + Number(log.minutes || 0), 0);
-      logTotal.textContent = `${logs.length} entries`;
-      logMinutesTotal.textContent = `${totalMinutes} min tracked`;
-      updateSnapshot();
-    }
-
-    function updateSnapshot() {
-      const tasks = readTasks();
-      const logs = readLogs();
-      const completed = tasks.filter((task) => task.done).length;
-      const totalMinutes = logs.reduce((sum, log) => sum + Number(log.minutes || 0), 0);
-      const categoryTotals = logs.reduce((acc, log) => {
-        acc[log.category] = (acc[log.category] || 0) + Number(log.minutes || 0);
-        return acc;
-      }, {});
-      const focusLane = Object.entries(categoryTotals).sort((a, b) => b[1] - a[1])[0]?.[0] || "Guitar";
-
-      snapshotTasks.textContent = `${completed} / ${tasks.length}`;
-      snapshotMinutes.textContent = `${totalMinutes}`;
-      snapshotFocus.textContent = focusLane;
-      updateMomentum(tasks, logs, focusLane, totalMinutes);
-      updateQuestHud(tasks, logs, focusLane);
-    }
-
-    function updateQuestHud(tasks, logs, focus) {
-      const xpState = getXpState(tasks, logs);
-      hudCombo.textContent = `${String(xpState.combo).padStart(2, "0")} Chain`;
-      hudXp.textContent = `${xpState.rank} / ${xpState.xp} XP`;
-      hudTarget.textContent = `${focus} Focus`;
-      xpProgress.style.width = `${xpState.percent}%`;
-      xpProgressLabel.textContent = `${xpState.current} / ${xpState.span}`;
-    }
-
-    function updateMomentum(tasks, logs, lane, totalMinutes) {
-      const completed = tasks.filter((task) => task.done).length;
-      const mode = motivationModes[Math.min(completed, motivationModes.length - 1)];
-      const streak = calculateStreak(logs);
-      const rhythmScore = Math.min(100, streak * 18 + completed * 12);
-      const creativeScore = Math.min(100, totalMinutes >= 90 ? 95 : totalMinutes);
-
-      motivationQuote.textContent = mode.quote;
-      motivationSub.textContent = mode.sub;
-      challengeTitle.textContent = mode.title;
-      challengeCopy.textContent = mode.copy;
-
-      streakCount.textContent = `${streak} days`;
-      focusLane.textContent = lane;
-      readinessScore.textContent = completed >= 2 ? "Locked In" : totalMinutes >= 30 ? "Warm" : "Fresh";
-      meterRhythm.style.width = `${rhythmScore}%`;
-      meterCreative.style.width = `${creativeScore}%`;
-      meterRhythmLabel.textContent = `${rhythmScore}%`;
-      meterCreativeLabel.textContent = `${creativeScore}%`;
-    }
-
-    function calculateStreak(logs) {
-      if (!logs.length) return 0;
-      const uniqueDates = [...new Set(logs.map((log) => log.date))].sort().reverse();
-      let streak = 0;
-      let cursor = new Date();
-      cursor.setHours(0, 0, 0, 0);
-
-      for (let i = 0; i < 14; i += 1) {
-        const label = cursor.toLocaleDateString("zh-Hant-TW", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit"
-        });
-        if (uniqueDates.includes(label)) {
-          streak += 1;
-          cursor.setDate(cursor.getDate() - 1);
-        } else {
-          break;
-        }
-      }
-      return streak;
-    }
-
-    logForm.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const title = document.getElementById("log-title").value.trim();
-      const minutes = document.getElementById("log-minutes").value.trim();
-      const category = document.getElementById("log-category").value;
-      const notes = document.getElementById("log-notes").value.trim();
-
-      if (!title || !minutes || !notes) return;
-
-      const logs = readLogs();
-      logs.unshift({
-        id: crypto.randomUUID(),
-        title,
-        minutes,
-        category,
-        notes,
-        date: new Date().toLocaleDateString("zh-Hant-TW", {
-          year: "numeric",
-          month: "2-digit",
-          day: "2-digit"
-        })
-      });
-      saveLogs(logs.slice(0, 20));
-      logForm.reset();
-      renderLogs();
-      pulseHud(hudXp);
-      showQuestToast("Session Logged", `已記錄 ${title}，這次練習會被算進你的 XP 和主練線。`);
-    });
-
-    logList.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLElement)) return;
-      const logId = target.dataset.deleteLog;
-      if (!logId) return;
-      const logs = readLogs().filter((log) => log.id !== logId);
-      saveLogs(logs);
-      renderLogs();
-    });
-
-    document.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLElement)) return;
-      const watchButton = target.closest("[data-watch-title]");
-      if (watchButton instanceof HTMLElement) {
-        openMediaModal({
-          title: watchButton.dataset.watchTitle || "Video Preview",
-          videoUrl: watchButton.dataset.watchVideo || "",
-          embedUrl: watchButton.dataset.watchEmbed || "",
-          externalUrl: watchButton.dataset.watchExternal || ""
-        });
-      }
-    });
-
-    mediaModalClose.addEventListener("click", closeMediaModal);
-    mediaModal.addEventListener("click", (event) => {
-      if (event.target === mediaModal) closeMediaModal();
-    });
-    document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape" && mediaModal.classList.contains("show")) {
-        closeMediaModal();
-      }
-    });
-
-    function renderRadar() {
-      const items = radarItems.length ? radarItems : (readRadar().length ? readRadar() : [...vaultRadarItems, ...radarSeeds.slice(0, 3)]);
-      radarFeed.innerHTML = "";
-      items.forEach((item) => {
-        const article = document.createElement("article");
-        article.className = "radar-item";
-        article.innerHTML = `
-          <div class="radar-item-head">
-            <div>
-              <span class="radar-source">${item.source}</span>
-              <strong>${item.title}</strong>
-            </div>
-            <span class="micro-pill">${item.lane}</span>
-          </div>
-          <p class="muted">${item.note}</p>
-          <div class="pill-row">${item.tags.map((tag) => `<span class="micro-pill">${tag}</span>`).join("")}</div>
-          ${item.url ? `<a class="radar-source" href="${item.url}" target="_blank" rel="noreferrer">open source</a>` : ""}
-          <div class="radar-actions">
-            <button class="button secondary" type="button" data-save-radar="${item.id}">save to log</button>
-            <button class="button secondary" type="button" data-task-radar="${item.id}">add to today</button>
-          </div>
-        `;
-        radarFeed.appendChild(article);
-      });
-    }
-
-    function scanRadar() {
-      const sourceItems = radarItems.length ? radarItems : radarSeeds;
-      const offset = Math.floor(Math.random() * sourceItems.length);
-      const items = [];
-      for (let i = 0; i < 3; i += 1) {
-        items.push(sourceItems[(offset + i) % sourceItems.length]);
-      }
-      radarItems = items;
-      saveRadar(items);
-      renderRadar();
-      pulseHud(hudTarget);
-      showQuestToast("Radar Sweep", "雷達已刷新，今天新的樂句掉寶已經進場。");
-    }
-
-    scanLicksButton.addEventListener("click", scanRadar);
-
-    radarFeed.addEventListener("click", (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLElement)) return;
-
-      const saveId = target.dataset.saveRadar;
-      const taskId = target.dataset.taskRadar;
-      const items = radarItems.length ? radarItems : readRadar();
-      const match = items.find((item) => item.id === saveId || item.id === taskId);
-      if (!match) return;
-
-      if (saveId) {
-        const logs = readLogs();
-        logs.unshift({
-          id: crypto.randomUUID(),
-          title: match.title,
-          minutes: 15,
-          category: match.lane,
-          notes: `Radar capture: ${match.note}`,
-          date: new Date().toLocaleDateString("zh-Hant-TW", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit"
-          })
-        });
-        saveLogs(logs.slice(0, 20));
-        renderLogs();
-        pulseHud(hudXp);
-        showQuestToast("Loot Saved", `已把 ${match.title} 收進戰績板，之後會算進你的動能。`);
-      }
-
-      if (taskId) {
-        const tasks = readTasks();
-        tasks.unshift({
-          id: `radar-task-${match.id}`,
-          title: `15 min / ${match.title}`,
-          category: match.lane,
-          description: match.note,
-          tags: ["Radar Pick", match.lane],
-          done: false
-        });
-        const deduped = tasks.filter((task, index, arr) => arr.findIndex((item) => item.id === task.id) === index);
-        saveTasks(deduped);
-        renderTasks();
-        pulseHud(hudTarget);
-        showQuestToast("Quest Added", `${match.title} 已加入今天任務欄，現在可以直接開練。`);
-      }
-    });
-
-    function getSearchableItems() {
-      return Array.from(
-        document.querySelectorAll(".card, .progression, .archive-item, .insight, .coach-card, .vault-card, .vault-link, .skill-card, .skill-link")
+    function renderSidebar() {
+      renderFilterGroup(
+        trackFilters,
+        state.data.tracks.map((item) => ({ label: item.name, value: item.name, count: item.count })),
+        state.filters.track,
+        (value) => { state.filters.track = value; renderAll(); }
       );
-    }
 
-    function runSearch() {
-      const query = searchInput.value.trim().toLowerCase();
-      let matches = 0;
+      renderFilterGroup(
+        levelFilters,
+        state.data.levels.map((item) => ({ label: item.name, value: item.name, count: item.count })),
+        state.filters.level,
+        (value) => { state.filters.level = value; renderAll(); }
+      );
 
-      getSearchableItems().forEach((item) => {
-        const text = item.textContent.toLowerCase();
-        const queryMatched = !query || text.includes(query);
-        const filterMatched = activeFilter === "all" || text.includes(activeFilter);
-        const matched = queryMatched && filterMatched;
-        item.classList.toggle("hidden-by-search", !matched);
-        if (matched) matches += 1;
+      const formatItems = [
+        { label: "pdf", value: "pdf", count: state.data.stats.pdf_count },
+        { label: "gp", value: "gp", count: state.data.stats.gp_count },
+        { label: "audio", value: "audio", count: state.data.stats.audio_count },
+        { label: "video", value: "video", count: state.data.stats.video_count }
+      ];
+      renderFilterGroup(
+        formatFilters,
+        formatItems,
+        state.filters.format,
+        (value) => { state.filters.format = value; renderAll(); }
+      );
+
+      seriesList.innerHTML = "";
+      state.data.series.slice(0, 14).forEach((item) => {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "series-row";
+        row.innerHTML = `<strong>${item.name}</strong><small>${item.count}</small>`;
+        row.addEventListener("click", () => {
+          state.filters.series = item.name;
+          seriesSelect.value = item.name;
+          renderAll();
+        });
+        seriesList.appendChild(row);
       });
 
-      const queryLabel = query ? `"${query}"` : "everything";
-      const filterLabel = activeFilter === "all" ? "all lanes" : activeFilter;
-      searchStatus.textContent = `Filtering ${queryLabel} in ${filterLabel}`;
-      searchCount.textContent = `${matches} matches`;
-      searchEmpty.hidden = matches !== 0;
+      priorityList.innerHTML = "";
+      state.data.featured.slice(0, 8).forEach((item) => {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "metric-row";
+        row.innerHTML = `<strong>${item.title}</strong><small>${item.track_label}</small>`;
+        row.addEventListener("click", () => {
+          state.selectedId = item.id;
+          renderLibrary();
+          renderDetail();
+        });
+        priorityList.appendChild(row);
+      });
+
+      seriesSelect.innerHTML = '<option value="all">全部系列</option>';
+      state.data.series.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = item.name;
+        option.textContent = `${item.name} (${item.count})`;
+        seriesSelect.appendChild(option);
+      });
+      seriesSelect.value = state.filters.series;
     }
 
-    searchInput.addEventListener("input", runSearch);
-    clearSearchButton.addEventListener("click", () => {
-      searchInput.value = "";
-      runSearch();
-    });
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        activeFilter = button.dataset.filter;
-        filterButtons.forEach((item) => item.classList.toggle("is-active", item === button));
-        runSearch();
+    function lessonMatches(lesson) {
+      const q = state.filters.query.trim().toLowerCase();
+      const haystack = [
+        lesson.title,
+        lesson.series,
+        lesson.track_label,
+        lesson.summary,
+        lesson.extensions.join(" "),
+        formatCountMap(lesson.formats).join(" ")
+      ].join(" ").toLowerCase();
+
+      if (q && !haystack.includes(q)) return false;
+      if (state.filters.track !== "all" && lesson.track_label !== state.filters.track) return false;
+      if (state.filters.level !== "all" && lesson.level !== state.filters.level) return false;
+      if (state.filters.series !== "all" && lesson.series !== state.filters.series) return false;
+
+      if (state.filters.format === "pdf" && !lesson.formats.pdf) return false;
+      if (state.filters.format === "gp" && !(lesson.formats.gp5 || lesson.formats.gp)) return false;
+      if (state.filters.format === "audio" && !(lesson.formats.wav || lesson.formats.mp3)) return false;
+      if (state.filters.format === "video" && !lesson.watch_url) return false;
+
+      return true;
+    }
+
+    function sortLessons(lessons) {
+      const sorted = [...lessons];
+      if (state.filters.sort === "title") {
+        sorted.sort((a, b) => a.title.localeCompare(b.title, "zh-Hant"));
+      } else if (state.filters.sort === "series") {
+        sorted.sort((a, b) => (a.series + a.title).localeCompare(b.series + b.title, "zh-Hant"));
+      } else {
+        sorted.sort((a, b) => b.priority_score - a.priority_score || a.title.localeCompare(b.title, "zh-Hant"));
+      }
+      return sorted;
+    }
+
+    function getVisibleLessons() {
+      return sortLessons(state.data.lessons.filter(lessonMatches));
+    }
+
+    function renderLibrary() {
+      const lessons = getVisibleLessons();
+      const modeNote = state.mode === "local"
+        ? "本地模式：可直接打開你硬碟裡的譜面、GP、音檔與影片。"
+        : "公開模式：可直接看公開影片；譜面與音檔請回本地版打開。";
+      libraryStatus.textContent = `${modeNote} 目前顯示 ${lessons.length} / ${state.data.lessons.length} 份教材`;
+      lessonList.innerHTML = "";
+
+      if (!lessons.length) {
+        lessonList.innerHTML = '<div class="empty">目前沒有符合條件的教材，試試看換系列或關鍵字。</div>';
+        return;
+      }
+
+      if (!lessons.some((item) => item.id === state.selectedId)) {
+        state.selectedId = lessons[0].id;
+      }
+
+      lessons.forEach((lesson) => {
+        const card = document.createElement("article");
+        card.className = "lesson-card" + (lesson.id === state.selectedId ? " active" : "");
+        card.innerHTML = `
+          <div class="lesson-top">
+            <div>
+              <h3>${lesson.title}</h3>
+              <p class="note">${lesson.summary || "這份教材有譜面、影片與對應練法。"} </p>
+            </div>
+            <span class="priority-badge">${lesson.priority_band}</span>
+          </div>
+          <div class="lesson-meta">
+            <span>${lesson.track_label}</span>
+            <span>${lesson.series}</span>
+            <span>${lesson.level}</span>
+            <span>${lesson.file_total} files</span>
+          </div>
+          <div class="format-strip">
+            ${Object.entries(lesson.formats).map(([key, value]) => `<span class="format-pill">${key} ${value}</span>`).join("")}
+          </div>
+        `;
+        card.addEventListener("click", () => {
+          state.selectedId = lesson.id;
+          renderLibrary();
+          renderDetail();
+        });
+        lessonList.appendChild(card);
       });
+    }
+
+    function createActionLink(label, href, className = "link-button") {
+      const link = document.createElement("a");
+      link.className = className;
+      link.href = href;
+      link.target = "_blank";
+      link.rel = "noreferrer";
+      link.textContent = label;
+      return link;
+    }
+
+    function renderVideoStage(lesson) {
+      detailStage.innerHTML = "";
+      if (lesson.video_embed_url) {
+        const iframe = document.createElement("iframe");
+        iframe.src = `${lesson.video_embed_url}?rel=0`;
+        iframe.allow = "accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        detailStage.appendChild(iframe);
+        return;
+      }
+      if (lesson.video_local_url && lesson.video_local_url.startsWith("file://")) {
+        const video = document.createElement("video");
+        video.src = lesson.video_local_url;
+        video.controls = true;
+        video.playsInline = true;
+        detailStage.appendChild(video);
+        return;
+      }
+      if (lesson.video_public_url) {
+        detailStage.innerHTML = `
+          <div class="placeholder">
+            這份教材有影片來源，但目前不支援直接嵌入。<br />
+            請用下方「看影片」打開原始頁面。
+          </div>
+        `;
+        return;
+      }
+      detailStage.innerHTML = '<div class="placeholder">No video preview</div>';
+    }
+
+    function renderFileGroup(target, title, items) {
+      if (!items.length) return;
+      const block = document.createElement("div");
+      block.className = "stack";
+      const label = document.createElement("small");
+      label.className = "note";
+      label.textContent = title;
+      block.appendChild(label);
+      items.forEach((item) => {
+        const link = document.createElement("a");
+        link.className = "file-item";
+        link.href = item.href;
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.innerHTML = `<span>${item.label}</span><small>${item.extension}</small>`;
+        block.appendChild(link);
+      });
+      target.appendChild(block);
+    }
+
+    function renderDetail() {
+      const lesson = state.data.lessons.find((item) => item.id === state.selectedId);
+      if (!lesson) return;
+
+      detailTitle.textContent = lesson.title;
+      detailCopy.textContent = lesson.summary || "這份教材可以直接用影片、譜面和練習步驟開始。";
+      detailTrack.textContent = lesson.track_label;
+
+      renderVideoStage(lesson);
+
+      detailActions.innerHTML = "";
+      if (lesson.watch_url) {
+        detailActions.appendChild(createActionLink("看影片", lesson.watch_url, "button primary"));
+      }
+      if (lesson.post_url) {
+        detailActions.appendChild(createActionLink("打開 Patreon 原文", lesson.post_url));
+      }
+      if (lesson.folder_href) {
+        detailActions.appendChild(createActionLink("打開資料夾", lesson.folder_href));
+      }
+
+      detailFiles.innerHTML = "";
+      renderFileGroup(detailFiles, "PDF / 譜面", lesson.pdf_links);
+      renderFileGroup(detailFiles, "GP / Guitar Pro", lesson.gp_links);
+      renderFileGroup(detailFiles, "Audio / Backing Track", lesson.audio_links);
+      renderFileGroup(detailFiles, "其他附件", lesson.extra_links);
+      if (!detailFiles.children.length) {
+        detailFiles.innerHTML = `
+          <div class="empty">
+            ${state.mode === "public" ? "公開版不直接暴露你的本地譜面檔，但這份教材的資源配置仍然保留在分類裡。" : "這份教材目前沒有可直接打開的檔案。"}
+          </div>
+        `;
+        const summary = document.createElement("div");
+        summary.className = "stack";
+        const note = document.createElement("small");
+        note.className = "note";
+        note.textContent = "資源配置";
+        summary.appendChild(note);
+        Object.entries(lesson.formats).forEach(([key, value]) => {
+          const row = document.createElement("div");
+          row.className = "file-item";
+          row.innerHTML = `<span>${key}</span><small>${value}</small>`;
+          summary.appendChild(row);
+        });
+        detailFiles.appendChild(summary);
+      }
+
+      detailPractice.innerHTML = "";
+      lesson.practice_steps.forEach((step) => {
+        const item = document.createElement("div");
+        item.className = "practice-item";
+        item.textContent = step;
+        detailPractice.appendChild(item);
+      });
+      lesson.extensions.forEach((step) => {
+        const item = document.createElement("div");
+        item.className = "practice-item";
+        item.textContent = `延伸：${step}`;
+        detailPractice.appendChild(item);
+      });
+    }
+
+    function renderAll() {
+      renderSidebar();
+      renderLibrary();
+      renderDetail();
+    }
+
+    quickSearch.addEventListener("input", () => {
+      state.filters.query = quickSearch.value;
+      renderAll();
     });
 
-    Promise.resolve()
-      .then(loadExternalRadar)
-      .then(loadSkillTreeSnapshot)
-      .then(() => {
-        renderTasks();
-        renderLogs();
-        renderRadar();
-        runSearch();
+    sortSelect.addEventListener("change", () => {
+      state.filters.sort = sortSelect.value;
+      renderAll();
+    });
+
+    seriesSelect.addEventListener("change", () => {
+      state.filters.series = seriesSelect.value;
+      renderAll();
+    });
+
+    resetFilters.addEventListener("click", () => {
+      state.filters = { query: "", track: "all", level: "all", format: "all", series: "all", sort: "priority" };
+      quickSearch.value = "";
+      sortSelect.value = "priority";
+      renderAll();
+    });
+
+    fetch(dataSource, { cache: "no-store" })
+      .then((response) => response.json())
+      .then((data) => {
+        state.data = data;
+        state.mode = data.mode || "public";
+        state.selectedId = data.featured[0]?.id || data.lessons[0]?.id || null;
+        renderHeroStats();
+        renderAll();
+      })
+      .catch(() => {
+        libraryStatus.textContent = "譜面資料載入失敗。";
+        lessonList.innerHTML = `<div class="empty">無法載入 ${dataSource}。</div>`;
       });
   </script>
 </body>
