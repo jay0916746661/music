@@ -1071,6 +1071,73 @@
       text-transform: uppercase;
     }
 
+    .vault-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .vault-card {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
+
+    .vault-media {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      object-fit: cover;
+      display: block;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .vault-body {
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .vault-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .vault-head h3 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 26px;
+      line-height: 1.05;
+    }
+
+    .vault-files {
+      display: grid;
+      gap: 8px;
+    }
+
+    .vault-link {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--ink);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .vault-link small {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
     .empty-state {
       padding: 20px 14px;
       border: 1px dashed rgba(72, 51, 37, 0.18);
@@ -1239,6 +1306,67 @@
     <section class="section">
       <div class="section-top">
         <div>
+          <h2>Lesson Vault</h2>
+          <p class="section-note">這一區現在直接以你手上的教材為主。E major 系列和 Tsubasa 系列被整理成兩個優先練功包，先練這些，再往外擴素材。</p>
+        </div>
+        <p class="section-note">PDF、圖表、影片和 GP5 檔都已經收進專案素材裡，之後這些會是 Daily Coach 和 Lick Radar 的第一優先來源。</p>
+      </div>
+      <div class="vault-grid">
+        <article class="vault-card searchable-item">
+          <img class="vault-media" src="assets/previews/major-circle-video.png" alt="Major Circle in E video preview">
+          <div class="vault-body">
+            <div class="vault-head">
+              <div>
+                <h3>E Major Quest Pack</h3>
+                <p class="muted">主打 E 大調的和弦循環、旋律加入方式和 circle 概念，很適合直接變成你的吉他與 Logic 主練素材。</p>
+              </div>
+              <span class="micro-pill">Priority Pack</span>
+            </div>
+            <div class="pill-row">
+              <span class="micro-pill">E Major</span>
+              <span class="micro-pill">Chord Progression</span>
+              <span class="micro-pill">Melody</span>
+              <span class="micro-pill">Video + PDF</span>
+            </div>
+            <div class="vault-files">
+              <a class="vault-link" href="assets/library/E%20Chord%20Progression%20and%20Adding%20Melody.pdf" target="_blank" rel="noreferrer"><span>E Chord Progression and Adding Melody</span><small>pdf</small></a>
+              <a class="vault-link" href="assets/library/Major%20Circle%20in%20E.pdf" target="_blank" rel="noreferrer"><span>Major Circle in E</span><small>pdf</small></a>
+              <a class="vault-link" href="assets/library/Major%20Circle%20in%20E%20Chords%20Diagram.pdf" target="_blank" rel="noreferrer"><span>Major Circle in E Chords Diagram</span><small>diagram</small></a>
+              <a class="vault-link" href="assets/library/Major%20Circle%20in%20E%20patreon.mp4" target="_blank" rel="noreferrer"><span>Major Circle in E Patreon Video</span><small>mp4</small></a>
+            </div>
+          </div>
+        </article>
+        <article class="vault-card searchable-item">
+          <img class="vault-media" src="assets/previews/ql/Tsubasa 8 Fast Tab and Sheet Music.pdf.png" alt="Tsubasa 8 fast tab preview">
+          <div class="vault-body">
+            <div class="vault-head">
+              <div>
+                <h3>Tsubasa Study Pack</h3>
+                <p class="muted">同一首素材同時有慢速、快速、和弦圖與 GP5，這很適合做分速練習、記譜對照和手感升級。</p>
+              </div>
+              <span class="micro-pill">Speed Run</span>
+            </div>
+            <div class="pill-row">
+              <span class="micro-pill">Tsubasa 8</span>
+              <span class="micro-pill">Slow / Fast</span>
+              <span class="micro-pill">Tab + Sheet</span>
+              <span class="micro-pill">GP5</span>
+            </div>
+            <div class="vault-files">
+              <a class="vault-link" href="assets/library/Tsubasa%208%20Chords%20Diagram.pdf" target="_blank" rel="noreferrer"><span>Tsubasa 8 Chords Diagram</span><small>diagram</small></a>
+              <a class="vault-link" href="assets/library/Tsubasa%208%20Slow%20Tab%20and%20Sheet%20Music.pdf" target="_blank" rel="noreferrer"><span>Tsubasa 8 Slow Tab and Sheet Music</span><small>pdf</small></a>
+              <a class="vault-link" href="assets/library/Tsubasa%208%20Slow%20Tab%20and%20Sheet%20Music.gp5" target="_blank" rel="noreferrer"><span>Tsubasa 8 Slow Tab and Sheet Music</span><small>gp5</small></a>
+              <a class="vault-link" href="assets/library/Tsubasa%208%20Fast%20Tab%20and%20Sheet%20Music.pdf" target="_blank" rel="noreferrer"><span>Tsubasa 8 Fast Tab and Sheet Music</span><small>pdf</small></a>
+              <a class="vault-link" href="assets/library/Tsubasa%208%20Fast%20Tab%20and%20Sheet%20Music.gp5" target="_blank" rel="noreferrer"><span>Tsubasa 8 Fast Tab and Sheet Music</span><small>gp5</small></a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
           <h2>Momentum Engine</h2>
           <p class="section-note">把今天的練習翻成遊戲節奏：你不是在硬撐，而是在累積連擊、解一個小挑戰、把狀態推到下一段。</p>
         </div>
@@ -1355,6 +1483,7 @@
             <button class="button" type="button" id="scan-licks">scan radar</button>
           </div>
           <div class="source-list">
+            <div class="source-row"><span>Local lesson vault</span><span>優先吃 E major 與 Tsubasa 教材包</span></div>
             <div class="source-row"><span>YouTube lesson channels</span><span>抓 lick / phrasing / timing 拆解</span></div>
             <div class="source-row"><span>Live session clips</span><span>抓真實演奏裡的語氣與停頓</span></div>
             <div class="source-row"><span>Creator notes / blogs</span><span>抓練法與應用情境</span></div>
@@ -1926,6 +2055,27 @@
       }
     ];
 
+    const vaultRadarItems = [
+      {
+        id: "vault-e-major-pack",
+        title: "E Major Quest Pack",
+        lane: "Guitar",
+        source: "Local lesson vault / E major series",
+        note: "先從 E Chord Progression、Major Circle in E 和 chord diagram 裡挑一條句子，這是你目前最核心的主線教材。",
+        tags: ["E Major", "Local Pack", "Priority"],
+        url: "assets/library/E%20Chord%20Progression%20and%20Adding%20Melody.pdf"
+      },
+      {
+        id: "vault-tsubasa-pack",
+        title: "Tsubasa Speed Run Pack",
+        lane: "Guitar",
+        source: "Local lesson vault / Tsubasa 8",
+        note: "慢版、快版、chord diagram 和 GP5 都齊，最適合拿來做分速練習和記譜對照。",
+        tags: ["Tsubasa 8", "Slow/Fast", "GP5"],
+        url: "assets/library/Tsubasa%208%20Slow%20Tab%20and%20Sheet%20Music.pdf"
+      }
+    ];
+
     const rankTable = [
       { name: "Rookie", minXp: 0 },
       { name: "Groove Scout", minXp: 80 },
@@ -2067,7 +2217,7 @@
         if (!response.ok) throw new Error(`Radar fetch failed: ${response.status}`);
         const payload = await response.json();
         if (Array.isArray(payload.items) && payload.items.length) {
-          radarItems = payload.items;
+          radarItems = [...vaultRadarItems, ...payload.items];
           saveRadar(radarItems);
           const updatedAt = payload.updatedAt ? new Date(payload.updatedAt) : null;
           radarMeta.textContent = updatedAt
@@ -2080,7 +2230,7 @@
       }
 
       const saved = readRadar();
-      radarItems = saved.length ? saved : radarSeeds.slice(0, 3);
+      radarItems = saved.length ? saved : [...vaultRadarItems, ...radarSeeds.slice(0, 3)];
     }
 
     function renderLogs() {
@@ -2228,7 +2378,7 @@
     });
 
     function renderRadar() {
-      const items = radarItems.length ? radarItems : (readRadar().length ? readRadar() : radarSeeds.slice(0, 3));
+      const items = radarItems.length ? radarItems : (readRadar().length ? readRadar() : [...vaultRadarItems, ...radarSeeds.slice(0, 3)]);
       radarFeed.innerHTML = "";
       items.forEach((item) => {
         const article = document.createElement("article");
@@ -2318,7 +2468,7 @@
     });
 
     const searchableItems = Array.from(
-      document.querySelectorAll(".card, .progression, .archive-item, .insight, .coach-card")
+      document.querySelectorAll(".card, .progression, .archive-item, .insight, .coach-card, .vault-card, .vault-link")
     );
 
     function runSearch() {
