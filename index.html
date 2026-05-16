@@ -1138,6 +1138,161 @@
       text-transform: uppercase;
     }
 
+    .skill-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 18px;
+    }
+
+    .skill-branch-grid,
+    .skill-priority-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .skill-branch-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .skill-card,
+    .skill-priority-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      display: grid;
+      gap: 12px;
+    }
+
+    .skill-card h3,
+    .skill-priority-card h3 {
+      margin: 0;
+      font-family: var(--display);
+      font-size: 24px;
+      line-height: 1.08;
+    }
+
+    .skill-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .skill-link {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 12px;
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid rgba(67, 212, 200, 0.12);
+      border-radius: 12px;
+      background: rgba(67, 212, 200, 0.05);
+    }
+
+    .skill-link strong {
+      font-size: 14px;
+    }
+
+    .skill-link small {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .skill-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .skill-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      min-height: 38px;
+      border: 1px solid rgba(67, 212, 200, 0.14);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--ink);
+      text-decoration: none;
+      font-family: var(--mono);
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .media-modal {
+      position: fixed;
+      inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(8, 11, 15, 0.84);
+      z-index: 40;
+    }
+
+    .media-modal.show {
+      display: flex;
+    }
+
+    .media-panel {
+      width: min(100%, 1080px);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #0c1217;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      display: grid;
+      gap: 0;
+    }
+
+    .media-panel-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .media-panel-head strong {
+      font-family: var(--display);
+      font-size: 24px;
+      line-height: 1.1;
+    }
+
+    .media-stage {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      background: #05080b;
+    }
+
+    .media-stage video,
+    .media-stage iframe {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+      background: #000;
+    }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: start;
+    }
+
+    .skill-note {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
     .empty-state {
       padding: 20px 14px;
       border: 1px dashed rgba(72, 51, 37, 0.18);
@@ -1165,7 +1320,9 @@
       .coach-strip,
       .flow-band,
       .cards,
-      .archive {
+      .archive,
+      .skill-grid,
+      .skill-branch-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1367,6 +1524,51 @@
     <section class="section">
       <div class="section-top">
         <div>
+          <h2>Skill Tree Sync</h2>
+          <p class="section-note">這一區直接吃你外接碟整理好的技能樹分類。不是概念圖而已，而是連回真實教材資料夾的練習入口。</p>
+        </div>
+        <p class="section-note" id="skill-tree-meta">Loading current skill tree snapshot...</p>
+      </div>
+      <div class="skill-grid">
+        <div class="skill-branch-grid" id="skill-branch-grid">
+          <article class="skill-card">
+            <div class="skill-header">
+              <div>
+                <h3>Sync Pending</h3>
+                <p class="skill-note">等待技能樹快照載入後，這裡會出現節奏、和聲、blues、jazz、riff、作品六條主幹。</p>
+              </div>
+              <span class="micro-pill">Skill Tree</span>
+            </div>
+          </article>
+        </div>
+        <div class="skill-priority-grid">
+          <article class="skill-priority-card">
+            <div class="skill-header">
+              <div>
+                <h3>Now Training</h3>
+                <p class="skill-note">根據你整理好的資料夾，自動帶出目前最值得先練的節點。</p>
+              </div>
+              <span class="micro-pill">Priority</span>
+            </div>
+            <div class="skill-list" id="skill-now-list"></div>
+          </article>
+          <article class="skill-priority-card">
+            <div class="skill-header">
+              <div>
+                <h3>Next Unlocks</h3>
+                <p class="skill-note">這些是下一批最適合接上的教材，不會讓你一直只練同一條線。</p>
+              </div>
+              <span class="micro-pill">Next</span>
+            </div>
+            <div class="skill-list" id="skill-next-list"></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-top">
+        <div>
           <h2>Momentum Engine</h2>
           <p class="section-note">把今天的練習翻成遊戲節奏：你不是在硬撐，而是在累積連擊、解一個小挑戰、把狀態推到下一段。</p>
         </div>
@@ -1544,7 +1746,7 @@
       </div>
       <div class="coach-grid">
         <div class="coach-lead">
-          <div class="coach-strip">
+          <div class="coach-strip" id="coach-strip">
             <article class="coach-card">
               <span class="coach-index">01</span>
               <h3>Guitar Line</h3>
@@ -1572,7 +1774,7 @@
           </div>
           <div class="panel">
             <h3>Today Runbook</h3>
-            <div class="progression-list">
+            <div class="progression-list" id="runbook-list">
               <article class="progression">
                 <div>
                   <strong>45 min / Guitar Phrase Drill</strong>
@@ -1617,13 +1819,15 @@
           </div>
         </div>
         <div class="priority-stack">
-          <section class="priority-card">
+          <section class="priority-card" id="priority-engine-card">
             <h3>Priority Engine</h3>
-            <p>每天優先序會依三個條件重排：卡關度、回報率、遺忘風險。你不是永遠平均練四種，而是讓系統判斷今天最值得攻哪一塊。</p>
-            <div class="priority-line"><span>Guitar</span><div class="bar"><b style="width: 88%"></b></div><span class="priority-pill">Focus Now</span></div>
-            <div class="priority-line"><span>Logic</span><div class="bar"><b style="width: 72%"></b></div><span class="priority-pill">Build Output</span></div>
-            <div class="priority-line"><span>DJ</span><div class="bar"><b style="width: 58%"></b></div><span class="priority-pill">Keep Warm</span></div>
-            <div class="priority-line"><span>Score</span><div class="bar"><b style="width: 51%"></b></div><span class="priority-pill">Capture Ideas</span></div>
+            <p id="priority-engine-copy">每天優先序會依三個條件重排：卡關度、回報率、遺忘風險。你不是永遠平均練四種，而是讓系統判斷今天最值得攻哪一塊。</p>
+            <div id="priority-line-list">
+              <div class="priority-line"><span>Guitar</span><div class="bar"><b style="width: 88%"></b></div><span class="priority-pill">Focus Now</span></div>
+              <div class="priority-line"><span>Logic</span><div class="bar"><b style="width: 72%"></b></div><span class="priority-pill">Build Output</span></div>
+              <div class="priority-line"><span>DJ</span><div class="bar"><b style="width: 58%"></b></div><span class="priority-pill">Keep Warm</span></div>
+              <div class="priority-line"><span>Score</span><div class="bar"><b style="width: 51%"></b></div><span class="priority-pill">Capture Ideas</span></div>
+            </div>
           </section>
           <section class="search-card">
             <h3>Auto Search Radar</h3>
@@ -1911,6 +2115,18 @@
       <span>Designed as a music library interface, not a streaming player.</span>
     </footer>
   </main>
+  <div class="media-modal" id="media-modal" aria-hidden="true">
+    <div class="media-panel">
+      <div class="media-panel-head">
+        <div>
+          <strong id="media-modal-title">Video Preview</strong>
+          <p class="section-note" id="media-modal-copy">直接在面板裡看，不用先跳去下載。</p>
+        </div>
+        <button class="button secondary" type="button" id="media-modal-close">close</button>
+      </div>
+      <div class="media-stage" id="media-stage"></div>
+    </div>
+  </div>
   <div class="quest-toast" id="quest-toast">
     <strong id="quest-toast-title">Quest Up</strong>
     <span id="quest-toast-copy">你剛剛完成了一段任務，節奏正在被你累積起來。</span>
@@ -1984,11 +2200,25 @@
     const hudTarget = document.getElementById("hud-target");
     const xpProgress = document.getElementById("xp-progress");
     const xpProgressLabel = document.getElementById("xp-progress-label");
+    const skillTreeMeta = document.getElementById("skill-tree-meta");
+    const skillBranchGrid = document.getElementById("skill-branch-grid");
+    const skillNowList = document.getElementById("skill-now-list");
+    const skillNextList = document.getElementById("skill-next-list");
+    const coachStrip = document.getElementById("coach-strip");
+    const runbookList = document.getElementById("runbook-list");
+    const priorityLineList = document.getElementById("priority-line-list");
+    const priorityEngineCopy = document.getElementById("priority-engine-copy");
+    const mediaModal = document.getElementById("media-modal");
+    const mediaModalTitle = document.getElementById("media-modal-title");
+    const mediaModalCopy = document.getElementById("media-modal-copy");
+    const mediaStage = document.getElementById("media-stage");
+    const mediaModalClose = document.getElementById("media-modal-close");
     const questToast = document.getElementById("quest-toast");
     const questToastTitle = document.getElementById("quest-toast-title");
     const questToastCopy = document.getElementById("quest-toast-copy");
     let activeFilter = "all";
     let radarItems = [];
+    let skillTreeSnapshot = null;
     let toastTimer = null;
 
     const motivationModes = [
@@ -2233,6 +2463,222 @@
       radarItems = saved.length ? saved : [...vaultRadarItems, ...radarSeeds.slice(0, 3)];
     }
 
+    function renderSkillList(target, items) {
+      if (!target) return;
+      target.innerHTML = "";
+      if (!items || !items.length) {
+        target.innerHTML = '<div class="empty-state">技能樹資料尚未同步。</div>';
+        return;
+      }
+      items.forEach((item) => {
+        const card = document.createElement("div");
+        card.className = "skill-link";
+        card.innerHTML = `
+          <span>
+            <strong>${item.title}</strong>
+            <small>${item.track_label || item.level || "practice"}</small>
+          </span>
+          <small>${item.priority_band || "node"}</small>
+        `;
+        const actions = document.createElement("div");
+        actions.className = "skill-actions";
+        if (item.preferred_watch_url) {
+          const watch = document.createElement("button");
+          watch.className = "skill-action";
+          watch.type = "button";
+          watch.dataset.watchTitle = item.title;
+          watch.dataset.watchVideo = item.stream_video_url || "";
+          watch.dataset.watchEmbed = item.embed_video_url || "";
+          watch.dataset.watchExternal = item.video_url || item.preferred_watch_url || "";
+          watch.textContent = item.local_video ? "watch mp4" : "watch video";
+          actions.appendChild(watch);
+        }
+        const folder = document.createElement("a");
+        folder.className = "skill-action";
+        folder.href = item.folder;
+        folder.target = "_blank";
+        folder.rel = "noreferrer";
+        folder.textContent = item.folder && item.folder.startsWith("http") ? "open source" : "open folder";
+        actions.appendChild(folder);
+        card.appendChild(actions);
+        target.appendChild(card);
+      });
+    }
+
+    function renderSkillTree() {
+      if (!skillTreeSnapshot) return;
+      skillBranchGrid.innerHTML = "";
+      skillTreeSnapshot.branches.forEach((branch) => {
+        const card = document.createElement("article");
+        card.className = "skill-card searchable-item";
+        card.innerHTML = `
+          <div class="skill-header">
+            <div>
+              <h3>${branch.title}</h3>
+              <p class="skill-note">${branch.summary}</p>
+            </div>
+            <span class="micro-pill">Branch</span>
+          </div>
+          <div class="skill-list">
+            ${branch.current.map((item) => `
+              <div class="skill-link">
+                <span>
+                  <strong>${item.title}</strong>
+                  <small>${item.level}</small>
+                </span>
+                  <small>${item.local_video ? "mp4" : item.video_url ? "video" : "folder"}</small>
+                <div class="skill-actions">
+                  ${item.preferred_watch_url ? `<button class="skill-action" type="button" data-watch-title="${item.title}" data-watch-video="${item.stream_video_url || ""}" data-watch-embed="${item.embed_video_url || ""}" data-watch-external="${item.video_url || item.preferred_watch_url || ""}">${item.local_video || item.stream_video_url ? "watch mp4" : "watch video"}</button>` : ""}
+                  <a class="skill-action" href="${item.folder}" target="_blank" rel="noreferrer">${item.folder && item.folder.startsWith("http") ? "open source" : "open folder"}</a>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        `;
+        skillBranchGrid.appendChild(card);
+      });
+      renderSkillList(skillNowList, skillTreeSnapshot.now);
+      renderSkillList(skillNextList, skillTreeSnapshot.next);
+      renderCoachFromSkillTree();
+    }
+
+    function laneLabelFromTrack(track) {
+      const map = {
+        "fretboard-theory": "Guitar Theory",
+        "harmony-touch": "Harmony Touch",
+        "blues-language": "Blues Language",
+        "jazz-voicing": "Jazz Voicing",
+        "technique-riff": "Technique / Riff",
+        "song-study": "Song Study"
+      };
+      return map[track] || "Practice Lane";
+    }
+
+    function buildCoachCopy(item) {
+      const ext = item.extensions || [];
+      return {
+        strong: `${item.track_label} 先用 ${item.title} 開路。`,
+        body: `${item.summary} 今天直接從這個資料夾開練，再補 ${ext[0] || "一個短變奏"}。`
+      };
+    }
+
+    function renderCoachFromSkillTree() {
+      if (!skillTreeSnapshot || !coachStrip || !runbookList || !priorityLineList) return;
+
+      const nowItems = Array.isArray(skillTreeSnapshot.now) ? skillTreeSnapshot.now : [];
+      const chosen = [];
+      const usedTracks = new Set();
+      nowItems.forEach((item) => {
+        if (chosen.length >= 4) return;
+        if (usedTracks.has(item.track)) return;
+        usedTracks.add(item.track);
+        chosen.push(item);
+      });
+      while (chosen.length < 4 && nowItems[chosen.length]) {
+        chosen.push(nowItems[chosen.length]);
+      }
+
+      coachStrip.innerHTML = chosen.map((item, index) => {
+        const copy = buildCoachCopy(item);
+        return `
+          <article class="coach-card searchable-item">
+            <span class="coach-index">${String(index + 1).padStart(2, "0")}</span>
+            <h3>${laneLabelFromTrack(item.track)}</h3>
+            <strong>${copy.strong}</strong>
+            <p>${copy.body}</p>
+          </article>
+        `;
+      }).join("");
+
+      runbookList.innerHTML = chosen.map((item, index) => `
+        <article class="progression searchable-item">
+          <div>
+            <strong>${45 - index * 5} min / ${item.title}</strong>
+            <p class="muted">${item.extensions?.join(" / ") || item.summary}</p>
+          </div>
+          <div class="chips">
+            <span>Priority ${String.fromCharCode(65 + index)}</span>
+            <span>${item.track_label}</span>
+          </div>
+          <div class="skill-actions">
+            ${item.preferred_watch_url ? `<button class="skill-action" type="button" data-watch-title="${item.title}" data-watch-video="${item.stream_video_url || ""}" data-watch-embed="${item.embed_video_url || ""}" data-watch-external="${item.video_url || item.preferred_watch_url || ""}">${item.local_video || item.stream_video_url ? "watch mp4" : "watch video"}</button>` : ""}
+            <a class="skill-action" href="${item.folder}" target="_blank" rel="noreferrer">${item.folder && item.folder.startsWith("http") ? "open source" : "open folder"}</a>
+          </div>
+        </article>
+      `).join("");
+
+      const trackCounts = {};
+      nowItems.forEach((item) => {
+        trackCounts[item.track_label] = (trackCounts[item.track_label] || 0) + 1;
+      });
+      const topTracks = Object.entries(trackCounts)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 4);
+      const maxCount = Math.max(...topTracks.map(([, count]) => count), 1);
+      priorityLineList.innerHTML = topTracks.map(([label, count], index) => {
+        const width = Math.max(32, Math.round((count / maxCount) * 100));
+        const pill = index === 0 ? "Focus Now" : index === 1 ? "Build Up" : index === 2 ? "Keep Warm" : "Explore";
+        return `
+          <div class="priority-line">
+            <span>${label}</span>
+            <div class="bar"><b style="width: ${width}%"></b></div>
+            <span class="priority-pill">${pill}</span>
+          </div>
+        `;
+      }).join("");
+      priorityEngineCopy.textContent = skillTreeSnapshot.hero?.copy || "今天的優先序會先吃你已下載教材裡最值得先練的節點。";
+    }
+
+    function closeMediaModal() {
+      mediaModal.classList.remove("show");
+      mediaModal.setAttribute("aria-hidden", "true");
+      mediaStage.innerHTML = "";
+    }
+
+    function openMediaModal({ title, videoUrl, embedUrl, externalUrl }) {
+      mediaModalTitle.textContent = title || "Video Preview";
+      mediaModalCopy.textContent = "直接在面板裡看，不用先跳去下載。";
+      mediaStage.innerHTML = "";
+
+      if (videoUrl) {
+        const video = document.createElement("video");
+        video.src = videoUrl;
+        video.controls = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        mediaStage.appendChild(video);
+      } else if (embedUrl) {
+        const iframe = document.createElement("iframe");
+        iframe.src = `${embedUrl}?autoplay=1&rel=0`;
+        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+        iframe.allowFullscreen = true;
+        mediaStage.appendChild(iframe);
+      } else if (externalUrl) {
+        window.open(externalUrl, "_blank", "noopener,noreferrer");
+        return;
+      } else {
+        mediaModalCopy.textContent = "這個節點目前沒有可直接播放的影片來源。";
+      }
+
+      mediaModal.classList.add("show");
+      mediaModal.setAttribute("aria-hidden", "false");
+    }
+
+    async function loadSkillTreeSnapshot() {
+      try {
+        const response = await fetch("./data/skill-tree-snapshot.json", { cache: "no-store" });
+        if (!response.ok) throw new Error(`Skill tree fetch failed: ${response.status}`);
+        skillTreeSnapshot = await response.json();
+        const updatedAt = skillTreeSnapshot.updatedAt ? new Date(skillTreeSnapshot.updatedAt) : null;
+        skillTreeMeta.textContent = updatedAt
+          ? `Synced ${updatedAt.toLocaleString("zh-Hant-TW")}`
+          : "Skill tree snapshot loaded";
+        renderSkillTree();
+      } catch (error) {
+        skillTreeMeta.textContent = "Skill tree snapshot unavailable";
+      }
+    }
+
     function renderLogs() {
       const logs = readLogs();
       logList.innerHTML = "";
@@ -2377,6 +2823,30 @@
       renderLogs();
     });
 
+    document.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      const watchButton = target.closest("[data-watch-title]");
+      if (watchButton instanceof HTMLElement) {
+        openMediaModal({
+          title: watchButton.dataset.watchTitle || "Video Preview",
+          videoUrl: watchButton.dataset.watchVideo || "",
+          embedUrl: watchButton.dataset.watchEmbed || "",
+          externalUrl: watchButton.dataset.watchExternal || ""
+        });
+      }
+    });
+
+    mediaModalClose.addEventListener("click", closeMediaModal);
+    mediaModal.addEventListener("click", (event) => {
+      if (event.target === mediaModal) closeMediaModal();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && mediaModal.classList.contains("show")) {
+        closeMediaModal();
+      }
+    });
+
     function renderRadar() {
       const items = radarItems.length ? radarItems : (readRadar().length ? readRadar() : [...vaultRadarItems, ...radarSeeds.slice(0, 3)]);
       radarFeed.innerHTML = "";
@@ -2467,15 +2937,17 @@
       }
     });
 
-    const searchableItems = Array.from(
-      document.querySelectorAll(".card, .progression, .archive-item, .insight, .coach-card, .vault-card, .vault-link")
-    );
+    function getSearchableItems() {
+      return Array.from(
+        document.querySelectorAll(".card, .progression, .archive-item, .insight, .coach-card, .vault-card, .vault-link, .skill-card, .skill-link")
+      );
+    }
 
     function runSearch() {
       const query = searchInput.value.trim().toLowerCase();
       let matches = 0;
 
-      searchableItems.forEach((item) => {
+      getSearchableItems().forEach((item) => {
         const text = item.textContent.toLowerCase();
         const queryMatched = !query || text.includes(query);
         const filterMatched = activeFilter === "all" || text.includes(activeFilter);
@@ -2506,6 +2978,7 @@
 
     Promise.resolve()
       .then(loadExternalRadar)
+      .then(loadSkillTreeSnapshot)
       .then(() => {
         renderTasks();
         renderLogs();

@@ -1,0 +1,919 @@
+{
+  "updatedAt": "2026-05-16T22:25:16.574653",
+  "hero": {
+    "title": "下載中的教材已同步成技能樹",
+    "copy": "平台現在可以讀到你外接碟裡的練習樹，先練什麼、接著練什麼，都有清楚入口。"
+  },
+  "now": [
+    {
+      "title": "Phrygian Dominant Exercise",
+      "series": "Phrygian",
+      "track": "fretboard-theory",
+      "track_label": "指板 / 理論基礎",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "先把音階、和弦功能、位置感打穩，這條最適合當日常主線。",
+      "extensions": [
+        "把同一個句型轉去 3 個調",
+        "60 / 80 / 100 bpm 三段節拍器練習",
+        "把 GP5 裡的主題句抄到 MuseScore 或 Logic MIDI"
+      ],
+      "post_url": "https://www.patreon.com/posts/phrygian-139719731",
+      "folder": "https://www.patreon.com/posts/phrygian-139719731",
+      "video_url": "https://youtu.be/fYc386JC7AU",
+      "embed_video_url": "https://www.youtube.com/embed/fYc386JC7AU",
+      "preferred_watch_url": "https://www.youtube.com/embed/fYc386JC7AU",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": " Omega Exercise 7 🟦(Pathfinder)",
+      "series": "Omega",
+      "track": "fretboard-theory",
+      "track_label": "指板 / 理論基礎",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "先把音階、和弦功能、位置感打穩，這條最適合當日常主線。",
+      "extensions": [
+        "把同一個句型轉去 3 個調",
+        "60 / 80 / 100 bpm 三段節拍器練習",
+        "把 GP5 裡的主題句抄到 MuseScore 或 Logic MIDI"
+      ],
+      "post_url": "https://www.patreon.com/posts/omega-exercise-7-157534102",
+      "folder": "https://www.patreon.com/posts/omega-exercise-7-157534102",
+      "video_url": "https://youtu.be/mvZ6_e4LPJc",
+      "embed_video_url": "https://www.youtube.com/embed/mvZ6_e4LPJc",
+      "preferred_watch_url": "https://www.youtube.com/embed/mvZ6_e4LPJc",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Riff Exercise",
+      "series": "Riff",
+      "track": "fretboard-theory",
+      "track_label": "指板 / 理論基礎",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "先把音階、和弦功能、位置感打穩，這條最適合當日常主線。",
+      "extensions": [
+        "把同一個句型轉去 3 個調",
+        "60 / 80 / 100 bpm 三段節拍器練習",
+        "把 GP5 裡的主題句抄到 MuseScore 或 Logic MIDI"
+      ],
+      "post_url": "https://www.patreon.com/posts/riff-exercise-84959017",
+      "folder": "https://www.patreon.com/posts/riff-exercise-84959017",
+      "video_url": "https://youtu.be/lPCvFO63ZIw",
+      "embed_video_url": "https://www.youtube.com/embed/lPCvFO63ZIw",
+      "preferred_watch_url": "https://www.youtube.com/embed/lPCvFO63ZIw",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Exercise 179",
+      "series": "Exercise",
+      "track": "fretboard-theory",
+      "track_label": "指板 / 理論基礎",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "先把音階、和弦功能、位置感打穩，這條最適合當日常主線。",
+      "extensions": [
+        "把同一個句型轉去 3 個調",
+        "60 / 80 / 100 bpm 三段節拍器練習",
+        "把 GP5 裡的主題句抄到 MuseScore 或 Logic MIDI"
+      ],
+      "post_url": "https://www.patreon.com/posts/exercise-179-139639596",
+      "folder": "https://www.patreon.com/posts/exercise-179-139639596",
+      "video_url": "https://youtu.be/-AhB7hRjfLc",
+      "embed_video_url": "https://www.youtube.com/embed/-AhB7hRjfLc",
+      "preferred_watch_url": "https://www.youtube.com/embed/-AhB7hRjfLc",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Exercise Mystery 3 (🟦 Pathfinder)",
+      "series": "Exercise",
+      "track": "fretboard-theory",
+      "track_label": "指板 / 理論基礎",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "先把音階、和弦功能、位置感打穩，這條最適合當日常主線。",
+      "extensions": [
+        "把同一個句型轉去 3 個調",
+        "60 / 80 / 100 bpm 三段節拍器練習",
+        "把 GP5 裡的主題句抄到 MuseScore 或 Logic MIDI"
+      ],
+      "post_url": "https://www.patreon.com/posts/exercise-mystery-151956038",
+      "folder": "https://www.patreon.com/posts/exercise-mystery-151956038",
+      "video_url": "https://youtu.be/TvC9NMXD6Ss",
+      "embed_video_url": "https://www.youtube.com/embed/TvC9NMXD6Ss",
+      "preferred_watch_url": "https://www.youtube.com/embed/TvC9NMXD6Ss",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Extensions 16  (🟦 Pathfinder) ",
+      "series": "Extensions",
+      "track": "harmony-touch",
+      "track_label": "和聲 / 觸弦 / 氣氛",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "這條最接近你想做的 Peaceful 風格，適合練和弦進行、音色和右手控制。",
+      "extensions": [
+        "同一進行做 clean / reverb / delay 三種音色",
+        "只留下上方旋律音，改寫成 4 小節變奏",
+        "把和弦名稱寫出來，再做一版慢速錄音"
+      ],
+      "post_url": "https://www.patreon.com/posts/extensions-16-123916949",
+      "folder": "https://www.patreon.com/posts/extensions-16-123916949",
+      "video_url": "https://youtu.be/3T3c0Iio2CA",
+      "embed_video_url": "https://www.youtube.com/embed/3T3c0Iio2CA",
+      "preferred_watch_url": "https://www.youtube.com/embed/3T3c0Iio2CA",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Extensions 17 (🟦 Pathfinder)",
+      "series": "Extensions",
+      "track": "harmony-touch",
+      "track_label": "和聲 / 觸弦 / 氣氛",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "這條最接近你想做的 Peaceful 風格，適合練和弦進行、音色和右手控制。",
+      "extensions": [
+        "同一進行做 clean / reverb / delay 三種音色",
+        "只留下上方旋律音，改寫成 4 小節變奏",
+        "把和弦名稱寫出來，再做一版慢速錄音"
+      ],
+      "post_url": "https://www.patreon.com/posts/extensions-17-126283782",
+      "folder": "https://www.patreon.com/posts/extensions-17-126283782",
+      "video_url": "https://youtu.be/bcE10nKPgbQ",
+      "embed_video_url": "https://www.youtube.com/embed/bcE10nKPgbQ",
+      "preferred_watch_url": "https://www.youtube.com/embed/bcE10nKPgbQ",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Extensions 18 (🟦 Pathfinder)",
+      "series": "Extensions",
+      "track": "harmony-touch",
+      "track_label": "和聲 / 觸弦 / 氣氛",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "這條最接近你想做的 Peaceful 風格，適合練和弦進行、音色和右手控制。",
+      "extensions": [
+        "同一進行做 clean / reverb / delay 三種音色",
+        "只留下上方旋律音，改寫成 4 小節變奏",
+        "把和弦名稱寫出來，再做一版慢速錄音"
+      ],
+      "post_url": "https://www.patreon.com/posts/extensions-18-126934783",
+      "folder": "https://www.patreon.com/posts/extensions-18-126934783",
+      "video_url": "https://youtu.be/GCm-M9MPpoc",
+      "embed_video_url": "https://www.youtube.com/embed/GCm-M9MPpoc",
+      "preferred_watch_url": "https://www.youtube.com/embed/GCm-M9MPpoc",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Extensions 19 ( 🟦 Pathfinder)",
+      "series": "Extensions",
+      "track": "harmony-touch",
+      "track_label": "和聲 / 觸弦 / 氣氛",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "這條最接近你想做的 Peaceful 風格，適合練和弦進行、音色和右手控制。",
+      "extensions": [
+        "同一進行做 clean / reverb / delay 三種音色",
+        "只留下上方旋律音，改寫成 4 小節變奏",
+        "把和弦名稱寫出來，再做一版慢速錄音"
+      ],
+      "post_url": "https://www.patreon.com/posts/extensions-19-128365823",
+      "folder": "https://www.patreon.com/posts/extensions-19-128365823",
+      "video_url": "https://youtu.be/vyo9L_WQfzI",
+      "embed_video_url": "https://www.youtube.com/embed/vyo9L_WQfzI",
+      "preferred_watch_url": "https://www.youtube.com/embed/vyo9L_WQfzI",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Extensions 22 (🟦 Pathfinder)",
+      "series": "Extensions",
+      "track": "harmony-touch",
+      "track_label": "和聲 / 觸弦 / 氣氛",
+      "level": "foundation",
+      "priority_band": "now",
+      "summary": "這條最接近你想做的 Peaceful 風格，適合練和弦進行、音色和右手控制。",
+      "extensions": [
+        "同一進行做 clean / reverb / delay 三種音色",
+        "只留下上方旋律音，改寫成 4 小節變奏",
+        "把和弦名稱寫出來，再做一版慢速錄音"
+      ],
+      "post_url": "https://www.patreon.com/posts/extensions-22-130769932",
+      "folder": "https://www.patreon.com/posts/extensions-22-130769932",
+      "video_url": "https://youtu.be/HKEhjVOtirM",
+      "embed_video_url": "https://www.youtube.com/embed/HKEhjVOtirM",
+      "preferred_watch_url": "https://www.youtube.com/embed/HKEhjVOtirM",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Slow Blues ",
+      "series": "Slow",
+      "track": "blues-language",
+      "track_label": "Blues 樂句語言",
+      "level": "core",
+      "priority_band": "now",
+      "summary": "拿來建立即興語感和收尾句，很適合當每日 10 到 20 分鐘 vocabulary 練習。",
+      "extensions": [
+        "從每首裡抓 2 個句尾做 call-and-response",
+        "換三個節奏版本：原版、延後、切分",
+        "跟 backing track 錄 2 輪 12 小節"
+      ],
+      "post_url": "https://www.patreon.com/posts/slow-blues-55720328",
+      "folder": "https://www.patreon.com/posts/slow-blues-55720328",
+      "video_url": "https://www.youtube.com/watch?v=XW9FAnj-QW8",
+      "embed_video_url": "https://www.youtube.com/embed/XW9FAnj-QW8",
+      "preferred_watch_url": "https://www.youtube.com/embed/XW9FAnj-QW8",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "The Blues Scale (Solo 1)",
+      "series": "The",
+      "track": "blues-language",
+      "track_label": "Blues 樂句語言",
+      "level": "core",
+      "priority_band": "now",
+      "summary": "拿來建立即興語感和收尾句，很適合當每日 10 到 20 分鐘 vocabulary 練習。",
+      "extensions": [
+        "從每首裡抓 2 個句尾做 call-and-response",
+        "換三個節奏版本：原版、延後、切分",
+        "跟 backing track 錄 2 輪 12 小節"
+      ],
+      "post_url": "https://www.patreon.com/posts/blues-scale-solo-61580734",
+      "folder": "https://www.patreon.com/posts/blues-scale-solo-61580734",
+      "video_url": "https://www.youtube.com/watch?v=GD-ZNr-xvI4",
+      "embed_video_url": "https://www.youtube.com/embed/GD-ZNr-xvI4",
+      "preferred_watch_url": "https://www.youtube.com/embed/GD-ZNr-xvI4",
+      "local_video": "",
+      "stream_video_url": ""
+    }
+  ],
+  "next": [
+    {
+      "title": "18 and Life Intro (Skid Row) (🟦 Pathfinder)",
+      "series": "18",
+      "track": "song-study",
+      "track_label": "作品 / 單曲研究",
+      "level": "foundation",
+      "priority_band": "next",
+      "summary": "適合拿來當週目標，練完整結構和表現。",
+      "extensions": [
+        "拆成 intro / main phrase / ending 三段",
+        "做一版更簡化的練習版編排",
+        "用自己的 tone 再錄一次"
+      ],
+      "post_url": "https://www.patreon.com/posts/18-and-life-skid-154675585",
+      "folder": "https://www.patreon.com/posts/18-and-life-skid-154675585",
+      "video_url": "https://youtu.be/OvcjPOUucpw",
+      "embed_video_url": "https://www.youtube.com/embed/OvcjPOUucpw",
+      "preferred_watch_url": "https://www.youtube.com/embed/OvcjPOUucpw",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Inspire (🟦 Pathfinder)",
+      "series": "Inspire",
+      "track": "song-study",
+      "track_label": "作品 / 單曲研究",
+      "level": "foundation",
+      "priority_band": "next",
+      "summary": "適合拿來當週目標，練完整結構和表現。",
+      "extensions": [
+        "拆成 intro / main phrase / ending 三段",
+        "做一版更簡化的練習版編排",
+        "用自己的 tone 再錄一次"
+      ],
+      "post_url": "https://www.patreon.com/posts/inspire-135303795",
+      "folder": "https://www.patreon.com/posts/inspire-135303795",
+      "video_url": "https://youtu.be/KtIXAKH0KJg",
+      "embed_video_url": "https://www.youtube.com/embed/KtIXAKH0KJg",
+      "preferred_watch_url": "https://www.youtube.com/embed/KtIXAKH0KJg",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Bluegrass Style (Lick)",
+      "series": "Bluegrass",
+      "track": "blues-language",
+      "track_label": "Blues 樂句語言",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "拿來建立即興語感和收尾句，很適合當每日 10 到 20 分鐘 vocabulary 練習。",
+      "extensions": [
+        "從每首裡抓 2 個句尾做 call-and-response",
+        "換三個節奏版本：原版、延後、切分",
+        "跟 backing track 錄 2 輪 12 小節"
+      ],
+      "post_url": "https://www.patreon.com/posts/bluegrass-style-62152837",
+      "folder": "https://www.patreon.com/posts/bluegrass-style-62152837",
+      "video_url": "https://www.youtube.com/watch?v=CZuzKmEzOm8",
+      "embed_video_url": "https://www.youtube.com/embed/CZuzKmEzOm8",
+      "preferred_watch_url": "https://www.youtube.com/embed/CZuzKmEzOm8",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Custom Lick 43",
+      "series": "Custom",
+      "track": "blues-language",
+      "track_label": "Blues 樂句語言",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "拿來建立即興語感和收尾句，很適合當每日 10 到 20 分鐘 vocabulary 練習。",
+      "extensions": [
+        "從每首裡抓 2 個句尾做 call-and-response",
+        "換三個節奏版本：原版、延後、切分",
+        "跟 backing track 錄 2 輪 12 小節"
+      ],
+      "post_url": "https://www.patreon.com/posts/custom-lick-43-74340345",
+      "folder": "https://www.patreon.com/posts/custom-lick-43-74340345",
+      "video_url": "https://www.youtube.com/watch?v=W6SNjC6tYI0",
+      "embed_video_url": "https://www.youtube.com/embed/W6SNjC6tYI0",
+      "preferred_watch_url": "https://www.youtube.com/embed/W6SNjC6tYI0",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Evenings 10",
+      "series": "Evenings",
+      "track": "harmony-touch",
+      "track_label": "和聲 / 觸弦 / 氣氛",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "這條最接近你想做的 Peaceful 風格，適合練和弦進行、音色和右手控制。",
+      "extensions": [
+        "同一進行做 clean / reverb / delay 三種音色",
+        "只留下上方旋律音，改寫成 4 小節變奏",
+        "把和弦名稱寫出來，再做一版慢速錄音"
+      ],
+      "post_url": "https://www.patreon.com/posts/evenings-10-79335816",
+      "folder": "https://www.patreon.com/posts/evenings-10-79335816",
+      "video_url": "https://youtu.be/5wW_m4NmZzk",
+      "embed_video_url": "https://www.youtube.com/embed/5wW_m4NmZzk",
+      "preferred_watch_url": "https://www.youtube.com/embed/5wW_m4NmZzk",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Evenings 7",
+      "series": "Evenings",
+      "track": "harmony-touch",
+      "track_label": "和聲 / 觸弦 / 氣氛",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "這條最接近你想做的 Peaceful 風格，適合練和弦進行、音色和右手控制。",
+      "extensions": [
+        "同一進行做 clean / reverb / delay 三種音色",
+        "只留下上方旋律音，改寫成 4 小節變奏",
+        "把和弦名稱寫出來，再做一版慢速錄音"
+      ],
+      "post_url": "https://www.patreon.com/posts/evenings-7-60025549",
+      "folder": "https://www.patreon.com/posts/evenings-7-60025549",
+      "video_url": "https://www.youtube.com/watch?v=xO7pb-f66oQ",
+      "embed_video_url": "https://www.youtube.com/embed/xO7pb-f66oQ",
+      "preferred_watch_url": "https://www.youtube.com/embed/xO7pb-f66oQ",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Evenings 8",
+      "series": "Evenings",
+      "track": "harmony-touch",
+      "track_label": "和聲 / 觸弦 / 氣氛",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "這條最接近你想做的 Peaceful 風格，適合練和弦進行、音色和右手控制。",
+      "extensions": [
+        "同一進行做 clean / reverb / delay 三種音色",
+        "只留下上方旋律音，改寫成 4 小節變奏",
+        "把和弦名稱寫出來，再做一版慢速錄音"
+      ],
+      "post_url": "https://www.patreon.com/posts/evenings-8-66291675",
+      "folder": "https://www.patreon.com/posts/evenings-8-66291675",
+      "video_url": "https://www.youtube.com/watch?v=2u_v9HHI6Bc",
+      "embed_video_url": "https://www.youtube.com/embed/2u_v9HHI6Bc",
+      "preferred_watch_url": "https://www.youtube.com/embed/2u_v9HHI6Bc",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Harmonic Minor - Lick 2 🟠",
+      "series": "Harmonic",
+      "track": "blues-language",
+      "track_label": "Blues 樂句語言",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "拿來建立即興語感和收尾句，很適合當每日 10 到 20 分鐘 vocabulary 練習。",
+      "extensions": [
+        "從每首裡抓 2 個句尾做 call-and-response",
+        "換三個節奏版本：原版、延後、切分",
+        "跟 backing track 錄 2 輪 12 小節"
+      ],
+      "post_url": "https://www.patreon.com/posts/harmonic-minor-2-39189419",
+      "folder": "https://www.patreon.com/posts/harmonic-minor-2-39189419",
+      "video_url": "https://www.youtube.com/watch?fbclid=IwAR0DYKffhajFKMJURvrocSAzlb5KmIGLOtENdBf0Z8oP1AXqh8UIX-8XZzA&v=BKshdFSFb3o&feature=youtu.be",
+      "embed_video_url": "",
+      "preferred_watch_url": "https://www.youtube.com/watch?fbclid=IwAR0DYKffhajFKMJURvrocSAzlb5KmIGLOtENdBf0Z8oP1AXqh8UIX-8XZzA&v=BKshdFSFb3o&feature=youtu.be",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Jazz 251 and 451 (Chords)",
+      "series": "Jazz",
+      "track": "jazz-voicing",
+      "track_label": "Jazz 和聲 / Voicing",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "偏和弦色彩與標準進行，適合搭配 MuseScore 做記譜整理。",
+      "extensions": [
+        "把 251 / 451 進行移到 4 個 key",
+        "每個 voicing 都找最上方旋律音",
+        "丟進 Logic 做 Rhodes + guitar 的 8 小節 loop"
+      ],
+      "post_url": "https://www.patreon.com/posts/jazz-251-and-451-53254843",
+      "folder": "https://www.patreon.com/posts/jazz-251-and-451-53254843",
+      "video_url": "https://www.youtube.com/watch?v=IgTyn6Hh7z0",
+      "embed_video_url": "https://www.youtube.com/embed/IgTyn6Hh7z0",
+      "preferred_watch_url": "https://www.youtube.com/embed/IgTyn6Hh7z0",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Jazz 251🎷Pentatonic Performance",
+      "series": "Jazz",
+      "track": "jazz-voicing",
+      "track_label": "Jazz 和聲 / Voicing",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "偏和弦色彩與標準進行，適合搭配 MuseScore 做記譜整理。",
+      "extensions": [
+        "把 251 / 451 進行移到 4 個 key",
+        "每個 voicing 都找最上方旋律音",
+        "丟進 Logic 做 Rhodes + guitar 的 8 小節 loop"
+      ],
+      "post_url": "https://www.patreon.com/posts/jazz-performance-38305385",
+      "folder": "https://www.patreon.com/posts/jazz-performance-38305385",
+      "video_url": "https://www.youtube.com/watch?v=77GyNXJ4yFQ&feature=youtu.be&fbclid=IwAR3cayS0JuAkIwgtrjqnYSHDtITPvrbD-8Uhl3PPDv3qo3eWlW9ukBnIg9o",
+      "embed_video_url": "https://www.youtube.com/embed/77GyNXJ4yFQ",
+      "preferred_watch_url": "https://www.youtube.com/embed/77GyNXJ4yFQ",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Jazz 251🎷Pentatonic Slower Version",
+      "series": "Jazz",
+      "track": "jazz-voicing",
+      "track_label": "Jazz 和聲 / Voicing",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "偏和弦色彩與標準進行，適合搭配 MuseScore 做記譜整理。",
+      "extensions": [
+        "把 251 / 451 進行移到 4 個 key",
+        "每個 voicing 都找最上方旋律音",
+        "丟進 Logic 做 Rhodes + guitar 的 8 小節 loop"
+      ],
+      "post_url": "https://www.patreon.com/posts/jazz-slower-38305618",
+      "folder": "https://www.patreon.com/posts/jazz-slower-38305618",
+      "video_url": "https://www.youtube.com/watch?v=NBasWBKEOq8&feature=youtu.be&fbclid=IwAR1Dydqni8b7d2CdYwkLAeiQ540mArIJ6zDgVQ1yiePnJPj29986dBMqDg0",
+      "embed_video_url": "https://www.youtube.com/embed/NBasWBKEOq8",
+      "preferred_watch_url": "https://www.youtube.com/embed/NBasWBKEOq8",
+      "local_video": "",
+      "stream_video_url": ""
+    },
+    {
+      "title": "Jazz Standard (Solo 2)",
+      "series": "Jazz",
+      "track": "jazz-voicing",
+      "track_label": "Jazz 和聲 / Voicing",
+      "level": "core",
+      "priority_band": "next",
+      "summary": "偏和弦色彩與標準進行，適合搭配 MuseScore 做記譜整理。",
+      "extensions": [
+        "把 251 / 451 進行移到 4 個 key",
+        "每個 voicing 都找最上方旋律音",
+        "丟進 Logic 做 Rhodes + guitar 的 8 小節 loop"
+      ],
+      "post_url": "https://www.patreon.com/posts/jazz-standard-2-54899523",
+      "folder": "https://www.patreon.com/posts/jazz-standard-2-54899523",
+      "video_url": "https://www.youtube.com/watch?v=s9smgXWVqzI",
+      "embed_video_url": "https://www.youtube.com/embed/s9smgXWVqzI",
+      "preferred_watch_url": "https://www.youtube.com/embed/s9smgXWVqzI",
+      "local_video": "",
+      "stream_video_url": ""
+    }
+  ],
+  "branches": [
+    {
+      "id": "01_節奏與基礎",
+      "title": "01_節奏與基礎",
+      "summary": "先點亮拍點、位置感、調式與基本練習曲，這裡是主線底盤。",
+      "current": [
+        {
+          "title": "Phrygian Dominant Exercise",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/phrygian-139719731",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/fYc386JC7AU",
+          "embed_video_url": "https://www.youtube.com/embed/fYc386JC7AU",
+          "preferred_watch_url": "https://www.youtube.com/embed/fYc386JC7AU"
+        },
+        {
+          "title": " Omega Exercise 7 🟦(Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/omega-exercise-7-157534102",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/mvZ6_e4LPJc",
+          "embed_video_url": "https://www.youtube.com/embed/mvZ6_e4LPJc",
+          "preferred_watch_url": "https://www.youtube.com/embed/mvZ6_e4LPJc"
+        },
+        {
+          "title": "Riff Exercise",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/riff-exercise-84959017",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/lPCvFO63ZIw",
+          "embed_video_url": "https://www.youtube.com/embed/lPCvFO63ZIw",
+          "preferred_watch_url": "https://www.youtube.com/embed/lPCvFO63ZIw"
+        },
+        {
+          "title": "Exercise 179",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/exercise-179-139639596",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/-AhB7hRjfLc",
+          "embed_video_url": "https://www.youtube.com/embed/-AhB7hRjfLc",
+          "preferred_watch_url": "https://www.youtube.com/embed/-AhB7hRjfLc"
+        },
+        {
+          "title": "Exercise Mystery 3 (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/exercise-mystery-151956038",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/TvC9NMXD6Ss",
+          "embed_video_url": "https://www.youtube.com/embed/TvC9NMXD6Ss",
+          "preferred_watch_url": "https://www.youtube.com/embed/TvC9NMXD6Ss"
+        },
+        {
+          "title": "Exercise Mystery 4 (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/exercise-mystery-152692026",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/lvc_BFvZI08",
+          "embed_video_url": "https://www.youtube.com/embed/lvc_BFvZI08",
+          "preferred_watch_url": "https://www.youtube.com/embed/lvc_BFvZI08"
+        }
+      ]
+    },
+    {
+      "id": "02_和聲與氣氛",
+      "title": "02_和聲與氣氛",
+      "summary": "Peaceful / Tsubasa / Extensions 這條線，專注和弦進行、觸弦與空氣感。",
+      "current": [
+        {
+          "title": "Extensions 16  (🟦 Pathfinder) ",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/extensions-16-123916949",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/3T3c0Iio2CA",
+          "embed_video_url": "https://www.youtube.com/embed/3T3c0Iio2CA",
+          "preferred_watch_url": "https://www.youtube.com/embed/3T3c0Iio2CA"
+        },
+        {
+          "title": "Extensions 17 (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/extensions-17-126283782",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/bcE10nKPgbQ",
+          "embed_video_url": "https://www.youtube.com/embed/bcE10nKPgbQ",
+          "preferred_watch_url": "https://www.youtube.com/embed/bcE10nKPgbQ"
+        },
+        {
+          "title": "Extensions 18 (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/extensions-18-126934783",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/GCm-M9MPpoc",
+          "embed_video_url": "https://www.youtube.com/embed/GCm-M9MPpoc",
+          "preferred_watch_url": "https://www.youtube.com/embed/GCm-M9MPpoc"
+        },
+        {
+          "title": "Extensions 19 ( 🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/extensions-19-128365823",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/vyo9L_WQfzI",
+          "embed_video_url": "https://www.youtube.com/embed/vyo9L_WQfzI",
+          "preferred_watch_url": "https://www.youtube.com/embed/vyo9L_WQfzI"
+        },
+        {
+          "title": "Extensions 22 (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/extensions-22-130769932",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/HKEhjVOtirM",
+          "embed_video_url": "https://www.youtube.com/embed/HKEhjVOtirM",
+          "preferred_watch_url": "https://www.youtube.com/embed/HKEhjVOtirM"
+        },
+        {
+          "title": "Extensions 23 (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/extensions-23-140430876",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/Iu2vsPfdeHk",
+          "embed_video_url": "https://www.youtube.com/embed/Iu2vsPfdeHk",
+          "preferred_watch_url": "https://www.youtube.com/embed/Iu2vsPfdeHk"
+        }
+      ]
+    },
+    {
+      "id": "03_Blues語言",
+      "title": "03_Blues語言",
+      "summary": "建立 lick vocabulary、句尾、推拉拍與藍調語感。",
+      "current": [
+        {
+          "title": "Slow Blues ",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/slow-blues-55720328",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://www.youtube.com/watch?v=XW9FAnj-QW8",
+          "embed_video_url": "https://www.youtube.com/embed/XW9FAnj-QW8",
+          "preferred_watch_url": "https://www.youtube.com/embed/XW9FAnj-QW8"
+        },
+        {
+          "title": "The Blues Scale (Solo 1)",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/blues-scale-solo-61580734",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://www.youtube.com/watch?v=GD-ZNr-xvI4",
+          "embed_video_url": "https://www.youtube.com/embed/GD-ZNr-xvI4",
+          "preferred_watch_url": "https://www.youtube.com/embed/GD-ZNr-xvI4"
+        },
+        {
+          "title": "The Blues Scale (Solo 2)",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/blues-scale-solo-61733293",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://www.youtube.com/watch?v=adaj0Azs5zk",
+          "embed_video_url": "https://www.youtube.com/embed/adaj0Azs5zk",
+          "preferred_watch_url": "https://www.youtube.com/embed/adaj0Azs5zk"
+        },
+        {
+          "title": "Blues Bridge (Lick 1)🔵",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/blues-bridge-1-45897703",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://www.youtube.com/watch?fbclid=IwAR3PR9uEs422Wk0oUAAxFbE4oAfmljcH4YT1nF2ild7dj4a94uvgDE6GuQw&v=YLdLtKDsVJs&feature=youtu.be",
+          "embed_video_url": "",
+          "preferred_watch_url": "https://www.youtube.com/watch?fbclid=IwAR3PR9uEs422Wk0oUAAxFbE4oAfmljcH4YT1nF2ild7dj4a94uvgDE6GuQw&v=YLdLtKDsVJs&feature=youtu.be"
+        },
+        {
+          "title": "Blues Bridge (Lick 2)🔵",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/blues-bridge-2-45897978",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://www.youtube.com/watch?fbclid=IwAR0FcmKNbRXucBm4Dlbe_xvIpaaxiznBEJkQEcXJqngbuWku6uGXaqBjr7U&v=PRI3FSjDmhU&feature=youtu.be",
+          "embed_video_url": "",
+          "preferred_watch_url": "https://www.youtube.com/watch?fbclid=IwAR0FcmKNbRXucBm4Dlbe_xvIpaaxiznBEJkQEcXJqngbuWku6uGXaqBjr7U&v=PRI3FSjDmhU&feature=youtu.be"
+        },
+        {
+          "title": "Blues Mood 🔵 (1 or 2❓)",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/blues-mood-1-or-46281684",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://www.youtube.com/watch?fbclid=IwAR0F78iKGKQIO7x97PgkSv2GgdCQzUndapwH3PPH4U05zPnQmIWjocFNnHk&v=zvF3--qAV3E&feature=youtu.be",
+          "embed_video_url": "",
+          "preferred_watch_url": "https://www.youtube.com/watch?fbclid=IwAR0F78iKGKQIO7x97PgkSv2GgdCQzUndapwH3PPH4U05zPnQmIWjocFNnHk&v=zvF3--qAV3E&feature=youtu.be"
+        }
+      ]
+    },
+    {
+      "id": "04_Jazz和聲",
+      "title": "04_Jazz和聲",
+      "summary": "251、451、voicing、standard 類教材都放在這裡。",
+      "current": [
+        {
+          "title": "Smooth 05 Pentatonic Exercise",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/smooth-05-51414874",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://www.youtube.com/watch?v=s7B1_yQfPUc",
+          "embed_video_url": "https://www.youtube.com/embed/s7B1_yQfPUc",
+          "preferred_watch_url": "https://www.youtube.com/embed/s7B1_yQfPUc"
+        },
+        {
+          "title": "Coffee Jazz 01 (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/coffee-jazz-01-153991192",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/nY2XvLGDE9w",
+          "embed_video_url": "https://www.youtube.com/embed/nY2XvLGDE9w",
+          "preferred_watch_url": "https://www.youtube.com/embed/nY2XvLGDE9w"
+        },
+        {
+          "title": "Standard Sessions 1/10 (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/standard-1-10-151377742",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/gzmqwnbXuPA",
+          "embed_video_url": "https://www.youtube.com/embed/gzmqwnbXuPA",
+          "preferred_watch_url": "https://www.youtube.com/embed/gzmqwnbXuPA"
+        },
+        {
+          "title": "Jazz Standard 2 ( 🟩 Intermediate )",
+          "level": "intermediate",
+          "folder": "https://www.patreon.com/posts/jazz-standard-2-140660377",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/5_eJN59F0j8",
+          "embed_video_url": "https://www.youtube.com/embed/5_eJN59F0j8",
+          "preferred_watch_url": "https://www.youtube.com/embed/5_eJN59F0j8"
+        },
+        {
+          "title": "Smooth 11 (🟩 Intermediate)",
+          "level": "intermediate",
+          "folder": "https://www.patreon.com/posts/smooth-11-143497451",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/sAeEgO1LVFg",
+          "embed_video_url": "https://www.youtube.com/embed/sAeEgO1LVFg",
+          "preferred_watch_url": "https://www.youtube.com/embed/sAeEgO1LVFg"
+        },
+        {
+          "title": "Standard Sessions 2/10 (🟩 Intermediate)",
+          "level": "intermediate",
+          "folder": "https://www.patreon.com/posts/standard-2-10-152132178",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/cMEKd3_bg6s",
+          "embed_video_url": "https://www.youtube.com/embed/cMEKd3_bg6s",
+          "preferred_watch_url": "https://www.youtube.com/embed/cMEKd3_bg6s"
+        }
+      ]
+    },
+    {
+      "id": "05_技巧與Riff",
+      "title": "05_技巧與Riff",
+      "summary": "速度、riff、string skipping、twister 類重手感內容。",
+      "current": [
+        {
+          "title": "String Skipping Exercises",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/string-skipping-119564423",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/W69af62MDx4",
+          "embed_video_url": "https://www.youtube.com/embed/W69af62MDx4",
+          "preferred_watch_url": "https://www.youtube.com/embed/W69af62MDx4"
+        },
+        {
+          "title": "String Skipping Exercises (With Guitar Pro)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/string-skipping-133474469",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/mMALFOQQi-o",
+          "embed_video_url": "https://www.youtube.com/embed/mMALFOQQi-o",
+          "preferred_watch_url": "https://www.youtube.com/embed/mMALFOQQi-o"
+        },
+        {
+          "title": "Twister 39 (Etude)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/twister-39-etude-156672586",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/glBk5JL2sZ4",
+          "embed_video_url": "https://www.youtube.com/embed/glBk5JL2sZ4",
+          "preferred_watch_url": "https://www.youtube.com/embed/glBk5JL2sZ4"
+        },
+        {
+          "title": " Twister 13 (🟩 Intermediate)",
+          "level": "intermediate",
+          "folder": "https://www.patreon.com/posts/twister-13-112048214",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/KhfOGJNBmaA",
+          "embed_video_url": "https://www.youtube.com/embed/KhfOGJNBmaA",
+          "preferred_watch_url": "https://www.youtube.com/embed/KhfOGJNBmaA"
+        },
+        {
+          "title": "New Twister 8 Remastered (🟩 Intermediate)",
+          "level": "intermediate",
+          "folder": "https://www.patreon.com/posts/new-twister-8-155940536",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/qWA4hXTZKzM",
+          "embed_video_url": "https://www.youtube.com/embed/qWA4hXTZKzM",
+          "preferred_watch_url": "https://www.youtube.com/embed/qWA4hXTZKzM"
+        },
+        {
+          "title": "Twister 12",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/twister-12-111724144",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/1FkClyOftQI",
+          "embed_video_url": "https://www.youtube.com/embed/1FkClyOftQI",
+          "preferred_watch_url": "https://www.youtube.com/embed/1FkClyOftQI"
+        }
+      ]
+    },
+    {
+      "id": "06_作品與應用",
+      "title": "06_作品與應用",
+      "summary": "完整曲目與單曲研究，適合做週目標或錄音任務。",
+      "current": [
+        {
+          "title": "18 and Life Intro (Skid Row) (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/18-and-life-skid-154675585",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/OvcjPOUucpw",
+          "embed_video_url": "https://www.youtube.com/embed/OvcjPOUucpw",
+          "preferred_watch_url": "https://www.youtube.com/embed/OvcjPOUucpw"
+        },
+        {
+          "title": "Inspire (🟦 Pathfinder)",
+          "level": "foundation",
+          "folder": "https://www.patreon.com/posts/inspire-135303795",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/KtIXAKH0KJg",
+          "embed_video_url": "https://www.youtube.com/embed/KtIXAKH0KJg",
+          "preferred_watch_url": "https://www.youtube.com/embed/KtIXAKH0KJg"
+        },
+        {
+          "title": "Jam in D 2",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/jam-in-d-2-115075314",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/sYSugudYQ5Y",
+          "embed_video_url": "https://www.youtube.com/embed/sYSugudYQ5Y",
+          "preferred_watch_url": "https://www.youtube.com/embed/sYSugudYQ5Y"
+        },
+        {
+          "title": "Jam in D!",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/jam-in-d-107456202",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/zFJ_mKJH_jM",
+          "embed_video_url": "https://www.youtube.com/embed/zFJ_mKJH_jM",
+          "preferred_watch_url": "https://www.youtube.com/embed/zFJ_mKJH_jM"
+        },
+        {
+          "title": "Melodic Control Session",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/melodic-control-156355141",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/Xwjgy5hph6g",
+          "embed_video_url": "https://www.youtube.com/embed/Xwjgy5hph6g",
+          "preferred_watch_url": "https://www.youtube.com/embed/Xwjgy5hph6g"
+        },
+        {
+          "title": "Amazing Grace",
+          "level": "core",
+          "folder": "https://www.patreon.com/posts/amazing-grace-52652857",
+          "local_video": "",
+          "stream_video_url": "",
+          "video_url": "https://youtu.be/xmpJhIJbKHM",
+          "embed_video_url": "https://www.youtube.com/embed/xmpJhIJbKHM",
+          "preferred_watch_url": "https://www.youtube.com/embed/xmpJhIJbKHM"
+        }
+      ]
+    }
+  ]
+}
