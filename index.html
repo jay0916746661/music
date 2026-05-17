@@ -396,6 +396,23 @@
       background: #000;
     }
 
+    .score-preview {
+      width: 100%;
+      min-height: 420px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      overflow: hidden;
+      background: rgba(8, 11, 18, 0.88);
+    }
+
+    .score-preview iframe {
+      width: 100%;
+      min-height: 420px;
+      border: 0;
+      display: block;
+      background: #fff;
+    }
+
     .placeholder {
       width: 100%;
       height: 100%;
@@ -484,6 +501,64 @@
       height: 8px;
       border-radius: 50%;
       background: var(--accent);
+    }
+
+    .status-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .status-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .status-button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 999px;
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .status-button.active {
+      border-color: rgba(255, 163, 77, 0.4);
+      background: rgba(255, 163, 77, 0.12);
+      color: var(--accent);
+    }
+
+    .status-meta {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .status-card {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .status-card strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+
+    .note-field {
+      width: 100%;
+      min-height: 92px;
+      resize: vertical;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 12px 14px;
+      font: inherit;
     }
 
     .mindmap {
@@ -633,8 +708,22 @@
         <div class="action-row" id="detail-actions"></div>
 
         <div class="detail-block">
+          <h4>練習狀態</h4>
+          <div class="status-grid">
+            <div class="status-chips" id="detail-status-controls"></div>
+            <div class="status-meta" id="detail-status-meta"></div>
+            <textarea class="note-field" id="detail-note" placeholder="記今天卡住的點、指法提醒、下次要先修的段落..."></textarea>
+          </div>
+        </div>
+
+        <div class="detail-block">
           <h4>譜面與素材</h4>
           <div class="file-list" id="detail-files"></div>
+        </div>
+
+        <div class="detail-block">
+          <h4>譜面預覽</h4>
+          <div id="detail-preview"></div>
         </div>
 
         <div class="detail-block">
@@ -688,10 +777,12 @@
     </section>
   </main>
 
+  <script src="./data/score-hub.local.js"></script>
   <script>
     const state = {
       mode: "public",
       data: null,
+      progress: {},
       selectedId: null,
       filters: {
         query: "",
@@ -702,7 +793,8 @@
         sort: "priority"
       }
     };
-    const dataSource = window.location.protocol === "file:" ? "./data/score-hub.json" : "./data/score-hub-public.json";
+    const isFileMode = window.location.protocol === "file:";
+    const dataSource = isFileMode ? "./data/score-hub.json" : "./data/score-hub-public.json";
 
     const heroStats = document.getElementById("hero-stats");
     const quickSearch = document.getElementById("quick-search");
@@ -722,19 +814,69 @@
     const detailStage = document.getElementById("detail-stage");
     const detailActions = document.getElementById("detail-actions");
     const detailFiles = document.getElementById("detail-files");
+    const detailPreview = document.getElementById("detail-preview");
     const detailPractice = document.getElementById("detail-practice");
+    const detailStatusControls = document.getElementById("detail-status-controls");
+    const detailStatusMeta = document.getElementById("detail-status-meta");
+    const detailNote = document.getElementById("detail-note");
+    const progressStoreKey = "score-hub-progress-v1";
+    const statusOptions = [
+      { value: "idle", label: "未開始" },
+      { value: "active", label: "練習中" },
+      { value: "solid", label: "穩定了" }
+    ];
 
     function formatCountMap(formats) {
       return Object.entries(formats || {}).map(([key, value]) => `${key} ${value}`);
     }
 
+    function loadProgress() {
+      try {
+        return JSON.parse(localStorage.getItem(progressStoreKey) || "{}");
+      } catch {
+        return {};
+      }
+    }
+
+    function saveProgress() {
+      localStorage.setItem(progressStoreKey, JSON.stringify(state.progress));
+    }
+
+    function getProgress(lessonId) {
+      return state.progress[lessonId] || { status: "idle", sessions: 0, lastPracticed: "", nextReview: "", note: "" };
+    }
+
+    function todayStamp() {
+      return new Date().toISOString().slice(0, 10);
+    }
+
+    function addDays(dateText, days) {
+      const base = new Date(`${dateText}T00:00:00`);
+      base.setDate(base.getDate() + days);
+      return base.toISOString().slice(0, 10);
+    }
+
+    function reviewDateForStatus(status, dateText) {
+      if (!dateText) return "";
+      if (status === "solid") return addDays(dateText, 7);
+      if (status === "active") return addDays(dateText, 3);
+      return addDays(dateText, 1);
+    }
+
+    function setProgress(lessonId, patch) {
+      const current = getProgress(lessonId);
+      state.progress[lessonId] = { ...current, ...patch };
+      saveProgress();
+    }
+
     function renderHeroStats() {
       const stats = state.data.stats;
+      const activeCount = Object.values(state.progress).filter((item) => item.status && item.status !== "idle").length;
       heroStats.innerHTML = `
         <article class="stat-card"><span>Lessons</span><strong>${stats.lesson_count}</strong></article>
         <article class="stat-card"><span>PDF Scores</span><strong>${stats.pdf_count}</strong></article>
         <article class="stat-card"><span>GP Files</span><strong>${stats.gp_count}</strong></article>
-        <article class="stat-card"><span>Video Sources</span><strong>${stats.video_count}</strong></article>
+        <article class="stat-card"><span>Active Queue</span><strong>${activeCount}</strong></article>
       `;
       libraryStatus.textContent = state.mode === "local"
         ? "本地模式：可直接打開你硬碟裡的譜面、GP、音檔與影片。"
@@ -884,6 +1026,8 @@
       }
 
       lessons.forEach((lesson) => {
+        const progress = getProgress(lesson.id);
+        const progressLabel = progress.status === "solid" ? "穩定" : progress.status === "active" ? "練習中" : "未開始";
         const card = document.createElement("article");
         card.className = "lesson-card" + (lesson.id === state.selectedId ? " active" : "");
         card.innerHTML = `
@@ -899,6 +1043,7 @@
             <span>${lesson.series}</span>
             <span>${lesson.level}</span>
             <span>${lesson.file_total} files</span>
+            <span>${progressLabel}</span>
           </div>
           <div class="format-strip">
             ${Object.entries(lesson.formats).map(([key, value]) => `<span class="format-pill">${key} ${value}</span>`).join("")}
@@ -973,6 +1118,75 @@
       target.appendChild(block);
     }
 
+    function renderPreview(lesson) {
+      detailPreview.innerHTML = "";
+      if (state.mode === "local" && lesson.pdf_links.length) {
+        const wrapper = document.createElement("div");
+        wrapper.className = "score-preview";
+        const iframe = document.createElement("iframe");
+        iframe.src = `${lesson.pdf_links[0].href}#toolbar=0&navpanes=0&view=FitH`;
+        wrapper.appendChild(iframe);
+        detailPreview.appendChild(wrapper);
+        return;
+      }
+      detailPreview.innerHTML = `<div class="empty">${state.mode === "public" ? "公開版不直接嵌入本地 PDF。請在本地模式打開譜面預覽。" : "這份教材目前沒有可預覽的 PDF。"}<\/div>`;
+    }
+
+    function renderProgress(lesson) {
+      const progress = getProgress(lesson.id);
+      detailStatusControls.innerHTML = "";
+      statusOptions.forEach((option) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `status-button${progress.status === option.value ? " active" : ""}`;
+        button.textContent = option.label;
+        button.addEventListener("click", () => {
+          const practicedOn = progress.lastPracticed || todayStamp();
+          setProgress(lesson.id, {
+            status: option.value,
+            nextReview: reviewDateForStatus(option.value, practicedOn)
+          });
+          renderHeroStats();
+          renderLibrary();
+          renderProgress(lesson);
+        });
+        detailStatusControls.appendChild(button);
+      });
+
+      const practiceButton = document.createElement("button");
+      practiceButton.type = "button";
+      practiceButton.className = "status-button";
+      practiceButton.textContent = "今天已練";
+      practiceButton.addEventListener("click", () => {
+        const latest = getProgress(lesson.id);
+        const stamp = todayStamp();
+        const nextStatus = latest.status === "idle" ? "active" : latest.status;
+        setProgress(lesson.id, {
+          status: nextStatus,
+          sessions: (latest.sessions || 0) + 1,
+          lastPracticed: stamp,
+          nextReview: reviewDateForStatus(nextStatus, stamp)
+        });
+        renderHeroStats();
+        renderLibrary();
+        renderProgress(lesson);
+      });
+      detailStatusControls.appendChild(practiceButton);
+
+      const latest = getProgress(lesson.id);
+      detailStatusMeta.innerHTML = `
+        <div class="status-card"><small class="note">目前狀態</small><strong>${statusOptions.find((item) => item.value === latest.status)?.label || "未開始"}</strong><span>${lesson.priority_band} priority</span></div>
+        <div class="status-card"><small class="note">累積練習</small><strong>${latest.sessions || 0} 次</strong><span>每按一次「今天已練」會累加</span></div>
+        <div class="status-card"><small class="note">上次練習</small><strong>${latest.lastPracticed || "尚未記錄"}</strong><span>用來判斷是否該回鍋</span></div>
+        <div class="status-card"><small class="note">下次複習</small><strong>${latest.nextReview || "待安排"}</strong><span>依狀態自動推 1 / 3 / 7 天</span></div>
+      `;
+
+      detailNote.value = latest.note || "";
+      detailNote.oninput = () => {
+        setProgress(lesson.id, { note: detailNote.value });
+      };
+    }
+
     function renderDetail() {
       const lesson = state.data.lessons.find((item) => item.id === state.selectedId);
       if (!lesson) return;
@@ -1019,6 +1233,8 @@
         });
         detailFiles.appendChild(summary);
       }
+      renderPreview(lesson);
+      renderProgress(lesson);
 
       detailPractice.innerHTML = "";
       lesson.practice_steps.forEach((step) => {
@@ -1063,19 +1279,26 @@
       renderAll();
     });
 
-    fetch(dataSource, { cache: "no-store" })
-      .then((response) => response.json())
-      .then((data) => {
+    function bootWithData(data) {
         state.data = data;
+        state.progress = loadProgress();
         state.mode = data.mode || "public";
         state.selectedId = data.featured[0]?.id || data.lessons[0]?.id || null;
         renderHeroStats();
         renderAll();
-      })
-      .catch(() => {
+    }
+
+    if (isFileMode && window.__SCORE_HUB_LOCAL__) {
+      bootWithData(window.__SCORE_HUB_LOCAL__);
+    } else {
+      fetch(dataSource, { cache: "no-store" })
+        .then((response) => response.json())
+        .then(bootWithData)
+        .catch(() => {
         libraryStatus.textContent = "譜面資料載入失敗。";
         lessonList.innerHTML = `<div class="empty">無法載入 ${dataSource}。</div>`;
-      });
+        });
+    }
   </script>
 </body>
 </html>

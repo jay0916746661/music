@@ -22,6 +22,7 @@ MANIFEST = ROOT / "_manifest" / "manifest.json"
 CATALOG = ROOT / "_manifest" / "practice-catalog.json"
 OUT = PROJECT_ROOT / "data" / "score-hub.json"
 PUBLIC_OUT = PROJECT_ROOT / "data" / "score-hub-public.json"
+LOCAL_JS_OUT = PROJECT_ROOT / "data" / "score-hub.local.js"
 
 
 def file_url(path: Path) -> str:
@@ -177,6 +178,10 @@ def main() -> int:
     }
 
     OUT.write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
+    LOCAL_JS_OUT.write_text(
+        "window.__SCORE_HUB_LOCAL__ = " + json.dumps(payload, ensure_ascii=False, indent=2) + ";\n",
+        encoding="utf-8",
+    )
     public_lessons = []
     for lesson in lessons:
         public_lessons.append({
@@ -201,6 +206,7 @@ def main() -> int:
     print(f"lessons={len(lessons)}")
     print(f"wrote={OUT}")
     print(f"wrote={PUBLIC_OUT}")
+    print(f"wrote={LOCAL_JS_OUT}")
     return 0
 
 
