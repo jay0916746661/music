@@ -236,6 +236,53 @@
       color: var(--teal);
     }
 
+    .preset-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .preset-button {
+      text-align: left;
+      display: grid;
+      gap: 4px;
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.025);
+      color: var(--ink);
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .preset-button strong {
+      font-size: 14px;
+    }
+
+    .preset-button small {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .filter-summary {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .summary-pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 32px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+      color: var(--muted);
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+
     .series-list,
     .track-list,
     .priority-list,
@@ -649,6 +696,10 @@
         <div class="stack">
           <input class="field" id="quick-search" type="search" placeholder="搜尋曲名、系列、理論、blues、Tsubasa...">
           <div>
+            <small class="note">快速分類</small>
+            <div class="preset-list" id="preset-list"></div>
+          </div>
+          <div>
             <small class="note">技能線</small>
             <div class="chip-group" id="track-filters"></div>
           </div>
@@ -663,6 +714,10 @@
           <div>
             <small class="note">練習狀態</small>
             <div class="chip-group" id="progress-filters"></div>
+          </div>
+          <div>
+            <small class="note">目前分類</small>
+            <div class="filter-summary" id="filter-summary"></div>
           </div>
         </div>
         <div class="detail-block">
@@ -817,6 +872,8 @@
     const levelFilters = document.getElementById("level-filters");
     const formatFilters = document.getElementById("format-filters");
     const progressFilters = document.getElementById("progress-filters");
+    const presetList = document.getElementById("preset-list");
+    const filterSummary = document.getElementById("filter-summary");
     const seriesList = document.getElementById("series-list");
     const priorityList = document.getElementById("priority-list");
     const todayList = document.getElementById("today-list");
@@ -843,6 +900,50 @@
       { value: "idle", label: "未開始" },
       { value: "active", label: "練習中" },
       { value: "solid", label: "穩定了" }
+    ];
+    const filterPresets = [
+      {
+        key: "today",
+        label: "今天先練",
+        description: "先看今天該複習和正在練的教材。",
+        apply() {
+          const counts = getProgressFilterItems().reduce((acc, item) => ({ ...acc, [item.value]: item.count }), {});
+          const progress = counts.review > 0 ? "review" : counts.active > 0 ? "active" : "all";
+          state.filters = { ...state.filters, query: "", track: "all", level: "all", format: "all", progress, series: "all", sort: "priority" };
+          quickSearch.value = "";
+          sortSelect.value = "priority";
+        }
+      },
+      {
+        key: "theory",
+        label: "理論 / 指板",
+        description: "Circle、Omega、Exercise 類先集中看。",
+        apply() {
+          state.filters = { ...state.filters, query: "", track: "指板 / 理論基礎", level: "all", format: "pdf", progress: "all", series: "all", sort: "priority" };
+          quickSearch.value = "";
+          sortSelect.value = "priority";
+        }
+      },
+      {
+        key: "harmony",
+        label: "和聲 / 氣氛",
+        description: "Peaceful、Tsubasa、Extensions 這條線。",
+        apply() {
+          state.filters = { ...state.filters, query: "", track: "和聲 / 觸弦 / 氣氛", level: "all", format: "pdf", progress: "all", series: "all", sort: "priority" };
+          quickSearch.value = "";
+          sortSelect.value = "priority";
+        }
+      },
+      {
+        key: "gp",
+        label: "直接開 GP 練",
+        description: "只看有 Guitar Pro 的教材，節奏和指法最好對。",
+        apply() {
+          state.filters = { ...state.filters, query: "", track: "all", level: "all", format: "gp", progress: "all", series: "all", sort: "priority" };
+          quickSearch.value = "";
+          sortSelect.value = "priority";
+        }
+      }
     ];
 
     function formatCountMap(formats) {
@@ -983,7 +1084,52 @@
       });
     }
 
+    function renderPresetList() {
+      presetList.innerHTML = "";
+      filterPresets.forEach((preset) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "preset-button";
+        button.innerHTML = `<strong>${preset.label}</strong><small>${preset.description}</small>`;
+        button.addEventListener("click", () => {
+          preset.apply();
+          renderAll();
+        });
+        presetList.appendChild(button);
+      });
+    }
+
+    function renderFilterSummary() {
+      const pills = [];
+      if (state.filters.query) pills.push(`搜尋 ${state.filters.query}`);
+      if (state.filters.track !== "all") pills.push(state.filters.track);
+      if (state.filters.level !== "all") pills.push(state.filters.level);
+      if (state.filters.format !== "all") pills.push(`格式 ${state.filters.format}`);
+      if (state.filters.progress !== "all") {
+        const labelMap = { active: "練習中", review: "今天複習", solid: "穩定了", idle: "未開始" };
+        pills.push(labelMap[state.filters.progress] || state.filters.progress);
+      }
+      if (state.filters.series !== "all") pills.push(`系列 ${state.filters.series}`);
+      if (state.filters.sort !== "priority") {
+        const sortMap = { title: "依標題", series: "依系列" };
+        pills.push(sortMap[state.filters.sort] || state.filters.sort);
+      }
+
+      filterSummary.innerHTML = "";
+      if (!pills.length) {
+        filterSummary.innerHTML = '<span class="summary-pill">全部教材</span>';
+        return;
+      }
+      pills.forEach((pill) => {
+        const el = document.createElement("span");
+        el.className = "summary-pill";
+        el.textContent = pill;
+        filterSummary.appendChild(el);
+      });
+    }
+
     function renderSidebar() {
+      renderPresetList();
       renderFilterGroup(
         trackFilters,
         state.data.tracks.map((item) => ({ label: item.name, value: item.name, count: item.count })),
@@ -1017,9 +1163,14 @@
         state.filters.progress,
         (value) => { state.filters.progress = value; renderAll(); }
       );
+      renderFilterSummary();
 
       seriesList.innerHTML = "";
-      state.data.series.slice(0, 14).forEach((item) => {
+      state.data.series
+        .slice()
+        .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "zh-Hant"))
+        .slice(0, 14)
+        .forEach((item) => {
         const row = document.createElement("button");
         row.type = "button";
         row.className = "series-row";
