@@ -627,31 +627,103 @@
 
     .mindmap {
       display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 10px;
+      gap: 18px;
     }
 
-    .mind-branch {
-      padding: 14px;
-      border-radius: 14px;
+    .mindmap-canvas {
+      position: relative;
+      min-height: 620px;
+      padding: 20px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,0.04);
+      background:
+        radial-gradient(circle at center, rgba(85, 211, 199, 0.05), transparent 24%),
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(180px, 0.9fr) minmax(0, 1fr);
+      grid-template-rows: 1fr auto 1fr;
+      gap: 20px 28px;
+      align-items: center;
+    }
+
+    .mindmap-node {
+      position: relative;
+      width: 100%;
+      padding: 16px;
+      border-radius: 18px;
       border: 1px solid var(--line);
-      background: rgba(255,255,255,0.03);
+      background: rgba(18, 26, 31, 0.96);
       display: grid;
       gap: 10px;
+      box-shadow: var(--shadow);
     }
 
-    .mind-branch h4 {
+    .mindmap-node.center {
+      grid-column: 2;
+      grid-row: 2;
+      text-align: center;
+      z-index: 2;
+    }
+
+    .mindmap-node.branch-a { grid-column: 1; grid-row: 1; }
+    .mindmap-node.branch-b { grid-column: 3; grid-row: 1; }
+    .mindmap-node.branch-c { grid-column: 1; grid-row: 3; }
+    .mindmap-node.branch-d { grid-column: 3; grid-row: 3; }
+
+    .mindmap-node h4 {
       margin: 0;
       font-family: var(--display);
-      font-size: 20px;
+      font-size: 22px;
+      line-height: 1.1;
     }
 
-    .mind-branch ul {
+    .mindmap-node p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .mindmap-node ul {
       margin: 0;
       padding-left: 18px;
       color: var(--muted);
       line-height: 1.7;
       font-size: 14px;
+    }
+
+    .mindmap-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .mindmap-tag {
+      display: inline-flex;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.04);
+      color: var(--muted);
+      font-size: 11px;
+      font-family: var(--mono);
+    }
+
+    .mindmap-link {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .mindmap-link line {
+      stroke: rgba(85, 211, 199, 0.22);
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
+    .mindmap-link circle {
+      fill: rgba(255, 158, 73, 0.7);
     }
 
     .empty {
@@ -673,6 +745,27 @@
       .workspace,
       .mindmap {
         grid-template-columns: 1fr;
+      }
+
+      .mindmap-canvas {
+        min-height: auto;
+        display: grid;
+        gap: 12px;
+      }
+
+      .mindmap-node,
+      .mindmap-node.center,
+      .mindmap-node.branch-a,
+      .mindmap-node.branch-b,
+      .mindmap-node.branch-c,
+      .mindmap-node.branch-d {
+        position: static;
+        width: 100%;
+        transform: none;
+      }
+
+      .mindmap-link {
+        display: none;
       }
 
       .library-toolbar {
@@ -711,38 +804,88 @@
         </div>
       </div>
       <div class="mindmap">
-        <article class="mind-branch">
-          <h4>節奏與基礎</h4>
-          <ul>
-            <li>Circle / Omega / Exercise 類</li>
-            <li>拍點、位置感、轉調與節奏穩定</li>
-            <li>先解鎖可轉 key 的主題句</li>
-          </ul>
-        </article>
-        <article class="mind-branch">
-          <h4>和聲與氣氛</h4>
-          <ul>
-            <li>Peaceful / Tsubasa / Extensions</li>
-            <li>和弦進行、voice leading、tone</li>
-            <li>適合 clean、reverb、delay 練法</li>
-          </ul>
-        </article>
-        <article class="mind-branch">
-          <h4>Blues / Jazz 語言</h4>
-          <ul>
-            <li>Blues、Jazz、251 / 451</li>
-            <li>句尾、voicing、和聲色彩</li>
-            <li>適合做 call-and-response</li>
-          </ul>
-        </article>
-        <article class="mind-branch">
-          <h4>技巧與作品</h4>
-          <ul>
-            <li>Twister、Riff、單曲研究</li>
-            <li>速度、riff、完整作品表現</li>
-            <li>最後進錄音、改編、編曲應用</li>
-          </ul>
-        </article>
+        <div class="mindmap-canvas">
+          <svg class="mindmap-link" viewBox="0 0 1200 560" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="600" y1="280" x2="240" y2="150"></line>
+            <line x1="600" y1="280" x2="960" y2="150"></line>
+            <line x1="600" y1="280" x2="240" y2="410"></line>
+            <line x1="600" y1="280" x2="960" y2="410"></line>
+            <circle cx="600" cy="280" r="6"></circle>
+          </svg>
+
+          <article class="mindmap-node center">
+            <h4>吉他成長主線</h4>
+            <p>先從技能線出發，再進到對應譜面、影片和 backing track。這裡不是裝飾，是你的練習導航。</p>
+            <div class="mindmap-tags">
+              <span class="mindmap-tag">理論</span>
+              <span class="mindmap-tag">和聲</span>
+              <span class="mindmap-tag">語言</span>
+              <span class="mindmap-tag">作品</span>
+            </div>
+          </article>
+
+          <article class="mindmap-node branch-a">
+            <h4>節奏與基礎</h4>
+            <p>先把位置感、節奏和可轉 key 的句子打穩。</p>
+            <div class="mindmap-tags">
+              <span class="mindmap-tag">Circle</span>
+              <span class="mindmap-tag">Omega</span>
+              <span class="mindmap-tag">Exercise</span>
+            </div>
+            <ul>
+              <li>拍點、位置感、轉調</li>
+              <li>先解鎖可移動的主題句</li>
+            </ul>
+            <button class="button" type="button" data-mind-track="指板 / 理論基礎">看這條線</button>
+          </article>
+
+          <article class="mindmap-node branch-b">
+            <h4>和聲與氣氛</h4>
+            <p>適合 clean、reverb、delay 的和聲與 tone 練法。</p>
+            <div class="mindmap-tags">
+              <span class="mindmap-tag">Peaceful</span>
+              <span class="mindmap-tag">Tsubasa</span>
+              <span class="mindmap-tag">Extensions</span>
+            </div>
+            <ul>
+              <li>和弦進行與 voice leading</li>
+              <li>旋律音和和聲重心</li>
+            </ul>
+            <button class="button" type="button" data-mind-track="和聲 / 觸弦 / 氣氛">看這條線</button>
+          </article>
+
+          <article class="mindmap-node branch-c">
+            <h4>Blues / Jazz 語言</h4>
+            <p>往句尾、voicing 和和聲色彩延伸。</p>
+            <div class="mindmap-tags">
+              <span class="mindmap-tag">Blues</span>
+              <span class="mindmap-tag">Jazz</span>
+              <span class="mindmap-tag">251 / 451</span>
+            </div>
+            <ul>
+              <li>call-and-response</li>
+              <li>句型和和弦色彩結合</li>
+            </ul>
+            <button class="button" type="button" data-mind-track="Blues 樂句語言">先看 Blues</button>
+            <button class="button" type="button" data-mind-track="Jazz 和聲 / Voicing">再看 Jazz</button>
+          </article>
+
+          <article class="mindmap-node branch-d">
+            <h4>技巧與作品</h4>
+            <p>把速度、riff 和完整作品表現推起來。</p>
+            <div class="mindmap-tags">
+              <span class="mindmap-tag">Twister</span>
+              <span class="mindmap-tag">Riff</span>
+              <span class="mindmap-tag">Song Study</span>
+            </div>
+            <ul>
+              <li>速度與 riff 穩定度</li>
+              <li>最後進改編與編曲應用</li>
+            </ul>
+            <button class="button" type="button" data-mind-track="技巧 / Riff / 速度">看技巧</button>
+            <button class="button" type="button" data-mind-track="作品 / 單曲研究">看作品</button>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -1173,6 +1316,27 @@
         detailViewControls.appendChild(button);
       });
       detailMediaGrid.classList.toggle("video-wide", state.detailView === "wide");
+    }
+
+    function bindMindmapActions() {
+      document.querySelectorAll("[data-mind-track]").forEach((button) => {
+        button.onclick = () => {
+          state.filters = {
+            ...state.filters,
+            query: "",
+            track: button.dataset.mindTrack,
+            level: "all",
+            format: "all",
+            progress: "all",
+            series: "all",
+            sort: "priority"
+          };
+          quickSearch.value = "";
+          sortSelect.value = "priority";
+          renderAll();
+          document.getElementById("library-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+      });
     }
 
     function renderSidebar() {
@@ -1630,6 +1794,7 @@
         state.selectedId = data.featured[0]?.id || data.lessons[0]?.id || null;
         renderHeroStats();
         renderAll();
+        bindMindmapActions();
     }
 
     if (isFileMode && window.__SCORE_HUB_LOCAL__) {
