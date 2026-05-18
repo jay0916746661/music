@@ -660,6 +660,10 @@
             <small class="note">格式</small>
             <div class="chip-group" id="format-filters"></div>
           </div>
+          <div>
+            <small class="note">練習狀態</small>
+            <div class="chip-group" id="progress-filters"></div>
+          </div>
         </div>
         <div class="detail-block">
           <h4>熱門系列</h4>
@@ -723,6 +727,7 @@
 
         <div class="detail-block">
           <h4>譜面預覽</h4>
+          <div class="action-row" id="detail-preview-controls"></div>
           <div id="detail-preview"></div>
         </div>
 
@@ -783,12 +788,14 @@
       mode: "public",
       data: null,
       progress: {},
+      previewPageByLesson: {},
       selectedId: null,
       filters: {
         query: "",
         track: "all",
         level: "all",
         format: "all",
+        progress: "all",
         series: "all",
         sort: "priority"
       }
@@ -801,6 +808,7 @@
     const trackFilters = document.getElementById("track-filters");
     const levelFilters = document.getElementById("level-filters");
     const formatFilters = document.getElementById("format-filters");
+    const progressFilters = document.getElementById("progress-filters");
     const seriesList = document.getElementById("series-list");
     const priorityList = document.getElementById("priority-list");
     const libraryStatus = document.getElementById("library-status");
@@ -814,6 +822,7 @@
     const detailStage = document.getElementById("detail-stage");
     const detailActions = document.getElementById("detail-actions");
     const detailFiles = document.getElementById("detail-files");
+    const detailPreviewControls = document.getElementById("detail-preview-controls");
     const detailPreview = document.getElementById("detail-preview");
     const detailPractice = document.getElementById("detail-practice");
     const detailStatusControls = document.getElementById("detail-status-controls");
@@ -867,6 +876,26 @@
       const current = getProgress(lessonId);
       state.progress[lessonId] = { ...current, ...patch };
       saveProgress();
+    }
+
+    function isReviewDue(progress) {
+      return Boolean(progress.nextReview) && progress.nextReview <= todayStamp();
+    }
+
+    function getProgressFilterItems() {
+      const lessons = state.data?.lessons || [];
+      const counts = { active: 0, review: 0, solid: 0, idle: 0 };
+      lessons.forEach((lesson) => {
+        const progress = getProgress(lesson.id);
+        counts[progress.status] = (counts[progress.status] || 0) + 1;
+        if (isReviewDue(progress)) counts.review += 1;
+      });
+      return [
+        { label: "練習中", value: "active", count: counts.active },
+        { label: "今天複習", value: "review", count: counts.review },
+        { label: "穩定了", value: "solid", count: counts.solid },
+        { label: "未開始", value: "idle", count: counts.idle }
+      ];
     }
 
     function renderHeroStats() {
@@ -930,6 +959,13 @@
         (value) => { state.filters.format = value; renderAll(); }
       );
 
+      renderFilterGroup(
+        progressFilters,
+        getProgressFilterItems(),
+        state.filters.progress,
+        (value) => { state.filters.progress = value; renderAll(); }
+      );
+
       seriesList.innerHTML = "";
       state.data.series.slice(0, 14).forEach((item) => {
         const row = document.createElement("button");
@@ -988,6 +1024,12 @@
       if (state.filters.format === "gp" && !(lesson.formats.gp5 || lesson.formats.gp)) return false;
       if (state.filters.format === "audio" && !(lesson.formats.wav || lesson.formats.mp3)) return false;
       if (state.filters.format === "video" && !lesson.watch_url) return false;
+
+      const progress = getProgress(lesson.id);
+      if (state.filters.progress === "active" && progress.status !== "active") return false;
+      if (state.filters.progress === "solid" && progress.status !== "solid") return false;
+      if (state.filters.progress === "idle" && progress.status !== "idle") return false;
+      if (state.filters.progress === "review" && !isReviewDue(progress)) return false;
 
       return true;
     }
@@ -1119,12 +1161,38 @@
     }
 
     function renderPreview(lesson) {
+      detailPreviewControls.innerHTML = "";
       detailPreview.innerHTML = "";
       if (state.mode === "local" && lesson.pdf_links.length) {
+        const total = lesson.pdf_links.length;
+        const currentIndex = Math.min(state.previewPageByLesson[lesson.id] || 0, total - 1);
+        state.previewPageByLesson[lesson.id] = currentIndex;
+        const prevButton = document.createElement("button");
+        prevButton.type = "button";
+        prevButton.className = "button";
+        prevButton.textContent = "上一頁譜";
+        prevButton.disabled = currentIndex === 0;
+        prevButton.addEventListener("click", () => {
+          state.previewPageByLesson[lesson.id] = Math.max(0, currentIndex - 1);
+          renderPreview(lesson);
+        });
+        const nextButton = document.createElement("button");
+        nextButton.type = "button";
+        nextButton.className = "button";
+        nextButton.textContent = "下一頁譜";
+        nextButton.disabled = currentIndex >= total - 1;
+        nextButton.addEventListener("click", () => {
+          state.previewPageByLesson[lesson.id] = Math.min(total - 1, currentIndex + 1);
+          renderPreview(lesson);
+        });
+        const pageLabel = document.createElement("span");
+        pageLabel.className = "note";
+        pageLabel.textContent = `${currentIndex + 1} / ${total} - ${lesson.pdf_links[currentIndex].label}`;
+        detailPreviewControls.append(prevButton, nextButton, pageLabel);
         const wrapper = document.createElement("div");
         wrapper.className = "score-preview";
         const iframe = document.createElement("iframe");
-        iframe.src = `${lesson.pdf_links[0].href}#toolbar=0&navpanes=0&view=FitH`;
+        iframe.src = `${lesson.pdf_links[currentIndex].href}#toolbar=0&navpanes=0&view=FitH`;
         wrapper.appendChild(iframe);
         detailPreview.appendChild(wrapper);
         return;
@@ -1147,6 +1215,7 @@
             nextReview: reviewDateForStatus(option.value, practicedOn)
           });
           renderHeroStats();
+          renderSidebar();
           renderLibrary();
           renderProgress(lesson);
         });
@@ -1168,6 +1237,7 @@
           nextReview: reviewDateForStatus(nextStatus, stamp)
         });
         renderHeroStats();
+        renderSidebar();
         renderLibrary();
         renderProgress(lesson);
       });
@@ -1273,7 +1343,7 @@
     });
 
     resetFilters.addEventListener("click", () => {
-      state.filters = { query: "", track: "all", level: "all", format: "all", series: "all", sort: "priority" };
+      state.filters = { query: "", track: "all", level: "all", format: "all", progress: "all", series: "all", sort: "priority" };
       quickSearch.value = "";
       sortSelect.value = "priority";
       renderAll();
