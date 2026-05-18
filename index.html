@@ -673,6 +673,14 @@
           <h4>優先練習</h4>
           <div class="priority-list" id="priority-list"></div>
         </div>
+        <div class="detail-block">
+          <h4>今日清單</h4>
+          <div class="priority-list" id="today-list"></div>
+        </div>
+        <div class="detail-block">
+          <h4>最近練過</h4>
+          <div class="priority-list" id="recent-list"></div>
+        </div>
       </aside>
 
       <section class="panel" id="library-panel">
@@ -811,6 +819,8 @@
     const progressFilters = document.getElementById("progress-filters");
     const seriesList = document.getElementById("series-list");
     const priorityList = document.getElementById("priority-list");
+    const todayList = document.getElementById("today-list");
+    const recentList = document.getElementById("recent-list");
     const libraryStatus = document.getElementById("library-status");
     const lessonList = document.getElementById("lesson-list");
     const sortSelect = document.getElementById("sort-select");
@@ -896,6 +906,48 @@
         { label: "穩定了", value: "solid", count: counts.solid },
         { label: "未開始", value: "idle", count: counts.idle }
       ];
+    }
+
+    function lessonsWithProgress() {
+      return (state.data?.lessons || []).map((lesson) => ({ lesson, progress: getProgress(lesson.id) }));
+    }
+
+    function getTodayQueue() {
+      return lessonsWithProgress()
+        .filter(({ lesson, progress }) => isReviewDue(progress) || progress.status === "active" || lesson.priority_band === "now")
+        .sort((a, b) => {
+          const aDue = isReviewDue(a.progress) ? 1 : 0;
+          const bDue = isReviewDue(b.progress) ? 1 : 0;
+          return bDue - aDue || (b.progress.sessions || 0) - (a.progress.sessions || 0) || b.lesson.priority_score - a.lesson.priority_score;
+        })
+        .slice(0, 6);
+    }
+
+    function getRecentQueue() {
+      return lessonsWithProgress()
+        .filter(({ progress }) => Boolean(progress.lastPracticed))
+        .sort((a, b) => b.progress.lastPracticed.localeCompare(a.progress.lastPracticed))
+        .slice(0, 6);
+    }
+
+    function renderSideLessonList(target, items, emptyText, formatter) {
+      target.innerHTML = "";
+      if (!items.length) {
+        target.innerHTML = `<div class="empty">${emptyText}</div>`;
+        return;
+      }
+      items.forEach(({ lesson, progress }) => {
+        const row = document.createElement("button");
+        row.type = "button";
+        row.className = "metric-row";
+        row.innerHTML = formatter(lesson, progress);
+        row.addEventListener("click", () => {
+          state.selectedId = lesson.id;
+          renderLibrary();
+          renderDetail();
+        });
+        target.appendChild(row);
+      });
     }
 
     function renderHeroStats() {
@@ -993,6 +1045,20 @@
         });
         priorityList.appendChild(row);
       });
+
+      renderSideLessonList(
+        todayList,
+        getTodayQueue(),
+        "今天還沒有排進待練清單。",
+        (lesson, progress) => `<strong>${lesson.title}</strong><small>${isReviewDue(progress) ? "今天該複習" : progress.status === "active" ? "練習中" : "優先教材"}</small>`
+      );
+
+      renderSideLessonList(
+        recentList,
+        getRecentQueue(),
+        "還沒有練習紀錄。",
+        (lesson, progress) => `<strong>${lesson.title}</strong><small>${progress.lastPracticed} · ${progress.sessions || 0} 次</small>`
+      );
 
       seriesSelect.innerHTML = '<option value="all">全部系列</option>';
       state.data.series.forEach((item) => {
@@ -1276,6 +1342,15 @@
       }
       if (lesson.folder_href) {
         detailActions.appendChild(createActionLink("打開資料夾", lesson.folder_href));
+      }
+      if (lesson.pdf_links?.length) {
+        detailActions.appendChild(createActionLink("開譜面", lesson.pdf_links[0].href));
+      }
+      if (lesson.gp_links?.length) {
+        detailActions.appendChild(createActionLink("開 GP", lesson.gp_links[0].href));
+      }
+      if (lesson.audio_links?.length) {
+        detailActions.appendChild(createActionLink("開 Backing Track", lesson.audio_links[0].href));
       }
 
       detailFiles.innerHTML = "";
