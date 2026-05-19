@@ -659,6 +659,12 @@
       box-shadow: var(--shadow);
     }
 
+    .mindmap-node.active {
+      border-color: rgba(85, 211, 199, 0.3);
+      background: rgba(22, 35, 40, 0.98);
+      box-shadow: 0 28px 70px rgba(0, 0, 0, 0.42), 0 0 0 1px rgba(85, 211, 199, 0.1) inset;
+    }
+
     .mindmap-node.center {
       grid-column: 2;
       grid-row: 2;
@@ -813,7 +819,7 @@
             <circle cx="600" cy="280" r="6"></circle>
           </svg>
 
-          <article class="mindmap-node center">
+          <article class="mindmap-node center" data-mind-node="center">
             <h4>吉他成長主線</h4>
             <p>先從技能線出發，再進到對應譜面、影片和 backing track。這裡不是裝飾，是你的練習導航。</p>
             <div class="mindmap-tags">
@@ -822,10 +828,11 @@
               <span class="mindmap-tag">語言</span>
               <span class="mindmap-tag">作品</span>
             </div>
+            <button class="button" type="button" data-mind-reset="all">回到全部教材</button>
           </article>
 
-          <article class="mindmap-node branch-a">
-            <h4>節奏與基礎</h4>
+          <article class="mindmap-node branch-a" data-mind-node="指板 / 理論基礎">
+            <h4>節奏與基礎 <span class="mindmap-tag" data-track-count="指板 / 理論基礎">0</span></h4>
             <p>先把位置感、節奏和可轉 key 的句子打穩。</p>
             <div class="mindmap-tags">
               <span class="mindmap-tag">Circle</span>
@@ -839,8 +846,8 @@
             <button class="button" type="button" data-mind-track="指板 / 理論基礎">看這條線</button>
           </article>
 
-          <article class="mindmap-node branch-b">
-            <h4>和聲與氣氛</h4>
+          <article class="mindmap-node branch-b" data-mind-node="和聲 / 觸弦 / 氣氛">
+            <h4>和聲與氣氛 <span class="mindmap-tag" data-track-count="和聲 / 觸弦 / 氣氛">0</span></h4>
             <p>適合 clean、reverb、delay 的和聲與 tone 練法。</p>
             <div class="mindmap-tags">
               <span class="mindmap-tag">Peaceful</span>
@@ -854,13 +861,15 @@
             <button class="button" type="button" data-mind-track="和聲 / 觸弦 / 氣氛">看這條線</button>
           </article>
 
-          <article class="mindmap-node branch-c">
+          <article class="mindmap-node branch-c" data-mind-node="語言">
             <h4>Blues / Jazz 語言</h4>
             <p>往句尾、voicing 和和聲色彩延伸。</p>
             <div class="mindmap-tags">
               <span class="mindmap-tag">Blues</span>
               <span class="mindmap-tag">Jazz</span>
               <span class="mindmap-tag">251 / 451</span>
+              <span class="mindmap-tag" data-track-count="Blues 樂句語言">0 Blues</span>
+              <span class="mindmap-tag" data-track-count="Jazz 和聲 / Voicing">0 Jazz</span>
             </div>
             <ul>
               <li>call-and-response</li>
@@ -870,13 +879,15 @@
             <button class="button" type="button" data-mind-track="Jazz 和聲 / Voicing">再看 Jazz</button>
           </article>
 
-          <article class="mindmap-node branch-d">
+          <article class="mindmap-node branch-d" data-mind-node="技巧作品">
             <h4>技巧與作品</h4>
             <p>把速度、riff 和完整作品表現推起來。</p>
             <div class="mindmap-tags">
               <span class="mindmap-tag">Twister</span>
               <span class="mindmap-tag">Riff</span>
               <span class="mindmap-tag">Song Study</span>
+              <span class="mindmap-tag" data-track-count="技巧 / Riff / 速度">0 技巧</span>
+              <span class="mindmap-tag" data-track-count="作品 / 單曲研究">0 作品</span>
             </div>
             <ul>
               <li>速度與 riff 穩定度</li>
@@ -1337,6 +1348,50 @@
           document.getElementById("library-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
         };
       });
+      document.querySelectorAll("[data-mind-reset]").forEach((button) => {
+        button.onclick = () => {
+          state.filters = {
+            ...state.filters,
+            query: "",
+            track: "all",
+            level: "all",
+            format: "all",
+            progress: "all",
+            series: "all",
+            sort: "priority"
+          };
+          quickSearch.value = "";
+          sortSelect.value = "priority";
+          renderAll();
+          document.getElementById("library-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        };
+      });
+    }
+
+    function renderMindmapState() {
+      const counts = Object.fromEntries((state.data?.tracks || []).map((item) => [item.name, item.count]));
+      document.querySelectorAll("[data-track-count]").forEach((el) => {
+        const key = el.dataset.trackCount;
+        const count = counts[key] || 0;
+        if (key === "Blues 樂句語言") el.textContent = `${count} Blues`;
+        else if (key === "Jazz 和聲 / Voicing") el.textContent = `${count} Jazz`;
+        else if (key === "技巧 / Riff / 速度") el.textContent = `${count} 技巧`;
+        else if (key === "作品 / 單曲研究") el.textContent = `${count} 作品`;
+        else el.textContent = `${count}`;
+      });
+
+      document.querySelectorAll("[data-mind-node]").forEach((node) => node.classList.remove("active"));
+      if (state.filters.track === "all") {
+        document.querySelector('[data-mind-node="center"]')?.classList.add("active");
+      } else {
+        document.querySelector(`[data-mind-node="${state.filters.track}"]`)?.classList.add("active");
+        if (["Blues 樂句語言", "Jazz 和聲 / Voicing"].includes(state.filters.track)) {
+          document.querySelector('[data-mind-node="語言"]')?.classList.add("active");
+        }
+        if (["技巧 / Riff / 速度", "作品 / 單曲研究"].includes(state.filters.track)) {
+          document.querySelector('[data-mind-node="技巧作品"]')?.classList.add("active");
+        }
+      }
     }
 
     function renderSidebar() {
@@ -1760,6 +1815,7 @@
     }
 
     function renderAll() {
+      renderMindmapState();
       renderSidebar();
       renderLibrary();
       renderDetail();
