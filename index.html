@@ -740,6 +740,33 @@
       text-align: center;
     }
 
+    .radar-list {
+      display: grid;
+      gap: 10px;
+    }
+
+    .radar-card {
+      display: grid;
+      gap: 10px;
+      padding: 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.025);
+    }
+
+    .radar-card h4 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.2;
+      font-family: var(--display);
+    }
+
+    .radar-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     @media (max-width: 1240px) {
       .workspace { grid-template-columns: 300px minmax(0, 1fr); }
       .detail-panel { grid-column: 1 / -1; }
@@ -900,6 +927,16 @@
       </div>
     </section>
 
+    <section class="panel" id="radar-panel">
+      <div class="panel-head">
+        <div>
+          <h2>技能線 Radar</h2>
+          <p class="note" id="radar-copy">會跟著你現在選的技能線，顯示比較接近的 YouTube lick / 分析候選。</p>
+        </div>
+      </div>
+      <div class="radar-list" id="radar-list"></div>
+    </section>
+
     <section class="workspace">
       <aside class="panel">
         <div class="panel-head">
@@ -1024,10 +1061,12 @@
   </main>
 
   <script src="./data/score-hub.local.js"></script>
+  <script src="./data/lick-radar.local.js"></script>
   <script>
     const state = {
       mode: "public",
       data: null,
+      radar: null,
       progress: {},
       previewPageByLesson: {},
       detailView: "standard",
@@ -1076,6 +1115,8 @@
     const detailStatusControls = document.getElementById("detail-status-controls");
     const detailStatusMeta = document.getElementById("detail-status-meta");
     const detailNote = document.getElementById("detail-note");
+    const radarCopy = document.getElementById("radar-copy");
+    const radarList = document.getElementById("radar-list");
     const progressStoreKey = "score-hub-progress-v1";
     const statusOptions = [
       { value: "idle", label: "未開始" },
@@ -1392,6 +1433,75 @@
           document.querySelector('[data-mind-node="技巧作品"]')?.classList.add("active");
         }
       }
+    }
+
+    function classifyRadarItem(item) {
+      const title = (item.title || "").toLowerCase();
+      const tags = (item.tags || []).join(" ").toLowerCase();
+      if (title.includes("srv") || tags.includes("blues")) return "Blues 樂句語言";
+      if (title.includes("aja") || title.includes("holdsworth") || tags.includes("jazz") || tags.includes("voicing")) return "Jazz 和聲 / Voicing";
+      if (title.includes("riff") || title.includes("beginner") || title.includes("flurries")) return "技巧 / Riff / 速度";
+      if (title.includes("master of puppets") || title.includes("what i got") || title.includes("song")) return "作品 / 單曲研究";
+      if (tags.includes("chords") || title.includes("out-of-key") || title.includes("major")) return "和聲 / 觸弦 / 氣氛";
+      return "指板 / 理論基礎";
+    }
+
+    function getRadarTrack() {
+      if (state.filters.track !== "all") return state.filters.track;
+      if (state.selectedId) {
+        const lesson = state.data?.lessons?.find((item) => item.id === state.selectedId);
+        if (lesson?.track_label) return lesson.track_label;
+      }
+      return "指板 / 理論基礎";
+    }
+
+    function getRadarItemsForTrack(track) {
+      const items = state.radar?.items || [];
+      const matching = items.filter((item) => classifyRadarItem(item) === track);
+      if (matching.length) return matching.slice(0, 4);
+      return items.slice(0, 4);
+    }
+
+    function renderRadar() {
+      const activeTrack = getRadarTrack();
+      const items = getRadarItemsForTrack(activeTrack);
+      radarCopy.textContent = `目前對應技能線：${activeTrack}。先抓 1 到 2 個候選，不要一次全吃。`;
+      radarList.innerHTML = "";
+      if (!items.length) {
+        radarList.innerHTML = '<div class="empty">目前還沒有 radar 候選。</div>';
+        return;
+      }
+      items.forEach((item) => {
+        const card = document.createElement("article");
+        card.className = "radar-card";
+        card.innerHTML = `
+          <div>
+            <h4>${item.title}</h4>
+            <p class="note">${item.note || "先抓一句最想偷的語氣，再決定要不要進主練。"}<\/p>
+          </div>
+          <div class="radar-meta">
+            <span class="mindmap-tag">${item.source}</span>
+            ${(item.tags || []).slice(0, 3).map((tag) => `<span class="mindmap-tag">${tag}</span>`).join("")}
+          </div>
+        `;
+        const actions = document.createElement("div");
+        actions.className = "action-row";
+        actions.appendChild(createActionLink("看影片", item.url, "button primary"));
+        if (item.lane === "Guitar") {
+          const jump = document.createElement("button");
+          jump.type = "button";
+          jump.className = "button";
+          jump.textContent = "切到對應技能線";
+          jump.addEventListener("click", () => {
+            state.filters.track = classifyRadarItem(item);
+            renderAll();
+            document.getElementById("library-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+          actions.appendChild(jump);
+        }
+        card.appendChild(actions);
+        radarList.appendChild(card);
+      });
     }
 
     function renderSidebar() {
@@ -1816,6 +1926,7 @@
 
     function renderAll() {
       renderMindmapState();
+      renderRadar();
       renderSidebar();
       renderLibrary();
       renderDetail();
@@ -1845,6 +1956,7 @@
 
     function bootWithData(data) {
         state.data = data;
+        state.radar = window.__LICK_RADAR__ || { items: [] };
         state.progress = loadProgress();
         state.mode = data.mode || "public";
         state.selectedId = data.featured[0]?.id || data.lessons[0]?.id || null;
