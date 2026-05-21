@@ -9,20 +9,24 @@
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0d1114;
-      --panel: #131a1f;
-      --panel-soft: #182127;
-      --panel-strong: #0f1519;
-      --line: rgba(150, 184, 177, 0.16);
-      --line-strong: rgba(150, 184, 177, 0.26);
-      --ink: #edf5ef;
-      --muted: #93a7a0;
-      --accent: #ff9e49;
-      --accent-soft: rgba(255, 158, 73, 0.12);
-      --teal: #55d3c7;
-      --olive: #9fcb63;
-      --danger: #ff7a68;
-      --shadow: 0 28px 70px rgba(0, 0, 0, 0.36);
+      --bg: #fbfaf7;
+      --paper: #fbfaf7;
+      --panel: #ffffff;
+      --panel-soft: #f5f0e8;
+      --panel-strong: #1f2228;
+      --line: #ded8ce;
+      --line-strong: #cfc5b7;
+      --ink: #1f2228;
+      --text: #1f2228;
+      --muted: #65707d;
+      --accent: #9e2f45;
+      --accent-soft: rgba(158, 47, 69, 0.10);
+      --teal: #18736b;
+      --olive: #c98524;
+      --danger: #b84a3a;
+      --gold: #c98524;
+      --blue: #315c9f;
+      --shadow: 0 12px 36px rgba(31, 34, 40, .12);
       --display: "Noto Serif TC", serif;
       --body: "Noto Sans TC", sans-serif;
       --mono: "IBM Plex Mono", monospace;
@@ -34,28 +38,80 @@
       margin: 0;
       font-family: var(--body);
       color: var(--ink);
-      background:
-        radial-gradient(circle at top left, rgba(85, 211, 199, 0.08), transparent 24%),
-        radial-gradient(circle at 92% 0%, rgba(255, 158, 73, 0.08), transparent 18%),
-        linear-gradient(180deg, #0a0e11 0%, #0d1114 100%);
+      background: var(--paper);
       min-height: 100vh;
     }
 
     body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 28px 28px;
-      mask-image: linear-gradient(180deg, rgba(0,0,0,0.9), transparent 80%);
-      opacity: 0.28;
+      content: none;
+    }
+
+    .top-nav {
+      width: min(1180px, calc(100% - 36px));
+      margin: 18px auto 0;
+      min-height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      position: sticky;
+      top: 12px;
+      z-index: 20;
+      padding: 10px 12px;
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 8px;
+      background: rgba(31, 34, 40, .92);
+      box-shadow: 0 16px 40px rgba(31, 34, 40, .18);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-weight: 820;
+      letter-spacing: .01em;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--display);
+      line-height: 1;
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      min-height: 36px;
+      display: inline-flex;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 8px;
+      color: rgba(255,255,255,.78);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 720;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255,255,255,.08);
+      color: #fff;
     }
 
     main {
-      width: min(1480px, calc(100% - 32px));
+      width: min(1180px, calc(100% - 36px));
       margin: 18px auto 56px;
       display: grid;
       gap: 16px;
@@ -767,6 +823,164 @@
       gap: 8px;
     }
 
+    .hero,
+    .panel,
+    .stat-card,
+    .preset-button,
+    .lesson-card,
+    .detail-block,
+    .mindmap-node,
+    .radar-card,
+    .detail-stage,
+    .score-preview,
+    .link-button,
+    .file-item,
+    .status-card,
+    .note-field {
+      border-radius: 8px;
+    }
+
+    .hero,
+    .panel {
+      border: 1px solid var(--line);
+      background: var(--panel);
+      box-shadow: var(--shadow);
+    }
+
+    .hero {
+      min-height: 520px;
+      padding: 72px 42px 34px;
+      align-items: end;
+      color: #fff;
+      background:
+        linear-gradient(90deg, rgba(31,34,40,.94), rgba(31,34,40,.66)),
+        linear-gradient(135deg, #1f2228, #3a2027 48%, #18736b);
+      overflow: hidden;
+    }
+
+    .hero p {
+      color: rgba(255,255,255,.74);
+    }
+
+    .eyebrow {
+      border-radius: 8px;
+      border-color: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.10);
+      color: #fff;
+    }
+
+    .button,
+    .chip-button,
+    .status-button {
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .button.primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .hero .button {
+      background: rgba(255,255,255,.10);
+      border-color: rgba(255,255,255,.22);
+      color: #fff;
+    }
+
+    .hero .button.primary {
+      background: #fff;
+      border-color: #fff;
+      color: var(--ink);
+    }
+
+    .stat-card {
+      border-color: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.10);
+    }
+
+    .stat-card span {
+      color: rgba(255,255,255,.70);
+    }
+
+    .field,
+    .select,
+    .summary-pill,
+    .metric-row,
+    .series-row,
+    .detail-block,
+    .mindmap-canvas {
+      background: var(--panel-soft);
+    }
+
+    .lesson-meta span,
+    .mindmap-tag {
+      background: rgba(31,34,40,.04);
+      border-color: rgba(31,34,40,.08);
+      color: var(--muted);
+    }
+
+    .preset-button,
+    .lesson-card,
+    .file-item,
+    .status-card,
+    .mindmap-node,
+    .radar-card {
+      background: #fff;
+      border-color: var(--line);
+    }
+
+    .lesson-card:hover,
+    .lesson-card.active,
+    .mindmap-node.active {
+      border-color: rgba(158, 47, 69, 0.34);
+      background: rgba(158, 47, 69, 0.06);
+      box-shadow: var(--shadow);
+    }
+
+    .mono-badge,
+    .chip-button.active {
+      color: var(--teal);
+      background: rgba(24, 115, 107, 0.08);
+      border-color: rgba(24, 115, 107, 0.22);
+    }
+
+    .priority-badge,
+    .status-button.active {
+      color: var(--accent);
+      background: rgba(158, 47, 69, 0.10);
+      border-color: rgba(158, 47, 69, 0.24);
+    }
+
+    .format-pill {
+      color: var(--olive);
+      background: rgba(201, 133, 36, 0.10);
+      border-color: rgba(201, 133, 36, 0.20);
+    }
+
+    .detail-stage {
+      background: #1f2228;
+    }
+
+    .mindmap-link line {
+      stroke: rgba(24, 115, 107, 0.24);
+    }
+
+    .mindmap-link circle {
+      fill: rgba(201, 133, 36, 0.80);
+    }
+
+    .mobile-tabbar {
+      display: none;
+    }
+
+    footer {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto 28px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
     @media (max-width: 1240px) {
       .workspace { grid-template-columns: 300px minmax(0, 1fr); }
       .detail-panel { grid-column: 1 / -1; }
@@ -774,10 +988,28 @@
     }
 
     @media (max-width: 920px) {
+      body {
+        padding-bottom: 74px;
+      }
+
+      .top-nav {
+        position: static;
+        margin-top: 12px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
       .hero,
       .workspace,
       .mindmap {
         grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: 92vh;
+        padding: 88px 20px 24px;
       }
 
       .mindmap-canvas {
@@ -808,10 +1040,55 @@
       .lesson-list {
         max-height: none;
       }
+
+      .mobile-tabbar {
+        position: fixed;
+        z-index: 30;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1px;
+        padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
+        background: rgba(31, 34, 40, .94);
+        backdrop-filter: blur(14px);
+        border-top: 1px solid rgba(255,255,255,.14);
+      }
+
+      .mobile-tabbar a {
+        min-height: 46px;
+        display: grid;
+        place-items: center;
+        padding: 6px 4px;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 12px;
+        font-weight: 820;
+        background: rgba(255,255,255,.08);
+      }
     }
   </style>
 </head>
 <body>
+  <nav class="top-nav" aria-label="主要導覽">
+    <div class="brand"><span class="brand-mark">G</span> Guitar Training</div>
+    <div class="nav-links">
+      <a href="#mindmap-panel">技能樹</a>
+      <a href="#library-panel">譜面庫</a>
+      <a href="#radar-panel">Radar</a>
+      <a href="#detail-panel">練習面板</a>
+    </div>
+  </nav>
+
+  <nav class="mobile-tabbar" aria-label="手機快速導覽">
+    <a href="#mindmap-panel">技能</a>
+    <a href="#library-panel">譜面</a>
+    <a href="#radar-panel">Radar</a>
+    <a href="#detail-panel">練習</a>
+  </nav>
+
   <main>
     <section class="hero">
       <div>
@@ -1059,6 +1336,10 @@
       </section>
     </section>
   </main>
+
+  <footer>
+    <span>Guitar Training score platform</span>
+  </footer>
 
   <script src="./data/score-hub.local.js"></script>
   <script src="./data/lick-radar.local.js"></script>
