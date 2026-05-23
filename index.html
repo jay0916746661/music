@@ -1262,6 +1262,10 @@
           <div class="priority-list" id="today-list"></div>
         </div>
         <div class="detail-block">
+          <h4>今日 Lick 候選</h4>
+          <div class="priority-list" id="today-radar-list"></div>
+        </div>
+        <div class="detail-block">
           <h4>最近練過</h4>
           <div class="priority-list" id="recent-list"></div>
         </div>
@@ -1349,6 +1353,7 @@
       data: null,
       radar: null,
       progress: {},
+      radarPicks: [],
       previewPageByLesson: {},
       detailView: "standard",
       selectedId: null,
@@ -1376,6 +1381,7 @@
     const seriesList = document.getElementById("series-list");
     const priorityList = document.getElementById("priority-list");
     const todayList = document.getElementById("today-list");
+    const todayRadarList = document.getElementById("today-radar-list");
     const recentList = document.getElementById("recent-list");
     const libraryStatus = document.getElementById("library-status");
     const lessonList = document.getElementById("lesson-list");
@@ -1399,6 +1405,7 @@
     const radarCopy = document.getElementById("radar-copy");
     const radarList = document.getElementById("radar-list");
     const progressStoreKey = "score-hub-progress-v1";
+    const radarPickStoreKey = "score-hub-radar-picks-v1";
     const statusOptions = [
       { value: "idle", label: "未開始" },
       { value: "active", label: "練習中" },
@@ -1463,6 +1470,18 @@
 
     function saveProgress() {
       localStorage.setItem(progressStoreKey, JSON.stringify(state.progress));
+    }
+
+    function loadRadarPicks() {
+      try {
+        return JSON.parse(localStorage.getItem(radarPickStoreKey) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveRadarPicks() {
+      localStorage.setItem(radarPickStoreKey, JSON.stringify(state.radarPicks));
     }
 
     function getProgress(lessonId) {
@@ -1692,14 +1711,20 @@
 
     function renderMindmapState() {
       const counts = Object.fromEntries((state.data?.tracks || []).map((item) => [item.name, item.count]));
+      const radarCounts = {};
+      (state.radar?.items || []).forEach((item) => {
+        const track = classifyRadarItem(item);
+        radarCounts[track] = (radarCounts[track] || 0) + 1;
+      });
       document.querySelectorAll("[data-track-count]").forEach((el) => {
         const key = el.dataset.trackCount;
         const count = counts[key] || 0;
-        if (key === "Blues 樂句語言") el.textContent = `${count} Blues`;
-        else if (key === "Jazz 和聲 / Voicing") el.textContent = `${count} Jazz`;
-        else if (key === "技巧 / Riff / 速度") el.textContent = `${count} 技巧`;
-        else if (key === "作品 / 單曲研究") el.textContent = `${count} 作品`;
-        else el.textContent = `${count}`;
+        const radarCount = radarCounts[key] || 0;
+        if (key === "Blues 樂句語言") el.textContent = `${count} Blues / ${radarCount} Radar`;
+        else if (key === "Jazz 和聲 / Voicing") el.textContent = `${count} Jazz / ${radarCount} Radar`;
+        else if (key === "技巧 / Riff / 速度") el.textContent = `${count} 技巧 / ${radarCount} Radar`;
+        else if (key === "作品 / 單曲研究") el.textContent = `${count} 作品 / ${radarCount} Radar`;
+        else el.textContent = `${count} / ${radarCount} Radar`;
       });
 
       document.querySelectorAll("[data-mind-node]").forEach((node) => node.classList.remove("active"));
@@ -1768,6 +1793,28 @@
         const actions = document.createElement("div");
         actions.className = "action-row";
         actions.appendChild(createActionLink("看影片", item.url, "button primary"));
+        const add = document.createElement("button");
+        add.type = "button";
+        add.className = "button";
+        const alreadyPicked = state.radarPicks.some((pick) => pick.id === item.id);
+        add.textContent = alreadyPicked ? "已在今日候選" : "加入今日候選";
+        add.disabled = alreadyPicked;
+        add.addEventListener("click", () => {
+          if (state.radarPicks.some((pick) => pick.id === item.id)) return;
+          state.radarPicks.unshift({
+            id: item.id,
+            title: item.title,
+            track: classifyRadarItem(item),
+            source: item.source,
+            url: item.url,
+            addedAt: todayStamp()
+          });
+          state.radarPicks = state.radarPicks.slice(0, 12);
+          saveRadarPicks();
+          renderRadar();
+          renderSidebar();
+        });
+        actions.appendChild(add);
         if (item.lane === "Guitar") {
           const jump = document.createElement("button");
           jump.type = "button";
@@ -1782,6 +1829,52 @@
         }
         card.appendChild(actions);
         radarList.appendChild(card);
+      });
+    }
+
+    function renderRadarPickList() {
+      todayRadarList.innerHTML = "";
+      if (!state.radarPicks.length) {
+        todayRadarList.innerHTML = '<div class="empty">還沒有加入今天的 lick 候選。</div>';
+        return;
+      }
+      state.radarPicks.slice(0, 6).forEach((pick) => {
+        const row = document.createElement("div");
+        row.className = "radar-card";
+        row.innerHTML = `
+          <div>
+            <h4>${pick.title}</h4>
+            <p class="note">${pick.track} · ${pick.addedAt}</p>
+          </div>
+          <div class="radar-meta">
+            <span class="mindmap-tag">${pick.source}</span>
+          </div>
+        `;
+        const actions = document.createElement("div");
+        actions.className = "action-row";
+        actions.appendChild(createActionLink("看影片", pick.url, "button primary"));
+        const jump = document.createElement("button");
+        jump.type = "button";
+        jump.className = "button";
+        jump.textContent = "切到技能線";
+        jump.addEventListener("click", () => {
+          state.filters.track = pick.track;
+          renderAll();
+        });
+        const remove = document.createElement("button");
+        remove.type = "button";
+        remove.className = "button";
+        remove.textContent = "移除";
+        remove.addEventListener("click", () => {
+          state.radarPicks = state.radarPicks.filter((item) => item.id !== pick.id);
+          saveRadarPicks();
+          renderRadar();
+          renderSidebar();
+        });
+        actions.appendChild(jump);
+        actions.appendChild(remove);
+        row.appendChild(actions);
+        todayRadarList.appendChild(row);
       });
     }
 
@@ -1867,6 +1960,7 @@
         "還沒有練習紀錄。",
         (lesson, progress) => `<strong>${lesson.title}</strong><small>${progress.lastPracticed} · ${progress.sessions || 0} 次</small>`
       );
+      renderRadarPickList();
 
       seriesSelect.innerHTML = '<option value="all">全部系列</option>';
       state.data.series.forEach((item) => {
@@ -2238,6 +2332,7 @@
     function bootWithData(data) {
         state.data = data;
         state.radar = window.__LICK_RADAR__ || { items: [] };
+        state.radarPicks = loadRadarPicks();
         state.progress = loadProgress();
         state.mode = data.mode || "public";
         state.selectedId = data.featured[0]?.id || data.lessons[0]?.id || null;
