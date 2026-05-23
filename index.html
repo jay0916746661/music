@@ -800,6 +800,19 @@
       display: grid;
       gap: 10px;
     }
+    .radar-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .radar-mini-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
 
     .radar-card {
       display: grid;
@@ -1211,6 +1224,13 @@
           <p class="note" id="radar-copy">會跟著你現在選的技能線，顯示比較接近的 YouTube lick / 分析候選。</p>
         </div>
       </div>
+      <div class="radar-toolbar">
+        <div class="chip-group" id="radar-style-filters"></div>
+        <div class="radar-mini-actions">
+          <button class="button" type="button" id="radar-refresh">今天重抽 3 個</button>
+          <button class="button" type="button" id="radar-clear-picks">清空今日候選</button>
+        </div>
+      </div>
       <div class="radar-list" id="radar-list"></div>
     </section>
 
@@ -1354,6 +1374,7 @@
       radar: null,
       progress: {},
       radarPicks: [],
+      radarStyle: "all",
       previewPageByLesson: {},
       detailView: "standard",
       selectedId: null,
@@ -1404,8 +1425,12 @@
     const detailNote = document.getElementById("detail-note");
     const radarCopy = document.getElementById("radar-copy");
     const radarList = document.getElementById("radar-list");
+    const radarStyleFilters = document.getElementById("radar-style-filters");
+    const radarRefresh = document.getElementById("radar-refresh");
+    const radarClearPicks = document.getElementById("radar-clear-picks");
     const progressStoreKey = "score-hub-progress-v1";
     const radarPickStoreKey = "score-hub-radar-picks-v1";
+    const radarStyleOptions = ["fusion", "jazz", "neo soul", "blues"];
     const statusOptions = [
       { value: "idle", label: "未開始" },
       { value: "active", label: "練習中" },
@@ -1482,6 +1507,70 @@
 
     function saveRadarPicks() {
       localStorage.setItem(radarPickStoreKey, JSON.stringify(state.radarPicks));
+    }
+
+    function radarSeedNumber(seed) {
+      return seed.split("").reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    }
+
+    function uniqueList(items) {
+      return [...new Set(items.filter(Boolean))];
+    }
+
+    function uniqueRadarItems(items) {
+      const seen = new Set();
+      return items.filter((item) => {
+        if (!item?.id || seen.has(item.id)) return false;
+        seen.add(item.id);
+        return true;
+      });
+    }
+
+    function getRadarStyles(item) {
+      const title = (item.title || "").toLowerCase();
+      const tags = (item.tags || []).join(" ").toLowerCase();
+      const styles = [];
+      if (title.includes("holdsworth") || title.includes("fusion") || tags.includes("fusion") || title.includes("out-of-key")) styles.push("fusion");
+      if (title.includes("aja") || tags.includes("jazz") || tags.includes("voicing") || tags.includes("analysis")) styles.push("jazz");
+      if (title.includes("major") || tags.includes("chords") || tags.includes("phrasing") || title.includes("improvise")) styles.push("neo soul");
+      if (title.includes("srv") || title.includes("blues") || tags.includes("blues")) styles.push("blues");
+      return uniqueList(styles.length ? styles : ["fusion"]);
+    }
+
+    function formatRadarStyleLabel(style) {
+      const labels = {
+        fusion: "Fusion",
+        jazz: "Jazz",
+        "neo soul": "Neo Soul",
+        blues: "Blues"
+      };
+      return labels[style] || style;
+    }
+
+    function getActiveRadarStyle() {
+      return state.radarStyle || "all";
+    }
+
+    function getRadarStyleItems() {
+      const track = getRadarTrack();
+      const items = state.radar?.items || [];
+      return radarStyleOptions.map((style) => ({
+        value: style,
+        label: formatRadarStyleLabel(style),
+        count: items.filter((item) => classifyRadarItem(item) === track && getRadarStyles(item).includes(style)).length
+      }));
+    }
+
+    function renderRadarStyleFilters() {
+      renderFilterGroup(
+        radarStyleFilters,
+        getRadarStyleItems(),
+        getActiveRadarStyle(),
+        (value) => {
+          state.radarStyle = value;
+          renderRadar();
+        }
+      );
     }
 
     function getProgress(lessonId) {
@@ -1761,17 +1850,47 @@
       return "指板 / 理論基礎";
     }
 
-    function getRadarItemsForTrack(track) {
+    function getRadarPool(track, style = getActiveRadarStyle()) {
       const items = state.radar?.items || [];
-      const matching = items.filter((item) => classifyRadarItem(item) === track);
-      if (matching.length) return matching.slice(0, 4);
-      return items.slice(0, 4);
+      const matchingTrack = items.filter((item) => classifyRadarItem(item) === track);
+      const matchingStyle = style === "all" ? matchingTrack : matchingTrack.filter((item) => getRadarStyles(item).includes(style));
+      const fallbackStyle = style === "all" ? items : items.filter((item) => getRadarStyles(item).includes(style));
+      return uniqueRadarItems([
+        ...matchingStyle,
+        ...matchingTrack,
+        ...fallbackStyle,
+        ...items
+      ]);
+    }
+
+    function getRadarItemsForTrack(track) {
+      return getRadarPool(track).slice(0, 4);
+    }
+
+    function buildTodayRadarPicks(force = false) {
+      if (!force && state.radarPicks.some((pick) => pick.addedAt === todayStamp())) return;
+      const pool = getRadarPool(getRadarTrack());
+      if (!pool.length) return;
+      const seed = radarSeedNumber(`${todayStamp()}-${getRadarTrack()}-${getActiveRadarStyle()}`);
+      const rotated = pool.map((item, index) => pool[(index + (seed % pool.length)) % pool.length]);
+      state.radarPicks = rotated.slice(0, 3).map((item) => ({
+        id: item.id,
+        title: item.title,
+        track: classifyRadarItem(item),
+        source: item.source,
+        url: item.url,
+        styles: getRadarStyles(item),
+        addedAt: todayStamp()
+      }));
+      saveRadarPicks();
     }
 
     function renderRadar() {
       const activeTrack = getRadarTrack();
       const items = getRadarItemsForTrack(activeTrack);
-      radarCopy.textContent = `目前對應技能線：${activeTrack}。先抓 1 到 2 個候選，不要一次全吃。`;
+      const styleLabel = getActiveRadarStyle() === "all" ? "全部風格" : formatRadarStyleLabel(getActiveRadarStyle());
+      radarCopy.textContent = `目前對應技能線：${activeTrack}，風格：${styleLabel}。先抓 1 到 2 個候選，不要一次全吃。`;
+      renderRadarStyleFilters();
       radarList.innerHTML = "";
       if (!items.length) {
         radarList.innerHTML = '<div class="empty">目前還沒有 radar 候選。</div>';
@@ -1787,6 +1906,7 @@
           </div>
           <div class="radar-meta">
             <span class="mindmap-tag">${item.source}</span>
+            ${getRadarStyles(item).map((style) => `<span class="mindmap-tag">${formatRadarStyleLabel(style)}</span>`).join("")}
             ${(item.tags || []).slice(0, 3).map((tag) => `<span class="mindmap-tag">${tag}</span>`).join("")}
           </div>
         `;
@@ -1807,6 +1927,7 @@
             track: classifyRadarItem(item),
             source: item.source,
             url: item.url,
+            styles: getRadarStyles(item),
             addedAt: todayStamp()
           });
           state.radarPicks = state.radarPicks.slice(0, 12);
@@ -1848,6 +1969,7 @@
           </div>
           <div class="radar-meta">
             <span class="mindmap-tag">${pick.source}</span>
+            ${((pick.styles || []).slice(0, 2)).map((style) => `<span class="mindmap-tag">${formatRadarStyleLabel(style)}</span>`).join("")}
           </div>
         `;
         const actions = document.createElement("div");
@@ -2329,13 +2451,28 @@
       renderAll();
     });
 
+    radarRefresh.addEventListener("click", () => {
+      buildTodayRadarPicks(true);
+      renderRadar();
+      renderSidebar();
+    });
+
+    radarClearPicks.addEventListener("click", () => {
+      state.radarPicks = [];
+      saveRadarPicks();
+      renderRadar();
+      renderSidebar();
+    });
+
     function bootWithData(data) {
         state.data = data;
         state.radar = window.__LICK_RADAR__ || { items: [] };
         state.radarPicks = loadRadarPicks();
+        state.radarStyle = "all";
         state.progress = loadProgress();
         state.mode = data.mode || "public";
         state.selectedId = data.featured[0]?.id || data.lessons[0]?.id || null;
+        buildTodayRadarPicks(false);
         renderHeroStats();
         renderAll();
         bindMindmapActions();
