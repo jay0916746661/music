@@ -1339,6 +1339,11 @@
               <h4>怎麼練</h4>
               <div class="practice-list" id="detail-practice"></div>
             </div>
+
+            <div class="detail-block">
+              <h4>對應 Lick / 分析</h4>
+              <div class="practice-list" id="detail-radar-links"></div>
+            </div>
           </div>
         </div>
 
@@ -1374,6 +1379,7 @@
       radar: null,
       progress: {},
       radarPicks: [],
+      todayLessonIds: [],
       radarStyle: "all",
       previewPageByLesson: {},
       detailView: "standard",
@@ -1420,6 +1426,7 @@
     const detailPreviewControls = document.getElementById("detail-preview-controls");
     const detailPreview = document.getElementById("detail-preview");
     const detailPractice = document.getElementById("detail-practice");
+    const detailRadarLinks = document.getElementById("detail-radar-links");
     const detailStatusControls = document.getElementById("detail-status-controls");
     const detailStatusMeta = document.getElementById("detail-status-meta");
     const detailNote = document.getElementById("detail-note");
@@ -1430,6 +1437,7 @@
     const radarClearPicks = document.getElementById("radar-clear-picks");
     const progressStoreKey = "score-hub-progress-v1";
     const radarPickStoreKey = "score-hub-radar-picks-v1";
+    const todayLessonStoreKey = "score-hub-today-lessons-v1";
     const radarStyleOptions = ["fusion", "jazz", "neo soul", "blues"];
     const statusOptions = [
       { value: "idle", label: "未開始" },
@@ -1507,6 +1515,18 @@
 
     function saveRadarPicks() {
       localStorage.setItem(radarPickStoreKey, JSON.stringify(state.radarPicks));
+    }
+
+    function loadTodayLessonIds() {
+      try {
+        return JSON.parse(localStorage.getItem(todayLessonStoreKey) || "[]");
+      } catch {
+        return [];
+      }
+    }
+
+    function saveTodayLessonIds() {
+      localStorage.setItem(todayLessonStoreKey, JSON.stringify(state.todayLessonIds));
     }
 
     function radarSeedNumber(seed) {
@@ -1625,14 +1645,20 @@
     }
 
     function getTodayQueue() {
-      return lessonsWithProgress()
-        .filter(({ lesson, progress }) => isReviewDue(progress) || progress.status === "active" || lesson.priority_band === "now")
+      const lessons = lessonsWithProgress();
+      const pinnedIds = state.todayLessonIds || [];
+      const pinned = pinnedIds
+        .map((id) => lessons.find(({ lesson }) => lesson.id === id))
+        .filter(Boolean);
+      const generated = lessons
+        .filter(({ lesson, progress }) => !pinnedIds.includes(lesson.id) && (isReviewDue(progress) || progress.status === "active" || lesson.priority_band === "now"))
         .sort((a, b) => {
           const aDue = isReviewDue(a.progress) ? 1 : 0;
           const bDue = isReviewDue(b.progress) ? 1 : 0;
           return bDue - aDue || (b.progress.sessions || 0) - (a.progress.sessions || 0) || b.lesson.priority_score - a.lesson.priority_score;
         })
         .slice(0, 6);
+      return [...pinned, ...generated].slice(0, 6);
     }
 
     function getRecentQueue() {
@@ -2160,6 +2186,7 @@
       lessons.forEach((lesson) => {
         const progress = getProgress(lesson.id);
         const progressLabel = progress.status === "solid" ? "穩定" : progress.status === "active" ? "練習中" : "未開始";
+        const inTodayList = state.todayLessonIds.includes(lesson.id);
         const card = document.createElement("article");
         card.className = "lesson-card" + (lesson.id === state.selectedId ? " active" : "");
         card.innerHTML = `
@@ -2176,6 +2203,7 @@
             <span>${lesson.level}</span>
             <span>${lesson.file_total} files</span>
             <span>${progressLabel}</span>
+            ${inTodayList ? "<span>今日清單</span>" : ""}
           </div>
           <div class="format-strip">
             ${Object.entries(lesson.formats).map(([key, value]) => `<span class="format-pill">${key} ${value}</span>`).join("")}
@@ -2198,6 +2226,30 @@
       link.rel = "noreferrer";
       link.textContent = label;
       return link;
+    }
+
+    function addLessonToToday(lessonId) {
+      if (state.todayLessonIds.includes(lessonId)) return;
+      state.todayLessonIds = [lessonId, ...state.todayLessonIds].slice(0, 8);
+      saveTodayLessonIds();
+    }
+
+    function removeLessonFromToday(lessonId) {
+      state.todayLessonIds = state.todayLessonIds.filter((id) => id !== lessonId);
+      saveTodayLessonIds();
+    }
+
+    function startLessonSession(lesson) {
+      const latest = getProgress(lesson.id);
+      const stamp = todayStamp();
+      const nextStatus = latest.status === "idle" ? "active" : latest.status;
+      setProgress(lesson.id, {
+        status: nextStatus,
+        sessions: (latest.sessions || 0) + 1,
+        lastPracticed: stamp,
+        nextReview: reviewDateForStatus(nextStatus, stamp)
+      });
+      addLessonToToday(lesson.id);
     }
 
     function renderVideoStage(lesson) {
@@ -2317,15 +2369,7 @@
       practiceButton.className = "status-button";
       practiceButton.textContent = "今天已練";
       practiceButton.addEventListener("click", () => {
-        const latest = getProgress(lesson.id);
-        const stamp = todayStamp();
-        const nextStatus = latest.status === "idle" ? "active" : latest.status;
-        setProgress(lesson.id, {
-          status: nextStatus,
-          sessions: (latest.sessions || 0) + 1,
-          lastPracticed: stamp,
-          nextReview: reviewDateForStatus(nextStatus, stamp)
-        });
+        startLessonSession(lesson);
         renderHeroStats();
         renderSidebar();
         renderLibrary();
@@ -2359,6 +2403,32 @@
       renderVideoStage(lesson);
 
       detailActions.innerHTML = "";
+      const inTodayList = state.todayLessonIds.includes(lesson.id);
+      const startButton = document.createElement("button");
+      startButton.type = "button";
+      startButton.className = "button primary";
+      startButton.textContent = "開始練這份";
+      startButton.addEventListener("click", () => {
+        startLessonSession(lesson);
+        renderHeroStats();
+        renderSidebar();
+        renderLibrary();
+        renderProgress(lesson);
+      });
+      detailActions.appendChild(startButton);
+
+      const todayButton = document.createElement("button");
+      todayButton.type = "button";
+      todayButton.className = "button";
+      todayButton.textContent = inTodayList ? "移出今日清單" : "加入今日清單";
+      todayButton.addEventListener("click", () => {
+        if (state.todayLessonIds.includes(lesson.id)) removeLessonFromToday(lesson.id);
+        else addLessonToToday(lesson.id);
+        renderSidebar();
+        renderDetail();
+      });
+      detailActions.appendChild(todayButton);
+
       if (lesson.watch_url) {
         detailActions.appendChild(createActionLink("看影片", lesson.watch_url, "button primary"));
       }
@@ -2419,6 +2489,54 @@
         item.textContent = `延伸：${step}`;
         detailPractice.appendChild(item);
       });
+
+      detailRadarLinks.innerHTML = "";
+      const linkedRadar = getRadarPool(lesson.track_label, "all").slice(0, 2);
+      if (!linkedRadar.length) {
+        detailRadarLinks.innerHTML = '<div class="empty">這條技能線目前沒有對應的 radar 候選。</div>';
+      } else {
+        linkedRadar.forEach((item) => {
+          const row = document.createElement("div");
+          row.className = "radar-card";
+          row.innerHTML = `
+            <div>
+              <h4>${item.title}</h4>
+              <p class="note">${item.source}</p>
+            </div>
+            <div class="radar-meta">
+              ${getRadarStyles(item).slice(0, 2).map((style) => `<span class="mindmap-tag">${formatRadarStyleLabel(style)}</span>`).join("")}
+            </div>
+          `;
+          const actions = document.createElement("div");
+          actions.className = "action-row";
+          actions.appendChild(createActionLink("看影片", item.url, "button"));
+          const add = document.createElement("button");
+          add.type = "button";
+          add.className = "button";
+          add.textContent = state.radarPicks.some((pick) => pick.id === item.id) ? "已在今日候選" : "加入今日候選";
+          add.disabled = state.radarPicks.some((pick) => pick.id === item.id);
+          add.addEventListener("click", () => {
+            if (state.radarPicks.some((pick) => pick.id === item.id)) return;
+            state.radarPicks.unshift({
+              id: item.id,
+              title: item.title,
+              track: classifyRadarItem(item),
+              source: item.source,
+              url: item.url,
+              styles: getRadarStyles(item),
+              addedAt: todayStamp()
+            });
+            state.radarPicks = state.radarPicks.slice(0, 12);
+            saveRadarPicks();
+            renderRadar();
+            renderSidebar();
+            renderDetail();
+          });
+          actions.appendChild(add);
+          row.appendChild(actions);
+          detailRadarLinks.appendChild(row);
+        });
+      }
     }
 
     function renderAll() {
@@ -2468,6 +2586,7 @@
         state.data = data;
         state.radar = window.__LICK_RADAR__ || { items: [] };
         state.radarPicks = loadRadarPicks();
+        state.todayLessonIds = loadTodayLessonIds();
         state.radarStyle = "all";
         state.progress = loadProgress();
         state.mode = data.mode || "public";
