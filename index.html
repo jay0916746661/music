@@ -361,6 +361,40 @@
       border: 1px solid rgba(255,255,255,0.02);
     }
 
+    .metric-row {
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      font: inherit;
+      color: var(--ink);
+    }
+
+    .metric-main {
+      min-width: 0;
+      display: grid;
+      gap: 4px;
+      flex: 1;
+    }
+
+    .metric-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .mini-button {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 6px 8px;
+      cursor: pointer;
+      font: inherit;
+      font-size: 11px;
+      font-family: var(--mono);
+    }
+
     .metric-row strong,
     .series-row strong {
       font-size: 14px;
@@ -1594,7 +1628,7 @@
     }
 
     function getProgress(lessonId) {
-      return state.progress[lessonId] || { status: "idle", sessions: 0, lastPracticed: "", nextReview: "", note: "" };
+      return state.progress[lessonId] || { status: "idle", sessions: 0, totalMinutes: 0, lastPracticed: "", nextReview: "", note: "" };
     }
 
     function todayStamp() {
@@ -1618,6 +1652,20 @@
       const current = getProgress(lessonId);
       state.progress[lessonId] = { ...current, ...patch };
       saveProgress();
+    }
+
+    function recordLessonSession(lesson, minutes = 20) {
+      const latest = getProgress(lesson.id);
+      const stamp = todayStamp();
+      const nextStatus = latest.status === "idle" ? "active" : latest.status;
+      setProgress(lesson.id, {
+        status: nextStatus,
+        sessions: (latest.sessions || 0) + 1,
+        totalMinutes: (latest.totalMinutes || 0) + minutes,
+        lastPracticed: stamp,
+        nextReview: reviewDateForStatus(nextStatus, stamp)
+      });
+      addLessonToToday(lesson.id);
     }
 
     function isReviewDue(progress) {
@@ -1678,11 +1726,33 @@
         const row = document.createElement("button");
         row.type = "button";
         row.className = "metric-row";
-        row.innerHTML = formatter(lesson, progress);
+        const payload = formatter(lesson, progress);
+        row.innerHTML = typeof payload === "string"
+          ? payload
+          : `<div class="metric-main">${payload.main}</div>${payload.actions ? `<div class="metric-actions">${payload.actions}</div>` : ""}`;
         row.addEventListener("click", () => {
           state.selectedId = lesson.id;
           renderLibrary();
           renderDetail();
+        });
+        row.querySelectorAll("[data-action]").forEach((button) => {
+          button.addEventListener("click", (event) => {
+            event.stopPropagation();
+            const action = button.dataset.action;
+            if (action === "session") {
+              recordLessonSession(lesson, Number(button.dataset.minutes || 20));
+              renderHeroStats();
+              renderSidebar();
+              renderLibrary();
+              if (state.selectedId === lesson.id) renderProgress(lesson);
+            }
+            if (action === "remove-today") {
+              removeLessonFromToday(lesson.id);
+              renderSidebar();
+              renderLibrary();
+              if (state.selectedId === lesson.id) renderDetail();
+            }
+          });
         });
         target.appendChild(row);
       });
@@ -1691,11 +1761,12 @@
     function renderHeroStats() {
       const stats = state.data.stats;
       const activeCount = Object.values(state.progress).filter((item) => item.status && item.status !== "idle").length;
+      const totalMinutes = Object.values(state.progress).reduce((sum, item) => sum + (item.totalMinutes || 0), 0);
       heroStats.innerHTML = `
         <article class="stat-card"><span>Lessons</span><strong>${stats.lesson_count}</strong></article>
         <article class="stat-card"><span>PDF Scores</span><strong>${stats.pdf_count}</strong></article>
         <article class="stat-card"><span>GP Files</span><strong>${stats.gp_count}</strong></article>
-        <article class="stat-card"><span>Active Queue</span><strong>${activeCount}</strong></article>
+        <article class="stat-card"><span>Practice Min</span><strong>${totalMinutes}</strong><small>${activeCount} active</small></article>
       `;
       libraryStatus.textContent = state.mode === "local"
         ? "本地模式：可直接打開你硬碟裡的譜面、GP、音檔與影片。"
@@ -2099,7 +2170,14 @@
         todayList,
         getTodayQueue(),
         "今天還沒有排進待練清單。",
-        (lesson, progress) => `<strong>${lesson.title}</strong><small>${isReviewDue(progress) ? "今天該複習" : progress.status === "active" ? "練習中" : "優先教材"}</small>`
+        (lesson, progress) => ({
+          main: `<strong>${lesson.title}</strong><small>${isReviewDue(progress) ? "今天該複習" : progress.status === "active" ? "練習中" : "優先教材"} · ${progress.totalMinutes || 0} 分鐘</small>`,
+          actions: `
+            <button class="mini-button" type="button" data-action="session" data-minutes="10">10m</button>
+            <button class="mini-button" type="button" data-action="session" data-minutes="20">20m</button>
+            <button class="mini-button" type="button" data-action="remove-today">移除</button>
+          `
+        })
       );
 
       renderSideLessonList(
@@ -2239,19 +2317,6 @@
       saveTodayLessonIds();
     }
 
-    function startLessonSession(lesson) {
-      const latest = getProgress(lesson.id);
-      const stamp = todayStamp();
-      const nextStatus = latest.status === "idle" ? "active" : latest.status;
-      setProgress(lesson.id, {
-        status: nextStatus,
-        sessions: (latest.sessions || 0) + 1,
-        lastPracticed: stamp,
-        nextReview: reviewDateForStatus(nextStatus, stamp)
-      });
-      addLessonToToday(lesson.id);
-    }
-
     function renderVideoStage(lesson) {
       detailStage.innerHTML = "";
       if (lesson.video_embed_url) {
@@ -2367,9 +2432,9 @@
       const practiceButton = document.createElement("button");
       practiceButton.type = "button";
       practiceButton.className = "status-button";
-      practiceButton.textContent = "今天已練";
+      practiceButton.textContent = "20 分鐘";
       practiceButton.addEventListener("click", () => {
-        startLessonSession(lesson);
+        recordLessonSession(lesson, 20);
         renderHeroStats();
         renderSidebar();
         renderLibrary();
@@ -2377,10 +2442,26 @@
       });
       detailStatusControls.appendChild(practiceButton);
 
+      [10, 30].forEach((minutes) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "status-button";
+        button.textContent = `${minutes} 分鐘`;
+        button.addEventListener("click", () => {
+          recordLessonSession(lesson, minutes);
+          renderHeroStats();
+          renderSidebar();
+          renderLibrary();
+          renderProgress(lesson);
+        });
+        detailStatusControls.appendChild(button);
+      });
+
       const latest = getProgress(lesson.id);
       detailStatusMeta.innerHTML = `
         <div class="status-card"><small class="note">目前狀態</small><strong>${statusOptions.find((item) => item.value === latest.status)?.label || "未開始"}</strong><span>${lesson.priority_band} priority</span></div>
-        <div class="status-card"><small class="note">累積練習</small><strong>${latest.sessions || 0} 次</strong><span>每按一次「今天已練」會累加</span></div>
+        <div class="status-card"><small class="note">累積練習</small><strong>${latest.sessions || 0} 次</strong><span>每次記一個 session 就會累加</span></div>
+        <div class="status-card"><small class="note">累積分鐘</small><strong>${latest.totalMinutes || 0} 分鐘</strong><span>10 / 20 / 30 分鐘 session 會累加</span></div>
         <div class="status-card"><small class="note">上次練習</small><strong>${latest.lastPracticed || "尚未記錄"}</strong><span>用來判斷是否該回鍋</span></div>
         <div class="status-card"><small class="note">下次複習</small><strong>${latest.nextReview || "待安排"}</strong><span>依狀態自動推 1 / 3 / 7 天</span></div>
       `;
@@ -2407,9 +2488,9 @@
       const startButton = document.createElement("button");
       startButton.type = "button";
       startButton.className = "button primary";
-      startButton.textContent = "開始練這份";
+      startButton.textContent = "開始練這份 20m";
       startButton.addEventListener("click", () => {
-        startLessonSession(lesson);
+        recordLessonSession(lesson, 20);
         renderHeroStats();
         renderSidebar();
         renderLibrary();
