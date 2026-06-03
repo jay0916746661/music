@@ -2,8 +2,8 @@
   "mode": "public",
   "updatedAt": "2026-05-16T22:51:02.376391",
   "stats": {
-    "lesson_count": 642,
-    "pdf_count": 1044,
+    "lesson_count": 643,
+    "pdf_count": 1045,
     "gp_count": 178,
     "audio_count": 190,
     "video_count": 641
@@ -80,6 +80,10 @@
     {
       "name": "Evenings",
       "count": 7
+    },
+    {
+      "name": "Jazz Book",
+      "count": 1
     }
   ],
   "tracks": [
@@ -105,13 +109,13 @@
     },
     {
       "name": "Jazz 和聲 / Voicing",
-      "count": 25
+      "count": 26
     }
   ],
   "levels": [
     {
       "name": "core",
-      "count": 462
+      "count": 463
     },
     {
       "name": "foundation",
@@ -279,6 +283,42 @@
         "把同一個句型轉去 3 個調",
         "60 / 80 / 100 bpm 三段節拍器練習",
         "把 GP5 裡的主題句抄到 MuseScore 或 Logic MIDI"
+      ]
+    },
+    {
+      "id": "mark-levine-jazz-book-lab",
+      "title": "爵士樂寶典 Jazz Book Lab",
+      "series": "Jazz Book",
+      "track": "jazz-voicing",
+      "track_label": "Jazz 和聲 / Voicing",
+      "level": "core",
+      "priority_band": "now",
+      "priority_score": 110,
+      "summary": "把這本書當成長線參考站，不是一次讀完。最適合在你練 Smooth、Harmony、Tetrads、251 類教材時，回來查和聲、即興與編曲概念。",
+      "post_url": "",
+      "folder_href": "",
+      "video_local_url": "",
+      "video_public_url": "",
+      "video_embed_url": "",
+      "watch_url": "",
+      "formats": {
+        "pdf": 1
+      },
+      "file_total": 1,
+      "pdf_links": [],
+      "gp_links": [],
+      "audio_links": [],
+      "extra_links": [],
+      "practice_steps": [
+        "不要整本順讀。先帶一個今天真的卡住的問題進去，例如 251 裡哪個音是和弦重心、這個 voicing 的色彩是什麼。",
+        "先看 10 到 15 分鐘，讀完立刻回吉他或 Logic 驗證，不讓它停在概念層。",
+        "把今天查到的概念寫成一句自己的話，補進右側筆記，之後才能回收成自己的語言。",
+        "如果今天是在練標準進行，就優先回查和弦色彩、導音連接、即興落點；如果今天是在編曲，就優先回查排列和張力釋放。"
+      ],
+      "extensions": [
+        "把今天查到的一個和聲概念，轉寫成 MuseScore 的 4 小節筆記",
+        "把一個 jazz voicing 丟進 Logic，做成 8 小節 comping loop",
+        "把書裡查到的概念對應到你現有的 Smooth / Tetrads / Harmony 教材，建立自己的索引"
       ]
     },
     {
@@ -24090,6 +24130,42 @@
         "只練右手節奏和乾淨 mute",
         "分成 2 小節 chunk loop",
         "錄一版乾淨速度、一版目標速度的 80%"
+      ]
+    },
+    {
+      "id": "mark-levine-jazz-book-lab",
+      "title": "爵士樂寶典 Jazz Book Lab",
+      "series": "Jazz Book",
+      "track": "jazz-voicing",
+      "track_label": "Jazz 和聲 / Voicing",
+      "level": "core",
+      "priority_band": "now",
+      "priority_score": 110,
+      "summary": "把這本書當成長線參考站，不是一次讀完。最適合在你練 Smooth、Harmony、Tetrads、251 類教材時，回來查和聲、即興與編曲概念。",
+      "post_url": "",
+      "folder_href": "",
+      "video_local_url": "",
+      "video_public_url": "",
+      "video_embed_url": "",
+      "watch_url": "",
+      "formats": {
+        "pdf": 1
+      },
+      "file_total": 1,
+      "pdf_links": [],
+      "gp_links": [],
+      "audio_links": [],
+      "extra_links": [],
+      "practice_steps": [
+        "不要整本順讀。先帶一個今天真的卡住的問題進去，例如 251 裡哪個音是和弦重心、這個 voicing 的色彩是什麼。",
+        "先看 10 到 15 分鐘，讀完立刻回吉他或 Logic 驗證，不讓它停在概念層。",
+        "把今天查到的概念寫成一句自己的話，補進右側筆記，之後才能回收成自己的語言。",
+        "如果今天是在練標準進行，就優先回查和弦色彩、導音連接、即興落點；如果今天是在編曲，就優先回查排列和張力釋放。"
+      ],
+      "extensions": [
+        "把今天查到的一個和聲概念，轉寫成 MuseScore 的 4 小節筆記",
+        "把一個 jazz voicing 丟進 Logic，做成 8 小節 comping loop",
+        "把書裡查到的概念對應到你現有的 Smooth / Tetrads / Harmony 教材，建立自己的索引"
       ]
     }
   ]
