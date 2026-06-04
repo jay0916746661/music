@@ -857,6 +857,36 @@
       background: rgba(255,255,255,0.025);
     }
 
+    .route-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .route-card {
+      display: grid;
+      gap: 12px;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.025);
+    }
+
+    .route-card h3 {
+      margin: 0;
+      font-size: 20px;
+      line-height: 1.1;
+      font-family: var(--display);
+    }
+
+    .route-card ol {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.65;
+      font-size: 14px;
+    }
+
     .radar-card h4 {
       margin: 0;
       font-size: 18px;
@@ -1032,6 +1062,7 @@
       .workspace { grid-template-columns: 300px minmax(0, 1fr); }
       .detail-panel { grid-column: 1 / -1; }
       .detail-media-grid.video-wide { grid-template-columns: 1fr; }
+      .route-grid { grid-template-columns: 1fr; }
     }
 
     @media (max-width: 920px) {
@@ -1268,6 +1299,16 @@
       <div class="radar-list" id="radar-list"></div>
     </section>
 
+    <section class="panel" id="progression-lab-panel">
+      <div class="panel-head">
+        <div>
+          <h2>Chord Progression Lab</h2>
+          <p class="note">先把進行、voicing、cadence、張力釋放拆成幾條可練主線。這一區是專門補你和弦進行量不夠時用的。</p>
+        </div>
+      </div>
+      <div class="route-grid" id="progression-lab"></div>
+    </section>
+
     <section class="workspace">
       <aside class="panel">
         <div class="panel-head">
@@ -1414,6 +1455,7 @@
       progress: {},
       radarPicks: [],
       todayLessonIds: [],
+      routeLessonIds: null,
       radarStyle: "all",
       previewPageByLesson: {},
       detailView: "standard",
@@ -1444,6 +1486,7 @@
     const todayList = document.getElementById("today-list");
     const todayRadarList = document.getElementById("today-radar-list");
     const recentList = document.getElementById("recent-list");
+    const progressionLab = document.getElementById("progression-lab");
     const libraryStatus = document.getElementById("library-status");
     const lessonList = document.getElementById("lesson-list");
     const sortSelect = document.getElementById("sort-select");
@@ -1518,6 +1561,16 @@
         apply() {
           state.filters = { ...state.filters, query: "", track: "all", level: "all", format: "gp", progress: "all", series: "all", sort: "priority" };
           quickSearch.value = "";
+          sortSelect.value = "priority";
+        }
+      },
+      {
+        key: "progressions",
+        label: "和弦進行主線",
+        description: "先補 progression、voicing、251、harmony 類教材。",
+        apply() {
+          state.filters = { ...state.filters, query: "chord", track: "all", level: "all", format: "pdf", progress: "all", series: "all", sort: "priority" };
+          quickSearch.value = "chord";
           sortSelect.value = "priority";
         }
       }
@@ -1716,6 +1769,118 @@
         .slice(0, 6);
     }
 
+    function scoreChordProgressionLesson(lesson) {
+      const hay = [
+        lesson.title,
+        lesson.series,
+        lesson.summary,
+        lesson.track_label,
+        ...(lesson.practice_steps || []),
+        ...(lesson.extensions || [])
+      ].join(" ").toLowerCase();
+      let score = 0;
+      if (/(chord|progression|harmony|voicing|cadence|interchange|251|451|tetrad|smooth|peaceful|tsubasa|extensions)/.test(hay)) score += 2;
+      if (/(251|451|cadence|standard)/.test(hay)) score += 2;
+      if (/(voicing|harmony|interchange|tetrad|chord melody)/.test(hay)) score += 2;
+      if (lesson.track_label === "Jazz 和聲 / Voicing") score += 3;
+      if (lesson.track_label === "和聲 / 觸弦 / 氣氛") score += 2;
+      if (lesson.series === "Jazz Book") score += 4;
+      if (/chord progression/.test(hay)) score += 4;
+      return score + (lesson.priority_score || 0) / 100;
+    }
+
+    function getChordProgressionCandidates() {
+      return (state.data?.lessons || [])
+        .map((lesson) => ({ lesson, score: scoreChordProgressionLesson(lesson) }))
+        .filter(({ score }) => score >= 3)
+        .sort((a, b) => b.score - a.score || b.lesson.priority_score - a.lesson.priority_score);
+    }
+
+    function getProgressionRoutes() {
+      const candidates = getChordProgressionCandidates().map((item) => item.lesson);
+      const pick = (matcher, limit = 4) => candidates.filter(matcher).slice(0, limit);
+      return [
+        {
+          title: "進行基礎",
+          copy: "先補最常見的 progression 視角，知道和弦怎麼往前走，不只背形狀。",
+          lessons: pick((lesson) => /chord progression|progression|only two chords|peaceful harmony club/i.test([lesson.title, lesson.summary].join(" ")))
+        },
+        {
+          title: "Voicing 與色彩",
+          copy: "把同一個進行練出不同和聲色彩，開始有編曲和 comping 的手感。",
+          lessons: pick((lesson) => /voicing|harmony|extensions|chord melody|smooth|peaceful/i.test([lesson.title, lesson.series, lesson.summary].join(" ")))
+        },
+        {
+          title: "251 / 標準進行",
+          copy: "往 jazz 常見路線走，補 cadence、導音與 tension release。",
+          lessons: pick((lesson) => /251|451|standard|jazz|tetrad|interchange/i.test([lesson.title, lesson.series, lesson.summary].join(" ")))
+        }
+      ];
+    }
+
+    function applyProgressionRoute(route) {
+      const ids = route.lessons.map((lesson) => lesson.id);
+      state.filters = {
+        ...state.filters,
+        query: "",
+        track: "all",
+        level: "all",
+        format: "pdf",
+        progress: "all",
+        series: "all",
+        sort: "priority"
+      };
+      quickSearch.value = "";
+      sortSelect.value = "priority";
+      if (ids.length) {
+        state.selectedId = ids[0];
+      }
+      state.routeLessonIds = ids;
+      renderAll();
+      document.getElementById("library-panel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderProgressionLab() {
+      progressionLab.innerHTML = "";
+      const routes = getProgressionRoutes();
+      routes.forEach((route) => {
+        const card = document.createElement("article");
+        card.className = "route-card";
+        card.innerHTML = `
+          <div>
+            <h3>${route.title}</h3>
+            <p class="note">${route.copy}</p>
+          </div>
+          <ol>
+            ${route.lessons.map((lesson) => `<li>${lesson.title}</li>`).join("")}
+          </ol>
+        `;
+        const actions = document.createElement("div");
+        actions.className = "action-row";
+        const focus = document.createElement("button");
+        focus.type = "button";
+        focus.className = "button primary";
+        focus.textContent = "打開這條線";
+        focus.addEventListener("click", () => applyProgressionRoute(route));
+        actions.appendChild(focus);
+        route.lessons.slice(0, 2).forEach((lesson) => {
+          const add = document.createElement("button");
+          add.type = "button";
+          add.className = "button";
+          add.textContent = `加入 ${lesson.title.slice(0, 8)}`;
+          add.addEventListener("click", () => {
+            addLessonToToday(lesson.id);
+            renderSidebar();
+            renderLibrary();
+            if (!state.selectedId) state.selectedId = lesson.id;
+          });
+          actions.appendChild(add);
+        });
+        card.appendChild(actions);
+        progressionLab.appendChild(card);
+      });
+    }
+
     function renderSideLessonList(target, items, emptyText, formatter) {
       target.innerHTML = "";
       if (!items.length) {
@@ -1800,6 +1965,7 @@
         button.className = "preset-button";
         button.innerHTML = `<strong>${preset.label}</strong><small>${preset.description}</small>`;
         button.addEventListener("click", () => {
+          state.routeLessonIds = null;
           preset.apply();
           renderAll();
         });
@@ -1869,6 +2035,7 @@
             series: "all",
             sort: "priority"
           };
+          state.routeLessonIds = null;
           quickSearch.value = "";
           sortSelect.value = "priority";
           renderAll();
@@ -1887,6 +2054,7 @@
             series: "all",
             sort: "priority"
           };
+          state.routeLessonIds = null;
           quickSearch.value = "";
           sortSelect.value = "priority";
           renderAll();
@@ -2103,14 +2271,14 @@
         trackFilters,
         state.data.tracks.map((item) => ({ label: item.name, value: item.name, count: item.count })),
         state.filters.track,
-        (value) => { state.filters.track = value; renderAll(); }
+        (value) => { state.routeLessonIds = null; state.filters.track = value; renderAll(); }
       );
 
       renderFilterGroup(
         levelFilters,
         state.data.levels.map((item) => ({ label: item.name, value: item.name, count: item.count })),
         state.filters.level,
-        (value) => { state.filters.level = value; renderAll(); }
+        (value) => { state.routeLessonIds = null; state.filters.level = value; renderAll(); }
       );
 
       const formatItems = [
@@ -2123,14 +2291,14 @@
         formatFilters,
         formatItems,
         state.filters.format,
-        (value) => { state.filters.format = value; renderAll(); }
+        (value) => { state.routeLessonIds = null; state.filters.format = value; renderAll(); }
       );
 
       renderFilterGroup(
         progressFilters,
         getProgressFilterItems(),
         state.filters.progress,
-        (value) => { state.filters.progress = value; renderAll(); }
+        (value) => { state.routeLessonIds = null; state.filters.progress = value; renderAll(); }
       );
       renderFilterSummary();
 
@@ -2145,6 +2313,7 @@
         row.className = "series-row";
         row.innerHTML = `<strong>${item.name}</strong><small>${item.count}</small>`;
         row.addEventListener("click", () => {
+          state.routeLessonIds = null;
           state.filters.series = item.name;
           seriesSelect.value = item.name;
           renderAll();
@@ -2210,6 +2379,7 @@
       ].join(" ").toLowerCase();
 
       if (q && !haystack.includes(q)) return false;
+      if (state.routeLessonIds?.length && !state.routeLessonIds.includes(lesson.id)) return false;
       if (state.filters.track !== "all" && lesson.track_label !== state.filters.track) return false;
       if (state.filters.level !== "all" && lesson.level !== state.filters.level) return false;
       if (state.filters.series !== "all" && lesson.series !== state.filters.series) return false;
@@ -2623,28 +2793,33 @@
     function renderAll() {
       renderMindmapState();
       renderRadar();
+      renderProgressionLab();
       renderSidebar();
       renderLibrary();
       renderDetail();
     }
 
     quickSearch.addEventListener("input", () => {
+      state.routeLessonIds = null;
       state.filters.query = quickSearch.value;
       renderAll();
     });
 
     sortSelect.addEventListener("change", () => {
+      state.routeLessonIds = null;
       state.filters.sort = sortSelect.value;
       renderAll();
     });
 
     seriesSelect.addEventListener("change", () => {
+      state.routeLessonIds = null;
       state.filters.series = seriesSelect.value;
       renderAll();
     });
 
     resetFilters.addEventListener("click", () => {
       state.filters = { query: "", track: "all", level: "all", format: "all", progress: "all", series: "all", sort: "priority" };
+      state.routeLessonIds = null;
       quickSearch.value = "";
       sortSelect.value = "priority";
       renderAll();
